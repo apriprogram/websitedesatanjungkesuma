@@ -1,6 +1,21 @@
 @php
     use Illuminate\Support\Str;
-    $imgSrc = image_url($news->thumbnail);
+    use Illuminate\Support\Facades\Storage;
+
+    $mediaUrl = function ($path, $default = null) {
+        if (empty($path)) return $default;
+        if (filter_var($path, FILTER_VALIDATE_URL) || Str::startsWith($path, ['http://', 'https://'])) return $path;
+        
+        $normalized = ltrim(str_replace(['storage/', 'public/'], '', $path), '/');
+        $fullPath = public_path('storage/' . $normalized);
+        
+        if (file_exists($fullPath)) {
+            return asset('storage/' . $normalized);
+        }
+        return $default;
+    };
+
+    $imgSrc = $mediaUrl($news->thumbnail);
     $publishedAt = $news->published_at ?? $news->created_at;
 @endphp
 <!DOCTYPE html>

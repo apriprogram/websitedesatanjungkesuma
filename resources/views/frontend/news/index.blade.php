@@ -1,5 +1,29 @@
 @php
+    use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Str;
+
+    /**
+     * Resolver URL media yang aman dari ketergantungan ekstensi 'fileinfo'.
+     * Menggunakan file_exists dan asset() sebagai fallback.
+     */
+    $mediaUrl = function ($path, $default = null) {
+        if (empty($path)) {
+            return $default;
+        }
+
+        if (filter_var($path, FILTER_VALIDATE_URL) || Str::startsWith($path, ['http://', 'https://'])) {
+            return $path;
+        }
+
+        $normalized = ltrim(str_replace(['storage/', 'public/'], '', $path), '/');
+        $fullPath = public_path('storage/' . $normalized);
+
+        if (file_exists($fullPath)) {
+            return asset('storage/' . $normalized);
+        }
+
+        return $default;
+    };
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -93,7 +117,7 @@
 
                 @forelse($news as $item)
                     @php
-                        $thumb = image_url($item->thumbnail);
+                        $thumb = $mediaUrl($item->thumbnail);
                         $publishedAt = $item->published_at ?? $item->created_at;
                     @endphp
                     <a href="{{ route('news.show', $item) }}" class="news-card-v2">
