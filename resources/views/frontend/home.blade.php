@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/transparency.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('assets/css/search-fix.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('assets/css/widget-animations.css') }}?v={{ time() }}">
-    <link rel="icon" href="{{ asset('img/logo/logo_lampung_timur.png') }}">
+    <link rel="icon" href="{{ asset('img/Logo/logo_lampung_timur.png') }}">
     <!-- Library JS dimuat di akhir body untuk performa -->
 </head>
 

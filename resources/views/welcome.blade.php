@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Laravel</title>
-    <link rel="icon" href="{{ asset('img/logo/logo_lampung_timur.png') }}">
+    <link rel="icon" href="{{ asset('img/Logo/logo_lampung_timur.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">

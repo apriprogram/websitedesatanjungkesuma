@@ -426,7 +426,7 @@ Route::get('/statistik-anggaran', function (Request $request) {
     ));
 })->name('statistics.budget.page');
 
-Route::get('/pages/{page:slug}', [PageController::class, 'show'])->name('pages.show');
+
 Route::get('/news', [NewsFrontController::class, 'index'])->name('news.index');
 Route::get('/news/{news:slug}', [NewsFrontController::class, 'show'])->name('news.show');
 Route::get('/videos', [VideoFrontController::class, 'index'])->name('videos.index');
@@ -597,3 +597,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
+
+// Route catch-all untuk halaman dinamis (pindahkan ke paling bawah agar tidak bentrok dengan route lain)
+Route::get('/{page:slug}', [\App\Http\Controllers\Admin\PageController::class, 'show'])->name('pages.show');
