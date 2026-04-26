@@ -172,6 +172,7 @@ class HomeController extends Controller
             'agama' => $buildCategoryStats('agama_id', 'ref_agama'),
             'perkawinan' => $buildCategoryStats('status_kawin_id', 'ref_status_kawin'),
             'golongan_darah' => $buildCategoryStats('golongan_darah_id', 'ref_golongan_darah'),
+            'suku' => $buildCategoryStats('suku_id', 'ref_suku'),
             'usia' => [
                 'labels' => $usiaRows->pluck('label')->all(),
                 'data' => $usiaRows->pluck('total')->map(fn($v) => (int)$v)->all(),
