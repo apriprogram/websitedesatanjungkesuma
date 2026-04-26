@@ -1,0 +1,435 @@
+/* Transparency Section Styles */
+.transparansi-section {
+    padding: 40px 0;
+    background-color: none;
+}
+
+.transparansi-header {
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.transparansi-title h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+.transparansi-desc {
+    color: #64748b;
+    font-size: 1rem;
+    max-width: 600px;
+}
+
+/* Centered header for Ringkasan section */
+#ringkasan .transparansi-header {
+    justify-content: center;
+    text-align: center;
+}
+
+#ringkasan .transparansi-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.transparansi-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+    background-color: none;
+}
+
+.transparansi-link:hover {
+    color: #1d4ed8;
+}
+
+/* Main Grid: Stack cards vertically (1 col) */
+.transparansi-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.transparansi-row {
+    display: block;
+    width: 100%;
+}
+
+/* Card Styles */
+.transparansi-card {
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    /* Light gray outline */
+    padding: 30px;
+    box-shadow: none;
+    width: 100%;
+}
+
+/* Override conflicts from main.css specific selectors */
+.transparansi-row .pelaksanaan-card,
+.transparansi-row .pendapatan-card,
+.transparansi-row .pembelanjaan-card {
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: none !important;
+    outline: 2px solid transparent;
+    transition: outline 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.card-header i {
+    font-size: 1.2rem;
+    color: #1e293b;
+    width: auto;
+    height: auto;
+    background: transparent;
+    border-radius: 0;
+    display: inline-block;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* Inner Content Grids: Flex-wrap based */
+.card-content-2col {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    width: 100%;
+}
+
+.card-content-3col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .card-content-3col {
+        grid-template-columns: 1fr;
+    }
+
+    .transparansi-title h2 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 8px;
+        line-height: 1.2;
+    }
+
+    .transparansi-desc {
+        color: #64748b;
+        font-size: 0.8rem;
+        max-width: 600px;
+    }
+
+    .transparansi-link {
+        font-size: 0.8rem;
+    }
+
+    /* Mobile Card Optimizations */
+    .transparansi-card {
+        padding: 15px !important;
+    }
+
+    .card-title {
+        font-size: 1.1rem !important;
+    }
+
+    .card-content-3col,
+    .card-content-2col {
+        gap: 20px !important;
+    }
+
+    .card-subtitle {
+        font-size: 0.85rem !important;
+    }
+
+    .card-value {
+        font-size: 0.95rem !important;
+    }
+
+    .transparansi-header {
+        margin-bottom: 25px !important;
+    }
+
+    /* Hero Section Optimizations */
+    .transparansi-hero {
+        padding: 90px 0 30px !important;
+        height: auto !important;
+        min-height: auto !important;
+        margin-top: 0 !important;
+        /* Remove white space gap */
+    }
+
+    .transparansi-head {
+        text-align: left !important;
+        /* Left align as requested */
+    }
+
+    .transparansi-head h1 {
+        font-size: 1.6rem !important;
+        margin-bottom: 8px !important;
+        line-height: 1.3;
+    }
+
+    .transparansi-head p {
+        font-size: 0.9rem !important;
+        margin-bottom: 12px !important;
+        padding: 0;
+        /* Remove side padding for cleaner left align */
+    }
+
+    .transparansi-summary {
+        margin-top: 20px !important;
+        gap: 12px !important;
+        padding: 0;
+        flex-direction: column;
+    }
+
+    .transparansi-hero .summary-card {
+        padding: 16px !important;
+    }
+
+    .summary-card h3 {
+        font-size: 1.4rem !important;
+    }
+}
+
+/* Specific Layout for Pembelanjaan Card: 3 items per row, wrap to next row */
+.pembelanjaan-card .card-content-3col {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 30px !important;
+    width: 100% !important;
+    background-color: none;
+}
+
+.pembelanjaan-card .card-content-3col .card-col {
+    grid-column: span 1 !important;
+    max-width: 100% !important;
+    flex: none !important;
+}
+
+/* Maintain single column on mobile */
+@media (max-width: 768px) {
+    .pembelanjaan-card .card-content-3col {
+        grid-template-columns: 1fr !important;
+    }
+
+    .pembelanjaan-card .card-content-3col .card-col {
+        grid-column: span 1 !important;
+    }
+}
+
+.card-col {
+    flex: 1 1 300px;
+    max-width: 100%;
+    min-width: 0;
+    /* Critical for text wrapping in grid/flex */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* Prevent overflow */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Styling for Card Items */
+.card-subtitle {
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+    min-height: 24px;
+    /* Limit to 3 lines with ellipsis */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+}
+
+.card-label {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-bottom: 0px;
+    font-weight: 500;
+}
+
+.card-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 12px;
+    font-family: inherit;
+}
+
+.card-value.highlight {
+    color: #2563eb;
+}
+
+/* Progress Bar */
+.card-bar {
+    height: 6px;
+    background: #f1f5f9;
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    margin-top: auto;
+    /* Push to bottom if flex column */
+}
+
+.card-bar span {
+    display: block;
+    height: 100%;
+    background: #2563eb;
+    border-radius: 99px;
+    transition: width 1s ease;
+}
+
+.card-percent {
+    text-align: right;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.card-divider {
+    display: none;
+    /* Hide divider in grid/flex layout */
+}
+
+/* Hover effects for transparency cards requested by user */
+.transparansi-row .pelaksanaan-card:hover,
+.transparansi-row .pendapatan-card:hover,
+.transparansi-row .pembelanjaan-card:hover {
+    outline: 2px solid #2563eb;
+    /* Blue outline */
+    box-shadow: none !important;
+    /* Remove shadow */
+    transform: none !important;
+    /* Remove transform if any */
+}
+
+/* Dark Mode Overrides */
+body.dark-mode .transparansi-title h2 {
+    color: #f1f5f9;
+}
+
+body.dark-mode .transparansi-desc {
+    color: #cbd5e1;
+}
+
+body.dark-mode .transparansi-card,
+body.dark-mode .transparansi-row .pelaksanaan-card,
+body.dark-mode .transparansi-row .pendapatan-card,
+body.dark-mode .transparansi-row .pembelanjaan-card {
+    background: #1e293b;
+    border-color: #334155 !important;
+    color: #f1f5f9;
+}
+
+body.dark-mode .card-title,
+body.dark-mode .card-subtitle,
+body.dark-mode .card-value {
+    color: #f1f5f9;
+}
+
+body.dark-mode .card-header i {
+    color: #60a5fa;
+}
+
+body.dark-mode .card-label {
+    color: #94a3b8;
+}
+
+body.dark-mode .card-bar {
+    background: #334155;
+}
+
+
+/* Dark Mode for Transparency Page Hero & Background */
+body.dark-mode .transparansi-page {
+    background-color: #0f172a;
+}
+
+body.dark-mode .transparansi-hero .summary-card {
+    background: rgba(30, 41, 59, 0.95);
+    border: 1px solid #334155;
+    color: #f1f5f9;
+}
+
+body.dark-mode .transparansi-hero .summary-label {
+    color: #cbd5e1;
+}
+
+body.dark-mode .transparansi-hero .summary-note {
+    color: #94a3b8;
+}
+
+body.dark-mode .transparansi-hero h3 {
+    color: #f1f5f9;
+}
+
+body.dark-mode .transparansi-hero .pill {
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid #475569;
+    color: #cbd5e1;
+}
+
+body.dark-mode .transparansi-section {
+    background-color: none;
+}
+
+
+/* Refined Dark Mode for Pills and Cards */
+body.dark-mode .pill {
+    background: rgba(30, 41, 59, 0.8) !important;
+    border-color: #475569 !important;
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .pill-muted {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .transparansi-hero .summary-card {
+    border-color: rgba(148, 163, 184, 0.2) !important;
+    background: #1e293b !important;
+    /* Opaque dark to match user expectation */
+}

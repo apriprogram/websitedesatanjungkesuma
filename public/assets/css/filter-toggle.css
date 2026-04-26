@@ -1,0 +1,73 @@
+/* Filter Toggle Button Styles */
+.filter-toggle-btn {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+    width: 100%;
+    justify-content: center;
+    order: 1.5;
+}
+
+.filter-toggle-btn:hover {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35);
+    transform: translateY(-1px);
+}
+
+.filter-toggle-btn:active {
+    transform: translateY(0);
+}
+
+.filter-toggle-icon {
+    transition: transform 0.3s ease;
+    font-size: 0.85rem;
+}
+
+/* Mobile Styles */
+@media (max-width: 1024px) {
+    .filter-toggle-btn {
+        display: flex !important;
+    }
+
+    .resident-filter-bar.filter-collapsed {
+        display: none !important;
+    }
+
+    .resident-filter-bar.filter-expanded {
+        display: flex !important;
+        animation: slideDown 0.3s ease;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dark Mode Support */
+body.dark-mode .filter-toggle-btn {
+    background: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+    box-shadow: 0 4px 12px rgba(129, 140, 248, 0.25);
+}
+
+body.dark-mode .filter-toggle-btn:hover {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    box-shadow: 0 6px 16px rgba(129, 140, 248, 0.35);
+}

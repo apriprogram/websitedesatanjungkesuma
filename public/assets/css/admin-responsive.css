@@ -1,0 +1,480 @@
+/* ============================================================
+   admin-responsive.css
+   Responsive breakpoints for the entire admin panel.
+   Breakpoints:
+     ≤1100px  — Tablet / small laptop (sidebar collapses)
+     ≤768px   — Tablet portrait
+     ≤640px   — Mobile
+   ============================================================ */
+
+/* ─── 1. Admin App Layout & Sidebar ─────────────────────────── */
+@media (max-width: 1100px) {
+  .admin-app {
+    grid-template-columns: 1fr !important;
+    position: relative;
+  }
+
+  .admin-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 260px;
+    z-index: 200;
+    transform: translateX(-100%);
+    box-shadow: 4px 0 24px rgba(15, 23, 42, 0.18);
+    transition: transform 0.3s ease;
+  }
+
+  body.sidebar-open .admin-sidebar {
+    transform: translateX(0);
+  }
+
+  /* Overlay when sidebar is open */
+  body.sidebar-open::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    z-index: 199;
+  }
+
+  .admin-main {
+    width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  /* Show expand trigger on small screens */
+  .sidebar-trigger {
+    display: grid !important;
+  }
+}
+
+/* ─── 2. Main Header ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .main-header {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .header-controls {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .header-title-text {
+    font-size: 1.1rem;
+  }
+
+  .header-subtitle {
+    font-size: 0.78rem;
+  }
+}
+
+/* ─── 3. Page Title & Breadcrumbs ───────────────────────────── */
+@media (max-width: 768px) {
+
+  .page-header,
+  .page-hero,
+  .dashboard-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+
+  .page-header__actions,
+  .hero-actions {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .page-header__actions>*,
+  .hero-actions>* {
+    flex: 1 1 auto;
+    min-width: 120px;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+/* ─── 4. Metric / Stat Cards ─────────────────────────────────── */
+@media (max-width: 768px) {
+
+  .metrics-grid,
+  .quick-stats__grid,
+  .data-support__grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px;
+  }
+
+  .quick-actions__grid,
+  .progress-insight,
+  .agenda-and-activity {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .metrics-grid,
+  .quick-stats__grid,
+  .data-support__grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ─── 5. Tables ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Make tables horizontally scrollable */
+  .table-wrapper,
+  .resident-table-wrapper,
+  .resident-table-wrap,
+  .admin-users-table-wrap,
+  .table-container,
+  .agenda-table-wrap,
+  .keluarga-table-wrap,
+  .entity-table-wrap,
+  .rw-table-wrap,
+  .rt-table-wrap,
+  .news-table-section {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+  }
+
+  /* Minimum widths so tables don't collapse */
+  .resident-table,
+  .users-table,
+  .entity-table,
+  table {
+    min-width: 640px;
+  }
+
+  /* Tighter cell padding on mobile */
+  table th,
+  table td {
+    padding: 8px 10px !important;
+    font-size: 0.82rem !important;
+    white-space: nowrap;
+  }
+}
+
+/* ─── 6. Toolbar / Search + Filter Row ──────────────────────── */
+@media (max-width: 768px) {
+
+  .toolbar,
+  .table-toolbar,
+  .section-toolbar,
+  .filter-bar,
+  .resident-toolbar,
+  .page-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .toolbar__search,
+  .search-wrap,
+  .resident-search,
+  .table-search {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  .toolbar__actions,
+  .action-buttons,
+  .header-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .toolbar__actions>*,
+  .action-buttons>*,
+  .header-buttons>* {
+    flex: 1 2 auto;
+    min-width: 100px;
+  }
+}
+
+/* ─── 7. Dialogs / Modals ────────────────────────────────────── */
+@media (max-width: 768px) {
+  .dialog {
+    width: calc(100vw - 24px) !important;
+    max-width: none !important;
+    max-height: 90dvh;
+    overflow-y: auto;
+    margin: auto 12px;
+    border-radius: 18px !important;
+  }
+
+  .dialog__header {
+    padding: 16px 16px 12px !important;
+  }
+
+  .dialog__body {
+    padding: 14px 16px !important;
+  }
+
+  .dialog__footer {
+    padding: 12px 16px !important;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dialog__footer>* {
+    flex: 1 1 auto;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+/* ─── 8. Form Grids inside Modals ───────────────────────────── */
+@media (max-width: 768px) {
+
+  .form-grid,
+  .form-row,
+  .fields-row,
+  .resident-form-grid,
+  [class*="form-grid"],
+  [class*="form-row"] {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .form-section-header {
+    font-size: 0.9rem;
+  }
+}
+
+/* ─── 9. Buttons ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+
+  /* Action icon buttons stay compact */
+  .icon-btn,
+  .table-action-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 0.8rem;
+  }
+
+  /* Primary action buttons go full-width in stacked contexts */
+  .btn-full-mobile {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ─── 10. Pagination ─────────────────────────────────────────── */
+@media (max-width: 640px) {
+
+  .pagination-wrap,
+  .pagination {
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+  }
+
+  .pagination .page-item {
+    flex: 0 0 auto;
+  }
+}
+
+/* ─── 11. Filter Dropdown / Export Dropdown ──────────────────── */
+@media (max-width: 768px) {
+
+  .filter-dropdown__menu,
+  .export-dropdown__menu {
+    left: auto !important;
+    right: 0 !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 340px;
+  }
+}
+
+/* ─── 12. Tabs ───────────────────────────────────────────────── */
+@media (max-width: 640px) {
+
+  .tab-list,
+  .tabs,
+  [role="tablist"] {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap !important;
+    gap: 4px !important;
+    padding-bottom: 4px;
+  }
+
+  .tab-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab-btn,
+  [role="tab"] {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 6px 14px !important;
+    font-size: 0.82rem !important;
+  }
+}
+
+/* ─── 13. News / Banner / Agenda Card Grids ──────────────────── */
+@media (max-width: 768px) {
+
+  .news-grid,
+  .banner-grid,
+  .card-grid,
+  .agenda-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+}
+
+/* ─── 14. Profile / User Header ─────────────────────────────── */
+@media (max-width: 640px) {
+
+  .profile-header,
+  .user-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+  }
+}
+
+/* ─── 15. Import/Export Dialog ───────────────────────────────── */
+@media (max-width: 640px) {
+  .import-dropzone {
+    padding: 20px 16px !important;
+  }
+
+  .import-file-list {
+    gap: 6px;
+  }
+}
+
+/* ─── 16. Budget / Anggaran Table ───────────────────────────── */
+@media (max-width: 768px) {
+  .budget-table-wrap {
+    overflow-x: auto;
+  }
+
+  .budget-summary-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+}
+
+/* ─── 17. Notification Dropdown ─────────────────────────────── */
+@media (max-width: 640px) {
+  .notification-menu {
+    position: fixed !important;
+    left: 8px !important;
+    right: 8px !important;
+    top: 60px !important;
+    width: auto !important;
+    max-height: 80dvh;
+    overflow-y: auto;
+    padding: 12px 14px !important;
+  }
+
+  .notification-header {
+    margin-bottom: 10px;
+  }
+
+  .notification-header span {
+    font-size: 0.92rem;
+  }
+
+  .notification-header small {
+    font-size: 0.78rem;
+  }
+
+  .notification-entry {
+    padding: 8px 10px !important;
+    gap: 12px !important;
+  }
+
+  .notification-icon {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.8rem !important;
+    border-radius: 10px !important;
+  }
+
+  .notification-title {
+    font-size: 0.88rem !important;
+  }
+
+  .notification-message {
+    font-size: 0.8rem !important;
+    line-height: 1.4;
+  }
+
+  .notification-meta,
+  .notification-menu time {
+    font-size: 0.74rem !important;
+  }
+}
+
+/* ─── 18. Profile Menu ──────────────────────────────────────── */
+@media (max-width: 640px) {
+  .profile-menu {
+    right: 0 !important;
+    left: auto !important;
+    min-width: 220px !important;
+  }
+}
+
+/* ─── 19. Sekilas Info / Wilayah Cards ───────────────────────── */
+@media (max-width: 768px) {
+
+  .info-card-grid,
+  .wilayah-card-grid,
+  .stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .info-card-grid,
+  .wilayah-card-grid,
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ─── 20. Agenda Widget (floating) ──────────────────────────── */
+@media (max-width: 640px) {
+
+  .fab-widget,
+  .agenda-fab {
+    bottom: 16px !important;
+    right: 16px !important;
+  }
+
+  .fab-panel,
+  .agenda-fab-panel {
+    width: calc(100vw - 32px) !important;
+    right: 0 !important;
+    left: auto !important;
+  }
+}
+
+/* ─── 21. Dark-mode overrides stay consistent ───────────────── */
+@media (max-width: 1100px) {
+  body.dark-mode .admin-sidebar {
+    background: #111827;
+  }
+
+  body.dark-mode.sidebar-open::after {
+    background: rgba(0, 0, 0, 0.6);
+  }
+}

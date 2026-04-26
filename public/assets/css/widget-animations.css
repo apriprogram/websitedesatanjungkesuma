@@ -1,0 +1,39 @@
+/* Widget Animations - Additional Styles */
+
+/* WhatsApp Widget Animations */
+.whatsapp-float {
+    animation: slideInUp 0.6s ease-out 0.2s forwards, pulsePrimary 2.5s ease-in-out 0.8s infinite !important;
+}
+
+/* Accessibility Widget Animations */
+.accessibility-float {
+    animation: slideInUp 0.6s ease-out 0.4s forwards, pulseSecondary 2.5s ease-in-out 1s infinite !important;
+}
+
+.accessibility-float:hover {
+    transform: scale(1.08) !important;
+}
+
+.accessibility-float:hover i {
+    animation: iconRotate 0.6s ease !important;
+}
+
+/* Visitor Stats Widget Animations */
+.visitor-float {
+    animation: slideInUp 0.6s ease-out 0.6s forwards, pulseTertiary 2.5s ease-in-out 1.2s infinite !important;
+}
+
+.visitor-float:hover {
+    transform: scale(1.08) !important;
+}
+
+.visitor-float:hover i {
+    animation: iconPulse 0.5s ease !important;
+}
+
+/* Panel Animation Enhancements */
+.whatsapp-panel.open,
+.a11y-panel.open,
+.visitor-panel.active {
+    animation: slideInUp 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) !important;
+}

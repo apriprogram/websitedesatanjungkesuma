@@ -1,0 +1,597 @@
+/* Announcement Page Styles */
+.announcement-page-section {
+    padding: 90px 0 30px 0;
+    /* Top padding accounts for fixed navbar */
+    background-color: none;
+    min-height: 80vh;
+}
+
+.announcement-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0px;
+}
+
+/* Card Container */
+.announcement-content {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #f1f5f9;
+    padding: 24px;
+    box-shadow: none !important;
+}
+
+/* Header */
+.announcement-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.announcement-page-title-group {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.section-title-icon {
+    width: 44px;
+    height: 44px;
+    background: #2563eb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+}
+
+.announcement-page-title {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #1e293b;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.announcement-page-desc {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin: 4px 0 0 0;
+}
+
+.announcement-page-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #f8fafc;
+    color: #475569;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s;
+}
+
+.announcement-page-back:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+    border-color: #cbd5e1;
+}
+
+/* Filters */
+.announcement-page-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+/* Navigation Tabs */
+.announcement-nav {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.announcement-tab {
+    padding: 10px 20px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.announcement-tab:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+.announcement-container .announcement-tab.active,
+.announcement-tab.active {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+}
+
+.announcement-tab:hover:not(.active) {
+    background: #f1f5f9;
+    color: #334155;
+}
+
+/* Toolbar */
+.announcement-page-toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.announcement-search-wrapper {
+    flex: 1;
+    position: relative;
+    min-width: 200px;
+}
+
+.search-icon-inside {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.announcement-page-search-input {
+    width: 100%;
+    height: 44px;
+    padding: 0 16px 0 40px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #333;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.announcement-page-search-input:focus {
+    border-color: #2563eb;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.announcement-page-select {
+    height: 44px;
+    padding: 0 48px 0 20px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background-color: #fff;
+    color: #475569;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 16px;
+    transition: all 0.2s;
+    min-width: 140px;
+}
+
+.announcement-page-select:hover {
+    border-color: #cbd5e1;
+    background-color: #f8fafc;
+}
+
+.announcement-page-select:focus {
+    border-color: #2563eb;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.announcement-page-submit {
+    height: 44px;
+    padding: 0 24px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.announcement-page-submit:hover {
+    background: #1d4ed8;
+}
+
+/* List Items */
+.announcement-page-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.announcement-item {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 16px;
+    margin: 0 -16px;
+    border-bottom: 1px solid #edf2f7;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+/* Ensure no pseudo element arrows from other CSS */
+.announcement-item::before,
+.announcement-item::after {
+    display: none !important;
+    content: none !important;
+}
+
+.announcement-item:first-child {
+    padding-top: 20px;
+}
+
+.announcement-item:last-child {
+    border-bottom: none;
+}
+
+.announcement-item:hover {
+    background: #fff !important;
+    box-shadow: 0 0 0 2px #2563eb !important;
+    z-index: 10;
+    border-color: transparent;
+}
+
+.announcement-item:hover .announcement-title {
+    color: #2563eb;
+}
+
+/* Arrow Hover Effect: Just color change */
+.announcement-item:hover .announcement-chevron {
+    background: transparent;
+    color: #2563eb;
+    transform: translateX(4px);
+}
+
+.announcement-media {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    background: #f1f5f9;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.announcement-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.announcement-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.announcement-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #334155;
+    margin: 0 0 4px 0;
+    line-height: 1.4;
+}
+
+.announcement-desc {
+    font-size: 0.9rem;
+    color: #64748b;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-clamp: 2;
+}
+
+.announcement-date-col {
+    text-align: right;
+    min-width: 200px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    list-style: none !important;
+}
+
+.announcement-date-text {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+    list-style: none !important;
+}
+
+/* Simple Arrow Styling */
+.announcement-chevron {
+    color: #cbd5e1;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    background: transparent !important;
+    border-radius: 0 !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+/* Response Logic */
+@media (max-width: 768px) {
+    .announcement-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .announcement-date-col {
+        text-align: left;
+        justify-content: flex-start;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .announcement-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .announcement-page-back {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Mobile Optimizations */
+    .announcement-page-section {
+        padding: 85px 0 20px 0 !important;
+    }
+
+    .announcement-content {
+        padding: 16px !important;
+        margin: 0 14px;
+    }
+
+    .announcement-page-title {
+        font-size: 1.2rem !important;
+    }
+
+    .announcement-page-desc {
+        font-size: 0.85rem !important;
+    }
+
+    .announcement-item {
+        padding: 16px 0 !important;
+        margin: 0 !important;
+        gap: 12px;
+    }
+
+    .announcement-title {
+        font-size: 0.95rem !important;
+    }
+
+    .announcement-desc {
+        font-size: 0.8rem !important;
+    }
+
+    /* Additional Scale-downs */
+    .announcement-tab {
+        padding: 6px 14px !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .announcement-page-search-input,
+    .announcement-page-select,
+    .announcement-page-submit {
+        height: 38px !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .announcement-page-toolbar {
+        gap: 8px !important;
+    }
+    
+    .announcement-page-submit {
+        padding: 0 16px !important;
+    }
+
+    .announcement-container .pagination-btn {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.85rem !important;
+        border-radius: 8px !important;
+    }
+}
+
+/* Pagination Override for Announcement Page */
+.announcement-container .news-pagination,
+.announcement-container .announcement-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 40px;
+}
+
+.announcement-empty {
+    text-align: center;
+    padding: 40px;
+    color: #64748b;
+    font-size: 0.95rem;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px dashed #cbd5e1;
+}
+
+.announcement-container .pagination-btn {
+    background: #eef1f2;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    color: #4b5563;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    box-shadow: none;
+}
+
+.announcement-container .pagination-btn:hover {
+    background: #e1e5e7;
+    /* Darker hover */
+    color: #1f2937;
+    text-decoration: none;
+}
+
+.announcement-container .pagination-ellipsis {
+    background: transparent;
+    cursor: default;
+    color: #94a3b8;
+    /* Lighter text for dots */
+}
+
+.announcement-container .pagination-ellipsis:hover {
+    background: transparent;
+    color: #94a3b8;
+}
+
+.announcement-container .pagination-btn.active {
+    background: #2563eb;
+    color: white;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.announcement-container .pagination-btn[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* Dark Mode Support */
+body.dark-mode .announcement-content {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+body.dark-mode .announcement-page-title {
+    color: #f8fafc;
+}
+
+body.dark-mode .announcement-page-desc {
+    color: #94a3b8;
+}
+
+body.dark-mode .announcement-tab {
+    background: #334155;
+    border-color: #475569;
+    color: #cbd5e1;
+}
+
+body.dark-mode .announcement-tab:hover:not(.active) {
+    background: #475569;
+    color: #f8fafc;
+}
+
+body.dark-mode .announcement-tab.active {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+}
+
+body.dark-mode .announcement-page-search-input,
+body.dark-mode .announcement-page-select {
+    background-color: #0f172a;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+body.dark-mode .announcement-page-search-input::placeholder {
+    color: #64748b;
+}
+
+body.dark-mode .announcement-item {
+    border-color: #334155;
+}
+
+body.dark-mode .announcement-item:hover {
+    background: #334155 !important;
+    box-shadow: 0 0 0 2px #2563eb !important;
+}
+
+body.dark-mode .announcement-title {
+    color: #f1f5f9;
+}
+
+body.dark-mode .announcement-desc {
+    color: #94a3b8;
+}
+
+body.dark-mode .announcement-date-text {
+    color: #64748b;
+}
+
+body.dark-mode .announcement-media {
+    background: #334155;
+}
+
+body.dark-mode .announcement-page-back {
+    background: #334155;
+    border-color: #475569;
+    color: #cbd5e1;
+}
+
+body.dark-mode .announcement-page-back:hover {
+    background: #475569;
+    color: #f8fafc;
+}
+
+body.dark-mode .announcement-container .pagination-btn {
+    background: #334155;
+    color: #cbd5e1;
+}
+
+body.dark-mode .announcement-container .pagination-btn:hover:not(.active) {
+    background: #475569;
+    color: #f8fafc;
+}
+
+body.dark-mode .announcement-container .pagination-btn.active {
+    background: #2563eb;
+    color: white;
+}

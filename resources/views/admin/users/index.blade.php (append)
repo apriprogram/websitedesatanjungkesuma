@@ -1,0 +1,446 @@
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const body = document.body;
+
+    const tabButtons = Array.from(document.querySelectorAll('[data-settings-tab]'));
+    const panels = Array.from(document.querySelectorAll('[data-settings-panel]'));
+
+    const setActiveTab = (target) => {
+        if (!target) return;
+        tabButtons.forEach((button) => {
+            const isActive = button.dataset.settingsTab === target;
+            button.classList.toggle('is-active', isActive);
+        });
+        panels.forEach((panel) => {
+            const isActive = panel.dataset.settingsPanel === target;
+            panel.classList.toggle('is-active', isActive);
+            panel.toggleAttribute('hidden', !isActive);
+        });
+    };
+
+    tabButtons.forEach((button) => {
+        button.addEventListener('click', () => setActiveTab(button.dataset.settingsTab));
+    });
+
+    const defaultTab =
+        tabButtons.find((button) => button.classList.contains('is-active'))?.dataset.settingsTab ??
+        panels[0]?.dataset.settingsPanel;
+    if (defaultTab) {
+        setActiveTab(defaultTab);
+    }
+
+    const registerSearch = (inputId, rowsSelector, emptySelector) => {
+        const input = document.getElementById(inputId);
+        const rows = Array.from(document.querySelectorAll(rowsSelector));
+        const emptyState = document.querySelector(emptySelector);
+        if (!input || rows.length === 0) return;
+
+        const applyFilter = () => {
+            const term = input.value.trim().toLowerCase();
+            let visibleCount = 0;
+            rows.forEach((row) => {
+                const haystack = row.dataset.search ?? '';
+                const isVisible = term === '' || haystack.includes(term);
+                row.hidden = !isVisible;
+                if (isVisible) {
+                    visibleCount += 1;
+                }
+            });
+            if (emptyState) {
+                emptyState.hidden = visibleCount !== 0;
+            }
+        };
+
+        input.addEventListener('input', applyFilter);
+        applyFilter();
+    };
+
+    registerSearch('adminSearch', '[data-table="users"] .table-row', '[data-empty="users"]');
+    registerSearch('pegawaiSearch', '[data-table="pegawai"] .table-row', '[data-empty="pegawai"]');
+
+    document.querySelectorAll('.js-delete-form').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+            const message = form.dataset.confirmMessage || 'Yakin ingin melanjutkan tindakan ini?';
+            if (!window.confirm(message)) {
+                event.preventDefault();
+            }
+        });
+    });
+
+    const modalStack = [];
+
+    const openModal = (modal) => {
+        if (!modal || modal.classList.contains('is-visible')) return;
+        modal.classList.add('is-visible');
+        modal.setAttribute('aria-hidden', 'false');
+        modalStack.push(modal);
+        body.classList.add('modal-open');
+    };
+
+    const closeModal = (modal) => {
+        if (!modal) return;
+        modal.classList.remove('is-visible');
+        modal.setAttribute('aria-hidden', 'true');
+        const index = modalStack.lastIndexOf(modal);
+        if (index !== -1) {
+            modalStack.splice(index, 1);
+        }
+        if (modalStack.length === 0) {
+            body.classList.remove('modal-open');
+        }
+    };
+
+    const handleModalClose = (modal) => {
+        if (!modal) return;
+        if (modal.id === 'adminFormModal') {
+            resetAdminForm();
+        }
+        if (modal.id === 'pegawaiFormModal') {
+            resetPegawaiForm();
+        }
+        closeModal(modal);
+    };
+
+    document.querySelectorAll('.dialog-backdrop').forEach((modal) => {
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                handleModalClose(modal);
+            }
+        });
+    });
+
+    document.querySelectorAll('[data-modal-close]').forEach((button) => {
+        button.addEventListener('click', () => {
+            const modal = button.closest('.dialog-backdrop');
+            handleModalClose(modal);
+        });
+    });
+
+    document.querySelectorAll('[data-modal-dismiss]').forEach((button) => {
+        button.addEventListener('click', () => {
+            const modal = button.closest('.dialog-backdrop');
+            handleModalClose(modal);
+        });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modalStack.length > 0) {
+            const modal = modalStack[modalStack.length - 1];
+            handleModalClose(modal);
+        }
+    });
+
+    const setupAvatarInput = (form, previewId, removeSelector) => {
+        if (!form) return null;
+        const preview = document.getElementById(previewId);
+        const fileInput = form.querySelector(`input[type="file"][data-preview="${previewId}"]`);
+        const removeField = form.querySelector('[data-remove-field]');
+        const removeButton = form.querySelector(removeSelector);
+        const defaultSrc = preview?.dataset.default || preview?.src || '';
+
+        if (fileInput && preview) {
+            fileInput.addEventListener('change', () => {
+                const [file] = fileInput.files;
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target?.result ?? defaultSrc;
+                    if (removeField) {
+                        removeField.value = '0';
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        if (removeButton && preview) {
+            removeButton.addEventListener('click', () => {
+                if (fileInput) {
+                    fileInput.value = '';
+                }
+                preview.src = defaultSrc;
+                if (removeField) {
+                    removeField.value = '1';
+                }
+            });
+        }
+
+        return {
+            reset() {
+                if (preview) {
+                    preview.src = defaultSrc;
+                }
+                if (fileInput) {
+                    fileInput.value = '';
+                }
+                if (removeField) {
+                    removeField.value = '0';
+                }
+            },
+            set(src) {
+                if (preview) {
+                    preview.src = src || defaultSrc;
+                }
+                if (removeField) {
+                    removeField.value = '0';
+                }
+                if (fileInput) {
+                    fileInput.value = '';
+                }
+            },
+        };
+    };
+
+    const adminModal = document.getElementById('adminFormModal');
+    const adminForm = document.getElementById('userForm');
+    const adminMethodField = adminForm?.querySelector('[data-method-field]');
+    const adminContextField = adminForm?.querySelector('input[name="context_tab"]');
+    const adminRemoveField = adminForm?.querySelector('[data-remove-field]');
+    const adminNameField = adminForm?.querySelector('input[name="nama"]');
+    const adminEmailField = adminForm?.querySelector('input[name="email"]');
+    const adminPhoneField = adminForm?.querySelector('input[name="nomor_hp"]');
+    const adminPasswordField = adminForm?.querySelector('input[name="password"]');
+    const adminPasswordConfirmField = adminForm?.querySelector('input[name="password_confirmation"]');
+    const adminIsAdminField = adminForm?.querySelector('input[name="is_admin"]');
+    const adminIsActiveField = adminForm?.querySelector('input[name="is_active"]');
+    const adminTitle = document.getElementById('userFormTitle');
+    const adminSubtitle = document.getElementById('userFormSubtitle');
+    const adminAvatarHelpers = setupAvatarInput(adminForm, 'userAvatarPreview', '[data-action="remove-user-photo"]');
+    const adminCreateAction = adminForm?.dataset.createAction;
+
+    function resetAdminForm(options = {}) {
+        if (!adminForm) return;
+        adminForm.reset();
+        adminForm.action = adminCreateAction || adminForm.action;
+        if (adminMethodField) adminMethodField.value = 'POST';
+        if (adminContextField) adminContextField.value = 'users';
+        if (adminRemoveField) adminRemoveField.value = '0';
+        if (adminIsAdminField) adminIsAdminField.checked = true;
+        if (adminIsActiveField) adminIsActiveField.checked = true;
+        if (adminPasswordField) {
+            adminPasswordField.required = true;
+            adminPasswordField.value = '';
+        }
+        if (adminPasswordConfirmField) {
+            adminPasswordConfirmField.required = true;
+            adminPasswordConfirmField.value = '';
+        }
+        if (adminTitle) adminTitle.textContent = 'Tambah Admin';
+        if (adminSubtitle) adminSubtitle.textContent = 'Isi detail admin untuk memberikan akses dashboard.';
+        if (adminAvatarHelpers) adminAvatarHelpers.reset();
+        adminForm.dataset.mode = 'create';
+        if (options.focus && adminNameField) {
+            adminNameField.focus();
+        }
+    }
+
+    function openAdminForm(mode, payload = {}) {
+        if (!adminForm || !adminModal) return;
+        setActiveTab('users');
+        if (adminContextField) adminContextField.value = 'users';
+
+        if (mode === 'edit') {
+            adminForm.dataset.mode = 'edit';
+            adminForm.action = payload.update || adminCreateAction || adminForm.action;
+            if (adminMethodField) adminMethodField.value = 'PUT';
+            if (adminTitle) adminTitle.textContent = 'Perbarui Admin';
+            if (adminSubtitle) adminSubtitle.textContent = 'Sesuaikan data admin dan status akses.';
+            if (adminNameField) adminNameField.value = payload.nama ?? '';
+            if (adminEmailField) adminEmailField.value = payload.email ?? '';
+            if (adminPhoneField) adminPhoneField.value = payload.nomorHp ?? '';
+            if (adminPasswordField) {
+                adminPasswordField.required = false;
+                adminPasswordField.value = '';
+            }
+            if (adminPasswordConfirmField) {
+                adminPasswordConfirmField.required = false;
+                adminPasswordConfirmField.value = '';
+            }
+            if (adminIsAdminField) adminIsAdminField.checked = payload.isAdmin === '1';
+            if (adminIsActiveField) adminIsActiveField.checked = payload.isActive === '1';
+            if (adminRemoveField) adminRemoveField.value = '0';
+            if (adminAvatarHelpers) adminAvatarHelpers.set(payload.avatar);
+            if (adminNameField) adminNameField.focus();
+        } else {
+            resetAdminForm({ focus: true });
+        }
+
+        openModal(adminModal);
+    }
+
+    const pegawaiModal = document.getElementById('pegawaiFormModal');
+    const pegawaiForm = document.getElementById('pegawaiForm');
+    const pegawaiMethodField = pegawaiForm?.querySelector('[data-method-field]');
+    const pegawaiContextField = pegawaiForm?.querySelector('input[name="context_tab"]');
+    const pegawaiRemoveField = pegawaiForm?.querySelector('[data-remove-field]');
+    const pegawaiNameField = pegawaiForm?.querySelector('input[name="nama"]');
+    const pegawaiJabatanField = pegawaiForm?.querySelector('input[name="jabatan"]');
+    const pegawaiEmailField = pegawaiForm?.querySelector('input[name="email"]');
+    const pegawaiPhoneField = pegawaiForm?.querySelector('input[name="nomor_hp"]');
+    const pegawaiStatusField = pegawaiForm?.querySelector('input[name="status"]');
+    const pegawaiAvatarHelpers = setupAvatarInput(pegawaiForm, 'pegawaiAvatarPreview', '[data-action="remove-pegawai-photo"]');
+    const pegawaiTitle = document.getElementById('pegawaiFormTitle');
+    const pegawaiSubtitle = document.getElementById('pegawaiFormSubtitle');
+    const pegawaiCreateAction = pegawaiForm?.dataset.createAction;
+
+    function resetPegawaiForm(options = {}) {
+        if (!pegawaiForm) return;
+        pegawaiForm.reset();
+        pegawaiForm.action = pegawaiCreateAction || pegawaiForm.action;
+        if (pegawaiMethodField) pegawaiMethodField.value = 'POST';
+        if (pegawaiContextField) pegawaiContextField.value = 'pegawai';
+        if (pegawaiRemoveField) pegawaiRemoveField.value = '0';
+        if (pegawaiStatusField && !pegawaiStatusField.value) {
+            pegawaiStatusField.value = 'Aktif';
+        }
+        if (pegawaiTitle) pegawaiTitle.textContent = 'Tambah Pegawai';
+        if (pegawaiSubtitle) pegawaiSubtitle.textContent = 'Lengkapi informasi aparatur desa untuk publikasi.';
+        if (pegawaiAvatarHelpers) pegawaiAvatarHelpers.reset();
+        pegawaiForm.dataset.mode = 'create';
+        if (options.focus && pegawaiNameField) {
+            pegawaiNameField.focus();
+        }
+    }
+
+    function openPegawaiForm(mode, payload = {}) {
+        if (!pegawaiForm || !pegawaiModal) return;
+        setActiveTab('pegawai');
+        if (pegawaiContextField) pegawaiContextField.value = 'pegawai';
+
+        if (mode === 'edit') {
+            pegawaiForm.dataset.mode = 'edit';
+            pegawaiForm.action = payload.update || pegawaiCreateAction || pegawaiForm.action;
+            if (pegawaiMethodField) pegawaiMethodField.value = 'PUT';
+            if (pegawaiTitle) pegawaiTitle.textContent = 'Perbarui Pegawai';
+            if (pegawaiSubtitle) pegawaiSubtitle.textContent = 'Sesuaikan data aparatur desa.';
+            if (pegawaiNameField) pegawaiNameField.value = payload.nama ?? '';
+            if (pegawaiJabatanField) pegawaiJabatanField.value = payload.jabatan ?? '';
+            if (pegawaiEmailField) pegawaiEmailField.value = payload.email ?? '';
+            if (pegawaiPhoneField) pegawaiPhoneField.value = payload.nomorHp ?? '';
+            if (pegawaiStatusField) pegawaiStatusField.value = payload.status ?? 'Aktif';
+            if (pegawaiRemoveField) pegawaiRemoveField.value = '0';
+            if (pegawaiAvatarHelpers) pegawaiAvatarHelpers.set(payload.avatar);
+            if (pegawaiNameField) pegawaiNameField.focus();
+        } else {
+            resetPegawaiForm({ focus: true });
+        }
+
+        openModal(pegawaiModal);
+    }
+
+    document.querySelector('.js-create-admin')?.addEventListener('click', () => openAdminForm('create'));
+    document.querySelectorAll('.js-edit-admin').forEach((button) => {
+        button.addEventListener('click', () => openAdminForm('edit', button.dataset));
+    });
+
+    document.querySelector('.js-create-pegawai')?.addEventListener('click', () => openPegawaiForm('create'));
+    document.querySelectorAll('.js-edit-pegawai').forEach((button) => {
+        button.addEventListener('click', () => openPegawaiForm('edit', button.dataset));
+    });
+
+    const detailModal = document.getElementById('detailModal');
+    const detailTitle = document.getElementById('detailModalTitle');
+    const detailSubtitle = document.getElementById('detailModalSubtitle');
+    const detailAvatar = document.getElementById('detailModalAvatar');
+    const detailName = document.getElementById('detailModalName');
+    const detailStatus = document.getElementById('detailModalStatus');
+    const detailEmail = document.getElementById('detailModalEmail');
+    const detailPhone = document.getElementById('detailModalPhone');
+    const detailInfoLabel = document.getElementById('detailModalInfoLabel');
+    const detailInfoValue = document.getElementById('detailModalInfoValue');
+    const detailMetaLabel = document.getElementById('detailModalMetaLabel');
+    const detailMetaValue = document.getElementById('detailModalMetaValue');
+
+    const applyStatusClass = (element, statusClass) => {
+        if (!element) return;
+        element.classList.remove('status-active', 'status-draft', 'status-scheduled', 'status-pending');
+        if (statusClass) {
+            element.classList.add(statusClass);
+        }
+    };
+
+    const openDetailModal = (type, payload = {}) => {
+        if (!detailModal) return;
+        if (detailTitle) {
+            detailTitle.textContent = type === 'admin' ? 'Detail Admin' : 'Detail Pegawai';
+        }
+        if (detailSubtitle) {
+            detailSubtitle.textContent =
+                type === 'admin'
+                    ? 'Tinjau status akses admin terpilih.'
+                    : 'Tinjau profil aparatur desa terpilih.';
+        }
+        if (detailAvatar) {
+            detailAvatar.src = payload.avatar || detailAvatar.dataset.default || detailAvatar.src;
+            detailAvatar.alt = payload.nama ? `Foto ${payload.nama}` : 'Avatar akun';
+        }
+        if (detailName) {
+            detailName.textContent = payload.nama ?? '-';
+        }
+        if (detailStatus) {
+            detailStatus.textContent = payload.status ?? '-';
+            applyStatusClass(detailStatus, payload.statusClass);
+        }
+        if (detailEmail) {
+            detailEmail.textContent = payload.email ?? '-';
+        }
+        if (detailPhone) {
+            detailPhone.textContent = payload.nomorHp ?? '-';
+        }
+        if (detailInfoLabel) {
+            detailInfoLabel.textContent = type === 'admin' ? 'Role' : 'Jabatan';
+        }
+        if (detailInfoValue) {
+            detailInfoValue.textContent = type === 'admin' ? payload.role ?? '-' : payload.jabatan ?? '-';
+        }
+        if (detailMetaLabel) {
+            detailMetaLabel.textContent = type === 'admin' ? 'Login Terakhir' : 'Pembaruan Data';
+        }
+        if (detailMetaValue) {
+            if (type === 'admin') {
+                const created = payload.created && payload.created !== '-' ? ` • Dibuat ${payload.created}` : '';
+                detailMetaValue.textContent = (payload.lastLogin ?? '-') + created;
+            } else {
+                detailMetaValue.textContent = payload.updated ?? '-';
+            }
+        }
+        openModal(detailModal);
+    };
+
+    document.querySelectorAll('.js-view-admin').forEach((button) => {
+        button.addEventListener('click', () => {
+            openDetailModal('admin', {
+                avatar: button.dataset.avatar,
+                nama: button.dataset.nama,
+                email: button.dataset.email,
+                nomorHp: button.dataset.nomorHp,
+                role: button.dataset.role,
+                status: button.dataset.status,
+                statusClass: button.dataset.statusClass,
+                lastLogin: button.dataset.lastLogin,
+                created: button.dataset.created,
+            });
+        });
+    });
+
+    document.querySelectorAll('.js-view-pegawai').forEach((button) => {
+        button.addEventListener('click', () => {
+            openDetailModal('pegawai', {
+                avatar: button.dataset.avatar,
+                nama: button.dataset.nama,
+                jabatan: button.dataset.jabatan,
+                email: button.dataset.email,
+                nomorHp: button.dataset.nomorHp,
+                status: button.dataset.status,
+                statusClass: button.dataset.statusClass,
+                updated: button.dataset.updated,
+            });
+        });
+    });
+
+    resetAdminForm();
+    resetPegawaiForm();
+});
+</script>
+@endpush
