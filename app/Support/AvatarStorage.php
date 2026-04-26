@@ -119,8 +119,9 @@ class AvatarStorage
 
         try {
             $resolved = self::resolveStoragePath($path, $fallbackDirectories);
-            if ($resolved && file_exists(public_path('storage/' . $resolved))) {
-                Storage::disk('public')->delete($resolved);
+            $fullPath = public_path('storage/' . $resolved);
+            if ($resolved && file_exists($fullPath)) {
+                @unlink($fullPath);
             }
         } catch (\Exception $e) {
             Log::error('Failed to delete avatar: ' . $e->getMessage());
@@ -130,8 +131,9 @@ class AvatarStorage
     private static function ensureDirectory(string $directory): void
     {
         try {
-            if (!file_exists(public_path('storage/' . $directory))) {
-                Storage::disk('public')->makeDirectory($directory);
+            $fullPath = public_path('storage/' . $directory);
+            if (!file_exists($fullPath)) {
+                @mkdir($fullPath, 0755, true);
             }
         } catch (\Exception $e) {
             Log::error('Failed to ensure directory: ' . $e->getMessage());

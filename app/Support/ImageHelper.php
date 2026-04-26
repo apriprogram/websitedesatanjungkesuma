@@ -24,13 +24,20 @@ class ImageHelper
             $filename = Str::random(40) . '.' . $extension;
             $path = "$folder/$filename";
 
+            if (!class_exists('finfo')) {
+                return $file->store($folder, 'public');
+            }
+
             $image = Image::make($file);
             $image->resize(300, 300, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
 
-            Storage::disk('public')->makeDirectory($folder);
+            $fullFolder = public_path('storage/' . $folder);
+            if (!file_exists($fullFolder)) {
+                @mkdir($fullFolder, 0755, true);
+            }
             Storage::disk('public')->put($path, (string) $image->encode());
 
             Log::info('Image uploaded successfully', [
@@ -58,8 +65,9 @@ class ImageHelper
         }
 
         try {
-            if (Storage::disk('public')->exists($path)) {
-                Storage::disk('public')->delete($path);
+            $fullPath = public_path('storage/' . $path);
+            if (file_exists($fullPath)) {
+                @unlink($fullPath);
                 Log::info('Image deleted successfully', ['path' => $path]);
                 return true;
             }

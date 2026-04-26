@@ -12,6 +12,6 @@ if (!function_exists('image_url')) {
      */
     function image_url($path, $default = null)
     {
-        return ImageHelper::getUrl($path, $default);
+        return ImageHelper::getImageUrl($path, $default);
     }
 }

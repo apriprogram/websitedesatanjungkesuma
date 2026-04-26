@@ -179,7 +179,7 @@ class PageController extends Controller
                 'type' => 'file',
                 'path' => $path,
                 'original_name' => $file->getClientOriginalName(),
-                'mime' => $file->getMimeType(),
+                'mime' => class_exists('finfo') ? $file->getMimeType() : $file->getClientMimeType(),
                 'size' => $file->getSize(),
             ]);
         }
@@ -195,7 +195,7 @@ class PageController extends Controller
                 'type' => 'image',
                 'path' => $path,
                 'original_name' => $image->getClientOriginalName(),
-                'mime' => $image->getMimeType(),
+                'mime' => class_exists('finfo') ? $image->getMimeType() : $image->getClientMimeType(),
                 'size' => $image->getSize(),
             ]);
         }
