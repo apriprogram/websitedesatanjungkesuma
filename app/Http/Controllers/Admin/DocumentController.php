@@ -54,7 +54,7 @@ class DocumentController extends Controller
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $path = $file->store('documents', 'public');
+            $path = safe_store($file, 'documents');
             $data['file_path'] = $path;
             $data['file_type'] = strtolower($file->getClientOriginalExtension());
             $data['file_size'] = (int) round($file->getSize() / 1024); // KB
@@ -105,14 +105,14 @@ class DocumentController extends Controller
             if ($document->file_path) {
                 try {
                     if (file_exists(public_path('storage/' . $document->file_path))) {
-                        Storage::disk('public')->delete($document->file_path);
+                        @unlink(public_path('storage/' . $document->file_path));
                     }
                 } catch (\Exception $e) {
                     // Abaikan error
                 }
             }
             $file = $request->file('file');
-            $path = $file->store('documents', 'public');
+            $path = safe_store($file, 'documents');
             $data['file_path'] = $path;
             $data['file_type'] = strtolower($file->getClientOriginalExtension());
             $data['file_size'] = (int) round($file->getSize() / 1024); // KB
@@ -128,7 +128,7 @@ class DocumentController extends Controller
         if ($document->file_path) {
             try {
                 if (file_exists(public_path('storage/' . $document->file_path))) {
-                    Storage::disk('public')->delete($document->file_path);
+                    @unlink(public_path('storage/' . $document->file_path));
                 }
             } catch (\Exception $e) {
                 // Abaikan error
@@ -142,11 +142,13 @@ class DocumentController extends Controller
 
     public function download(VillageDocument $document)
     {
-        if (! Storage::disk('public')->exists($document->file_path)) {
+        $fullPath = public_path('storage/' . $document->file_path);
+        
+        if (! file_exists($fullPath)) {
             abort(404);
         }
 
-        return Storage::disk('public')->download($document->file_path, $document->title . '.' . ($document->file_type ?: 'file'));
+        return response()->download($fullPath, $document->title . '.' . ($document->file_type ?: 'file'));
     }
 
     protected function validateData(Request $request, $id = null): array

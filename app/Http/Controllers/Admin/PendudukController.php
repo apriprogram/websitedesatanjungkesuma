@@ -1165,21 +1165,21 @@ class PendudukController extends Controller
             if ($penduduk?->foto_profil) {
                 $this->deleteFile($penduduk->foto_profil);
             }
-            $result['foto_profil'] = $request->file('foto_profil')->store('penduduk/foto-profil', 'public');
+            $result['foto_profil'] = safe_store($request->file('foto_profil'), 'penduduk/foto-profil');
         }
 
         if ($request->hasFile('foto_ktp')) {
             if ($penduduk?->foto_ktp) {
                 $this->deleteFile($penduduk->foto_ktp);
             }
-            $result['foto_ktp'] = $request->file('foto_ktp')->store('penduduk/foto-ktp', 'public');
+            $result['foto_ktp'] = safe_store($request->file('foto_ktp'), 'penduduk/foto-ktp');
         }
 
         if ($request->hasFile('foto_kk')) {
             if ($penduduk?->foto_kk) {
                 $this->deleteFile($penduduk->foto_kk);
             }
-            $result['foto_kk'] = $request->file('foto_kk')->store('penduduk/foto-kk', 'public');
+            $result['foto_kk'] = safe_store($request->file('foto_kk'), 'penduduk/foto-kk');
         }
 
         return $result;

@@ -229,21 +229,21 @@ class PegawaiController extends Controller
             if ($pegawai?->foto_ktp) {
                 $this->deleteFile($pegawai->foto_ktp);
             }
-            $result['foto_ktp'] = $request->file('foto_ktp')->store('pegawai/foto-ktp', 'public');
+            $result['foto_ktp'] = safe_store($request->file('foto_ktp'), 'pegawai/foto-ktp');
         }
 
         if ($request->hasFile('sk_pengangkatan')) {
             if ($pegawai?->sk_pengangkatan) {
                 $this->deleteFile($pegawai->sk_pengangkatan);
             }
-            $result['sk_pengangkatan'] = $request->file('sk_pengangkatan')->store('pegawai/dokumen', 'public');
+            $result['sk_pengangkatan'] = safe_store($request->file('sk_pengangkatan'), 'pegawai/dokumen');
         }
 
         if ($request->hasFile('sk_pemberhentian')) {
             if ($pegawai?->sk_pemberhentian) {
                 $this->deleteFile($pegawai->sk_pemberhentian);
             }
-            $result['sk_pemberhentian'] = $request->file('sk_pemberhentian')->store('pegawai/dokumen', 'public');
+            $result['sk_pemberhentian'] = safe_store($request->file('sk_pemberhentian'), 'pegawai/dokumen');
         }
 
         return $result;
@@ -254,7 +254,7 @@ class PegawaiController extends Controller
         if ($path) {
             try {
                 if (file_exists(public_path('storage/' . $path))) {
-                    Storage::disk('public')->delete($path);
+                    @unlink(public_path('storage/' . $path));
                 }
             } catch (\Exception $e) {
                 // Abaikan error

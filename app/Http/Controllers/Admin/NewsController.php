@@ -90,7 +90,7 @@ class NewsController extends Controller
         $payload['views'] = 0;
 
         if ($request->hasFile('thumbnail')) {
-            $payload['thumbnail'] = $request->file('thumbnail')->store('news', 'public');
+            $payload['thumbnail'] = safe_store($request->file('thumbnail'), 'news');
         }
 
         News::create($payload);
@@ -116,13 +116,13 @@ class NewsController extends Controller
             if (!empty($news->thumbnail)) {
                 try {
                     if (file_exists(public_path('storage/' . $news->thumbnail))) {
-                        Storage::disk('public')->delete($news->thumbnail);
+                        @unlink(public_path('storage/' . $news->thumbnail));
                     }
                 } catch (\Exception $e) {
                     // Abaikan error
                 }
             }
-            $payload['thumbnail'] = $request->file('thumbnail')->store('news', 'public');
+            $payload['thumbnail'] = safe_store($request->file('thumbnail'), 'news');
         }
 
         $news->update($payload);

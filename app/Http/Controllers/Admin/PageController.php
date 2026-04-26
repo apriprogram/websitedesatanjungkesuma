@@ -63,7 +63,7 @@ class PageController extends Controller
         $data = $this->validatePage($request);
 
         if ($request->hasFile('feature_image')) {
-            $data['feature_image'] = $request->file('feature_image')->store('page-images', 'public');
+            $data['feature_image'] = safe_store($request->file('feature_image'), 'page-images');
         }
 
         $page = Page::create($data);
@@ -98,13 +98,13 @@ class PageController extends Controller
             if ($page->feature_image) {
                 try {
                     if (file_exists(public_path('storage/' . $page->feature_image))) {
-                        Storage::disk('public')->delete($page->feature_image);
+                        @unlink(public_path('storage/' . $page->feature_image));
                     }
                 } catch (\Exception $e) {
                     // Abaikan error
                 }
             }
-            $data['feature_image'] = $request->file('feature_image')->store('page-images', 'public');
+            $data['feature_image'] = safe_store($request->file('feature_image'), 'page-images');
         }
 
         $page->update($data);
@@ -127,7 +127,7 @@ class PageController extends Controller
         if ($page->feature_image) {
             try {
                 if (file_exists(public_path('storage/' . $page->feature_image))) {
-                    Storage::disk('public')->delete($page->feature_image);
+                    @unlink(public_path('storage/' . $page->feature_image));
                 }
             } catch (\Exception $e) {
                 // Abaikan error
@@ -152,7 +152,7 @@ class PageController extends Controller
         if ($attachment->path) {
             try {
                 if (file_exists(public_path('storage/' . $attachment->path))) {
-                    Storage::disk('public')->delete($attachment->path);
+                    @unlink(public_path('storage/' . $attachment->path));
                 }
             } catch (\Exception $e) {
                 // Abaikan error
@@ -173,7 +173,7 @@ class PageController extends Controller
             if (! $file) {
                 continue;
             }
-            $path = $file->store('page-attachments', 'public');
+            $path = safe_store($file, 'page-attachments');
             PageAttachment::create([
                 'page_id' => $page->id,
                 'type' => 'file',
@@ -189,7 +189,7 @@ class PageController extends Controller
             if (! $image) {
                 continue;
             }
-            $path = $image->store('page-attachments', 'public');
+            $path = safe_store($image, 'page-attachments');
             PageAttachment::create([
                 'page_id' => $page->id,
                 'type' => 'image',

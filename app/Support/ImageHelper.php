@@ -25,7 +25,9 @@ class ImageHelper
             $path = "$folder/$filename";
 
             if (!class_exists('finfo')) {
-                return $file->store($folder, 'public');
+                $filename = $file->hashName();
+                $file->move(public_path('storage/' . $folder), $filename);
+                return $folder . '/' . $filename;
             }
 
             $image = Image::make($file);
@@ -38,11 +40,12 @@ class ImageHelper
             if (!file_exists($fullFolder)) {
                 @mkdir($fullFolder, 0755, true);
             }
-            Storage::disk('public')->put($path, (string) $image->encode());
+            $fullPath = public_path('storage/' . $path);
+            file_put_contents($fullPath, (string) $image->encode());
 
             Log::info('Image uploaded successfully', [
                 'path' => $path,
-                'size' => Storage::disk('public')->size($path),
+                'size' => filesize($fullPath),
             ]);
 
             return $path;

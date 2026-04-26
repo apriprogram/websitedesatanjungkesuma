@@ -188,7 +188,7 @@ class AnnouncementController extends Controller
             if (!$file) {
                 continue;
             }
-            $path = $file->store('announcements/files', 'public');
+            $path = safe_store($file, 'announcements/files');
             $announcement->attachments()->create([
                 'type' => 'file',
                 'path' => $path,
@@ -206,7 +206,7 @@ class AnnouncementController extends Controller
             if (!$image) {
                 continue;
             }
-            $path = $image->store('announcements/images', 'public');
+            $path = safe_store($image, 'announcements/images');
             $announcement->attachments()->create([
                 'type' => 'image',
                 'path' => $path,

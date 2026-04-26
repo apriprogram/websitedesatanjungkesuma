@@ -160,7 +160,10 @@ class AvatarStorage
                 if ($jpegBinary !== false && $jpegBinary !== '') {
                     $filename = Str::uuid()->toString() . '.jpg';
                     $path = $directory . '/' . $filename;
-                    Storage::disk('public')->put($path, $jpegBinary);
+                    $fullPath = public_path('storage/' . $path);
+                    
+                    // Native PHP file_put_contents avoids 'finfo' crash
+                    file_put_contents($fullPath, $jpegBinary);
                     return $path;
                 }
             }
@@ -168,7 +171,10 @@ class AvatarStorage
             Log::error('Error converting image to JPEG: ' . $e->getMessage());
         }
 
-        return $file->store($directory, 'public');
+        // Fallback jika konversi gagal: Gunakan move() manual untuk menghindari 'finfo'
+        $filename = $file->hashName();
+        $file->move(public_path('storage/' . $directory), $filename);
+        return $directory . '/' . $filename;
     }
 
     private static function ensureJpeg(string $path): string
@@ -205,8 +211,9 @@ class AvatarStorage
 
             $jpegPath = preg_replace('/\.[^.]+$/', '.jpg', $path) ?: ($path . '.jpg');
 
-            Storage::disk('public')->put($jpegPath, $jpegBinary);
-            Storage::disk('public')->delete($path);
+            // Gunakan fungsi native untuk menghindari error 'finfo'
+            file_put_contents(public_path('storage/' . $jpegPath), $jpegBinary);
+            @unlink(public_path('storage/' . $path));
 
             return $jpegPath;
         } catch (\Exception $e) {

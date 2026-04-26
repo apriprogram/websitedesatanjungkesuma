@@ -108,7 +108,7 @@ class HeroBannerController extends Controller
             }
         }
 
-        return $request->file('image')->store('hero-banners', 'public');
+        return safe_store($request->file('image'), 'hero-banners');
     }
 
     public function storeInfo(Request $request)
@@ -122,7 +122,7 @@ class HeroBannerController extends Controller
             'image' => ['required', 'image', 'max:4096'],
         ]);
 
-        $data['image_url'] = $request->file('image')->store('banner-info', 'public');
+        $data['image_url'] = safe_store($request->file('image'), 'banner-info');
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
         InfoMediaBanner::create($data);
@@ -150,7 +150,7 @@ class HeroBannerController extends Controller
             } catch (\Exception $e) {
                 // Abaikan error
             }
-            $data['image_url'] = $request->file('image')->store('banner-info', 'public');
+            $data['image_url'] = safe_store($request->file('image'), 'banner-info');
         }
 
         $data['sort_order'] = $data['sort_order'] ?? $infoBanner->sort_order ?? 0;
@@ -172,7 +172,7 @@ class HeroBannerController extends Controller
             'image' => ['required', 'image', 'max:4096'],
         ]);
 
-        $data['image_url'] = $request->file('image')->store('infographics', 'public');
+        $data['image_url'] = safe_store($request->file('image'), 'infographics');
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
         InfographicBanner::create($data);
@@ -230,7 +230,7 @@ class HeroBannerController extends Controller
             } catch (\Exception $e) {
                 // Abaikan error
             }
-            $data['image_url'] = $request->file('image')->store('infographics', 'public');
+            $data['image_url'] = safe_store($request->file('image'), 'infographics');
         }
 
         $data['sort_order'] = $data['sort_order'] ?? $banner->sort_order ?? 0;
