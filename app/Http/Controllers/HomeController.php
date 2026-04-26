@@ -124,8 +124,59 @@ class HomeController extends Controller
 
     private function getStatistikData()
     {
-        // ... (Logika statistik dipindah ke sini untuk merapikan index)
-        return []; // Simplified for brevity in this move, but keep logic in real implementation
+        if (!Schema::hasTable('penduduks')) return [];
+
+        $matiId = Schema::hasTable('ref_status_dasar') 
+            ? DB::table('ref_status_dasar')->whereRaw('UPPER(nama) = ?', ['MATI'])->value('id') 
+            : null;
+
+        $buildCategoryStats = function ($column, $table) use ($matiId) {
+            if (!Schema::hasTable($table) || !Schema::hasColumn('penduduks', $column)) {
+                return ['labels' => [], 'data' => []];
+            }
+
+            $rows = DB::table('penduduks')
+                ->when($matiId, fn($q) => $q->where('status_dasar_id', '!=', $matiId))
+                ->join($table, "{$table}.id", '=', "penduduks.{$column}")
+                ->selectRaw("{$table}.nama as label, COUNT(*) as total")
+                ->groupBy('label')
+                ->orderByDesc('total')
+                ->limit(6)
+                ->get();
+
+            return [
+                'labels' => $rows->pluck('label')->all(),
+                'data' => $rows->pluck('total')->map(fn($v) => (int)$v)->all(),
+            ];
+        };
+
+        $now = now();
+        $usiaRows = DB::table('penduduks')
+            ->when($matiId, fn($q) => $q->where('status_dasar_id', '!=', $matiId))
+            ->selectRaw("
+                CASE
+                    WHEN tanggal_lahir IS NULL THEN 'Lainnya'
+                    WHEN TIMESTAMPDIFF(YEAR, tanggal_lahir, ?) < 13 THEN 'Anak-anak'
+                    WHEN TIMESTAMPDIFF(YEAR, tanggal_lahir, ?) BETWEEN 13 AND 17 THEN 'Remaja'
+                    WHEN TIMESTAMPDIFF(YEAR, tanggal_lahir, ?) BETWEEN 18 AND 59 THEN 'Dewasa'
+                    ELSE 'Lansia'
+                END AS label,
+                COUNT(*) AS total
+            ", [$now, $now, $now])
+            ->groupBy('label')
+            ->get();
+
+        return [
+            'pekerjaan' => $buildCategoryStats('pekerjaan_id', 'ref_pekerjaan'),
+            'pendidikan' => $buildCategoryStats('pendidikan_sedang_id', 'ref_pendidikan'),
+            'agama' => $buildCategoryStats('agama_id', 'ref_agama'),
+            'perkawinan' => $buildCategoryStats('status_kawin_id', 'ref_status_kawin'),
+            'golongan_darah' => $buildCategoryStats('golongan_darah_id', 'ref_golongan_darah'),
+            'usia' => [
+                'labels' => $usiaRows->pluck('label')->all(),
+                'data' => $usiaRows->pluck('total')->map(fn($v) => (int)$v)->all(),
+            ],
+        ];
     }
 
     private function getWilayahData()
