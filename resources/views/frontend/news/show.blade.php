@@ -1,18 +1,6 @@
 @php
-    use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Str;
-    $mediaUrl = function ($path, $default = null) {
-        if (empty($path))
-            return $default;
-        if (Str::startsWith($path, ['http://', 'https://']))
-            return $path;
-        if (Storage::disk('public')->exists($path))
-            return Storage::url($path);
-        if (file_exists(public_path($path)))
-            return asset($path);
-        return $default;
-    };
-    $imgSrc = $mediaUrl($news->thumbnail, null);
+    $imgSrc = image_url($news->thumbnail);
     $publishedAt = $news->published_at ?? $news->created_at;
 @endphp
 <!DOCTYPE html>

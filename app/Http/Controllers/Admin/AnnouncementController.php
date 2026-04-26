@@ -129,8 +129,14 @@ class AnnouncementController extends Controller
             abort(404);
         }
 
-        if ($attachment->path && Storage::disk('public')->exists($attachment->path)) {
-            Storage::disk('public')->delete($attachment->path);
+        if ($attachment->path) {
+            try {
+                if (file_exists(public_path('storage/' . $attachment->path))) {
+                    Storage::disk('public')->delete($attachment->path);
+                }
+            } catch (\Exception $e) {
+                // Abaikan error
+            }
         }
 
         $attachment->delete();

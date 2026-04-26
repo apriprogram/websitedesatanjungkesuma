@@ -88,8 +88,14 @@ class PublicInfoController extends Controller
         }
 
         if ($section === 'request' && $request->hasFile('request_image')) {
-            if ($setting->request_image && Storage::disk('public')->exists($setting->request_image)) {
-                Storage::disk('public')->delete($setting->request_image);
+            if ($setting->request_image) {
+                try {
+                    if (file_exists(public_path('storage/' . $setting->request_image))) {
+                        Storage::disk('public')->delete($setting->request_image);
+                    }
+                } catch (\Exception $e) {
+                    // Abaikan error
+                }
             }
             $path = $request->file('request_image')->store('public-info', 'public');
             $setting->request_image = $path;

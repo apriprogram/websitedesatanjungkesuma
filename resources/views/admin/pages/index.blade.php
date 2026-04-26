@@ -200,7 +200,7 @@
                                                 data-page-meta-description="{{ $page->meta_description ?: '-' }}"
                                                 data-page-attachments="@json($attachments->map(function ($att) { return ['name' => $att->original_name ?: basename($att->path), 'url' => $att->url, 'type' => $att->type]; })->values())"
                                                 data-page-content="{{ \Illuminate\Support\Str::limit(strip_tags($page->content), 300) }}"
-                                                data-page-feature="{{ $page->feature_image ? (\Illuminate\Support\Str::startsWith($page->feature_image, ['http://', 'https://']) ? $page->feature_image : \Illuminate\Support\Facades\Storage::url($page->feature_image)) : '' }}"
+                                                data-page-feature="{{ $page->feature_image ? (\Illuminate\Support\Str::startsWith($page->feature_image, ['http://', 'https://']) ? $page->feature_image : asset('storage/' . ltrim($page->feature_image, '/'))) : '' }}"
                                                 role="menuitem">
                                                 <i class="fas fa-eye"></i><span>Detail</span>
                                             </button>

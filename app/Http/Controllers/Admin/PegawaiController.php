@@ -252,7 +252,13 @@ class PegawaiController extends Controller
     private function deleteFile(?string $path): void
     {
         if ($path) {
-            Storage::disk('public')->delete($path);
+            try {
+                if (file_exists(public_path('storage/' . $path))) {
+                    Storage::disk('public')->delete($path);
+                }
+            } catch (\Exception $e) {
+                // Abaikan error
+            }
         }
     }
 

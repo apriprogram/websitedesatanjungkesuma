@@ -279,7 +279,7 @@
                             <div class="news-upload-card">
                                 <div class="news-upload-card__preview @if($page->feature_image) is-visible @endif" id="featurePreview">
                                     @if($page->feature_image)
-                                        <img src="{{ \Illuminate\Support\Facades\Storage::url($page->feature_image) }}" alt="Feature image" id="featurePreviewImg">
+                                        <img src="{{ asset('storage/' . ltrim($page->feature_image, '/')) }}" alt="Feature image" id="featurePreviewImg">
                                     @else
                                         <div class="news-upload-card__placeholder" id="featurePlaceholder">
                                             <i class="fas fa-image fa-2x"></i>

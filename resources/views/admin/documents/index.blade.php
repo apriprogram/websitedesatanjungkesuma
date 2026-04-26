@@ -585,7 +585,7 @@
                                         'size' => $doc->file_size ? number_format($doc->file_size) . ' KB' : 'Tidak diketahui',
                                         'public' => $doc->is_public ? 'Ya' : 'Tidak',
                                         'uploaded' => optional($doc->uploaded_at)->translatedFormat('d M Y') ?? '-',
-                                        'url' => Storage::url($doc->file_path),
+                                        'url' => asset('storage/' . ltrim($doc->file_path, '/')),
                                     ]);
                                 @endphp
                                 <td>
@@ -609,7 +609,7 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                         </summary>
                                         <div class="news-table__action-options" role="menu">
-                                            <a class="news-table__action-item" href="{{ Storage::url($doc->file_path) }}"
+                                            <a class="news-table__action-item" href="{{ asset('storage/' . ltrim($doc->file_path, '/')) }}"
                                                 target="_blank" rel="noopener">
                                                 <i class="fas fa-eye"></i><span>Lihat File</span>
                                             </a>

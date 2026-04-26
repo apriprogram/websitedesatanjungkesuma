@@ -67,9 +67,9 @@ class MediaController extends Controller
                 $normalized = substr($normalized, 7);
             }
 
-            if (Storage::disk('public')->exists($normalized)) {
-                $full = Storage::disk('public')->path($normalized);
-                return response()->file($full, [
+            $fullPath = public_path('storage/' . $normalized);
+            if (file_exists($fullPath)) {
+                return response()->file($fullPath, [
                     'Cache-Control' => 'public, max-age=604800, immutable',
                 ]);
             }

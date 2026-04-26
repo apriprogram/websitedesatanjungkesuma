@@ -114,7 +114,13 @@ class NewsController extends Controller
 
         if ($request->hasFile('thumbnail')) {
             if (!empty($news->thumbnail)) {
-                Storage::disk('public')->delete($news->thumbnail);
+                try {
+                    if (file_exists(public_path('storage/' . $news->thumbnail))) {
+                        Storage::disk('public')->delete($news->thumbnail);
+                    }
+                } catch (\Exception $e) {
+                    // Abaikan error
+                }
             }
             $payload['thumbnail'] = $request->file('thumbnail')->store('news', 'public');
         }

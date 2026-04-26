@@ -96,7 +96,13 @@ class PageController extends Controller
 
         if ($request->hasFile('feature_image')) {
             if ($page->feature_image) {
-                Storage::disk('public')->delete($page->feature_image);
+                try {
+                    if (file_exists(public_path('storage/' . $page->feature_image))) {
+                        Storage::disk('public')->delete($page->feature_image);
+                    }
+                } catch (\Exception $e) {
+                    // Abaikan error
+                }
             }
             $data['feature_image'] = $request->file('feature_image')->store('page-images', 'public');
         }
@@ -119,7 +125,13 @@ class PageController extends Controller
     public function destroy(Page $page)
     {
         if ($page->feature_image) {
-            Storage::disk('public')->delete($page->feature_image);
+            try {
+                if (file_exists(public_path('storage/' . $page->feature_image))) {
+                    Storage::disk('public')->delete($page->feature_image);
+                }
+            } catch (\Exception $e) {
+                // Abaikan error
+            }
         }
 
         ActivityLogger::log('page.deleted', $page, 'Halaman dihapus', [
@@ -138,7 +150,13 @@ class PageController extends Controller
         abort_if($attachment->page_id !== $page->id, 404);
 
         if ($attachment->path) {
-            Storage::disk('public')->delete($attachment->path);
+            try {
+                if (file_exists(public_path('storage/' . $attachment->path))) {
+                    Storage::disk('public')->delete($attachment->path);
+                }
+            } catch (\Exception $e) {
+                // Abaikan error
+            }
         }
         $attachment->delete();
 

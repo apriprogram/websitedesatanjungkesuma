@@ -1,25 +1,9 @@
 @php
-    use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Str;
-    $mediaUrl = function ($path, $default = null) {
-        if (empty($path)) {
-            return $default;
-        }
-        if (Str::startsWith($path, ['http://', 'https://'])) {
-            return $path;
-        }
-        if (Storage::disk('public')->exists($path)) {
-            return Storage::url($path);
-        }
-        if (file_exists(public_path($path))) {
-            return asset($path);
-        }
-        return $default;
-    };
     $categories = $categories ?? [];
     $defaultAnnouncementImage = asset('img/Logo/speaker.png');
 
-    $resolveAnnouncementImage = function ($announcement) use ($defaultAnnouncementImage, $mediaUrl) {
+    $resolveAnnouncementImage = function ($announcement) use ($defaultAnnouncementImage) {
         $img = null;
         if ($announcement->relationLoaded('imageAttachments')) {
             $img = optional($announcement->imageAttachments->first())->url;
@@ -31,7 +15,7 @@
         } elseif (!$img && method_exists($announcement, 'attachments')) {
             $img = optional($announcement->attachments()->where('type', 'image')->first())->url;
         }
-        return $mediaUrl($img, $defaultAnnouncementImage);
+        return image_url($img, $defaultAnnouncementImage);
     };
 @endphp
 <!DOCTYPE html>

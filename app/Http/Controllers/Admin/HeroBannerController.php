@@ -54,7 +54,13 @@ class HeroBannerController extends Controller
     public function destroy(HeroSlide $hero_banner)
     {
         if ($hero_banner->background_url) {
-            Storage::disk('public')->delete($hero_banner->background_url);
+            try {
+                if (file_exists(public_path('storage/' . $hero_banner->background_url))) {
+                    Storage::disk('public')->delete($hero_banner->background_url);
+                }
+            } catch (\Exception $e) {
+                // Abaikan error jika gagal hapus file fisik
+            }
         }
 
         $hero_banner->delete();
@@ -93,7 +99,13 @@ class HeroBannerController extends Controller
         }
 
         if ($hero_banner && $hero_banner->background_url) {
-            Storage::disk('public')->delete($hero_banner->background_url);
+            try {
+                if (file_exists(public_path('storage/' . $hero_banner->background_url))) {
+                    Storage::disk('public')->delete($hero_banner->background_url);
+                }
+            } catch (\Exception $e) {
+                // Abaikan error
+            }
         }
 
         return $request->file('image')->store('hero-banners', 'public');
@@ -131,7 +143,13 @@ class HeroBannerController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            Storage::disk('public')->delete($infoBanner->image_url);
+            try {
+                if ($infoBanner->image_url && file_exists(public_path('storage/' . $infoBanner->image_url))) {
+                    Storage::disk('public')->delete($infoBanner->image_url);
+                }
+            } catch (\Exception $e) {
+                // Abaikan error
+            }
             $data['image_url'] = $request->file('image')->store('banner-info', 'public');
         }
 
@@ -165,7 +183,13 @@ class HeroBannerController extends Controller
 
     public function destroyInfo(InfoMediaBanner $infoBanner)
     {
-        Storage::disk('public')->delete($infoBanner->image_url);
+        try {
+            if ($infoBanner->image_url && file_exists(public_path('storage/' . $infoBanner->image_url))) {
+                Storage::disk('public')->delete($infoBanner->image_url);
+            }
+        } catch (\Exception $e) {
+            // Abaikan error
+        }
         $infoBanner->delete();
 
         return redirect()->route('admin.hero-banners.index')
@@ -174,7 +198,13 @@ class HeroBannerController extends Controller
 
     public function destroyInfographic(InfographicBanner $banner)
     {
-        Storage::disk('public')->delete($banner->image_url);
+        try {
+            if ($banner->image_url && file_exists(public_path('storage/' . $banner->image_url))) {
+                Storage::disk('public')->delete($banner->image_url);
+            }
+        } catch (\Exception $e) {
+            // Abaikan error
+        }
         $banner->delete();
 
         return redirect()->route('admin.hero-banners.index')
@@ -193,7 +223,13 @@ class HeroBannerController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            Storage::disk('public')->delete($banner->image_url);
+            try {
+                if ($banner->image_url && file_exists(public_path('storage/' . $banner->image_url))) {
+                    Storage::disk('public')->delete($banner->image_url);
+                }
+            } catch (\Exception $e) {
+                // Abaikan error
+            }
             $data['image_url'] = $request->file('image')->store('infographics', 'public');
         }
 

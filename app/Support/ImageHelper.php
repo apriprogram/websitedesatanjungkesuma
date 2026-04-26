@@ -89,10 +89,13 @@ class ImageHelper
         }
 
         $normalized = ltrim(str_replace(['storage/', 'public/'], '', $path), '/');
+        $fullPath = public_path('storage/' . $normalized);
 
-        return Storage::disk('public')->exists($normalized)
-            ? Storage::url($normalized)
-            : $defaultUrl;
+        if (file_exists($fullPath)) {
+            return asset('storage/' . $normalized);
+        }
+
+        return $defaultUrl;
     }
 
     /**
@@ -122,8 +125,10 @@ class ImageHelper
         }
 
         $normalized = ltrim(str_replace(['storage/', 'public/'], '', $default), '/');
-        if ($normalized !== '' && Storage::disk('public')->exists($normalized)) {
-            return Storage::url($normalized);
+        $fullPath = public_path('storage/' . $normalized);
+
+        if ($normalized !== '' && file_exists($fullPath)) {
+            return asset('storage/' . $normalized);
         }
 
         return asset($default);

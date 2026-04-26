@@ -1,20 +1,7 @@
 @php
-    use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Str;
-    $mediaUrl = function ($path, $default = null) {
-        if (empty($path)) {
-            return $default;
-        }
-        if (Str::startsWith($path, ['http://', 'https://'])) {
-            return $path;
-        }
-        if (Storage::disk('public')->exists($path)) {
-            return Storage::url($path);
-        }
-        if (file_exists(public_path($path))) {
-            return asset($path);
-        }
-        return $default;
+    $mediaUrl = function ($path) {
+        return image_url($path, asset('assets/img/default-video.jpg'));
     };
 @endphp
 <!DOCTYPE html>

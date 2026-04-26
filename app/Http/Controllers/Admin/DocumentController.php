@@ -103,7 +103,13 @@ class DocumentController extends Controller
 
         if ($request->hasFile('file')) {
             if ($document->file_path) {
-                Storage::disk('public')->delete($document->file_path);
+                try {
+                    if (file_exists(public_path('storage/' . $document->file_path))) {
+                        Storage::disk('public')->delete($document->file_path);
+                    }
+                } catch (\Exception $e) {
+                    // Abaikan error
+                }
             }
             $file = $request->file('file');
             $path = $file->store('documents', 'public');
@@ -120,7 +126,13 @@ class DocumentController extends Controller
     public function destroy(VillageDocument $document)
     {
         if ($document->file_path) {
-            Storage::disk('public')->delete($document->file_path);
+            try {
+                if (file_exists(public_path('storage/' . $document->file_path))) {
+                    Storage::disk('public')->delete($document->file_path);
+                }
+            } catch (\Exception $e) {
+                // Abaikan error
+            }
         }
 
         $document->delete();

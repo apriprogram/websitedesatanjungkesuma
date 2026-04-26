@@ -1049,9 +1049,9 @@
                             @php
                                 $rowNumber = $startIndex + $index + 1;
                                 $birthInfo = trim(($resident->tempat_lahir ? $resident->tempat_lahir . ', ' : '') . ($resident->tanggal_lahir?->translatedFormat('d M Y') ?? ''));
-                                $fotoProfilUrl = $resident->foto_profil ? Storage::url($resident->foto_profil) : null;
-                                $fotoKtpUrl = $resident->foto_ktp ? Storage::url($resident->foto_ktp) : null;
-                                $fotoKkUrl = $resident->foto_kk ? Storage::url($resident->foto_kk) : null;
+                                $fotoProfilUrl = $resident->foto_profil ? asset('storage/' . ltrim($resident->foto_profil, '/')) : null;
+                                $fotoKtpUrl = $resident->foto_ktp ? asset('storage/' . ltrim($resident->foto_ktp, '/')) : null;
+                                $fotoKkUrl = $resident->foto_kk ? asset('storage/' . ltrim($resident->foto_kk, '/')) : null;
                                 $detailPayload = [
                                     'nama' => $resident->nama,
                                     'nik' => $resident->nik,

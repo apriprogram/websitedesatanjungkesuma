@@ -1,17 +1,5 @@
 @php
-    use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Str;
-    $mediaUrl = function ($path, $default = null) {
-        if (empty($path))
-            return $default;
-        if (Str::startsWith($path, ['http://', 'https://']))
-            return $path;
-        if (Storage::disk('public')->exists($path))
-            return Storage::url($path);
-        if (file_exists(public_path($path)))
-            return asset($path);
-        return $default;
-    };
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -105,7 +93,7 @@
 
                 @forelse($news as $item)
                     @php
-                        $thumb = $mediaUrl($item->thumbnail, null);
+                        $thumb = image_url($item->thumbnail);
                         $publishedAt = $item->published_at ?? $item->created_at;
                     @endphp
                     <a href="{{ route('news.show', $item) }}" class="news-card-v2">

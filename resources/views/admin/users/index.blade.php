@@ -585,7 +585,6 @@
                         <div class="table-body">
                             @forelse ($pegawais as $pegawai)
                                 @php
-                                    $publicDisk = \Illuminate\Support\Facades\Storage::disk('public');
                                     // Gunakan accessor image_url dari trait HasProfileImage
                                     $pegawaiAvatar = $pegawai->image_url ?? $storageDefaultAvatar;
                                     $pegawaiAvatarVersion = $pegawai->updated_at?->timestamp
@@ -663,17 +662,17 @@
                                         ? trim(($pegawai->updater->nama ?? '-') . ' (' . ($pegawai->updater->email ?? '-') . ')')
                                         : 'Belum ada';
 
-                                    $pegawaiFotoKtpUrl = ($pegawai->foto_ktp && $publicDisk->exists($pegawai->foto_ktp))
+                                    $pegawaiFotoKtpUrl = ($pegawai->foto_ktp && file_exists(public_path('storage/' . $pegawai->foto_ktp)))
                                         ? asset('storage/' . $pegawai->foto_ktp)
                                         : '';
                                     $pegawaiFotoKtpName = $pegawai->foto_ktp ? basename($pegawai->foto_ktp) : '';
 
-                                    $pegawaiSkPengangkatanUrl = ($pegawai->sk_pengangkatan && $publicDisk->exists($pegawai->sk_pengangkatan))
+                                    $pegawaiSkPengangkatanUrl = ($pegawai->sk_pengangkatan && file_exists(public_path('storage/' . $pegawai->sk_pengangkatan)))
                                         ? asset('storage/' . $pegawai->sk_pengangkatan)
                                         : '';
                                     $pegawaiSkPengangkatanName = $pegawai->sk_pengangkatan ? basename($pegawai->sk_pengangkatan) : '';
 
-                                    $pegawaiSkPemberhentianUrl = ($pegawai->sk_pemberhentian && $publicDisk->exists($pegawai->sk_pemberhentian))
+                                    $pegawaiSkPemberhentianUrl = ($pegawai->sk_pemberhentian && file_exists(public_path('storage/' . $pegawai->sk_pemberhentian)))
                                         ? asset('storage/' . $pegawai->sk_pemberhentian)
                                         : '';
                                     $pegawaiSkPemberhentianName = $pegawai->sk_pemberhentian ? basename($pegawai->sk_pemberhentian) : '';

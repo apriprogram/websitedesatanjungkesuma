@@ -23,16 +23,7 @@
 
     $resolvePegawaiFoto = function ($pegawai, $default = 'img/Users/user2.png') {
         $foto = $pegawai->image_url ?? $pegawai->gambar ?? null;
-        if ($foto && Storage::disk('public')->exists($foto)) {
-            return Storage::url($foto);
-        }
-        if ($foto && Str::startsWith($foto, ['http://', 'https://'])) {
-            return $foto;
-        }
-        if ($foto && file_exists(public_path($foto))) {
-            return asset($foto);
-        }
-        return asset($default);
+        return image_url($foto, asset($default));
     };
 @endphp
 <!DOCTYPE html>

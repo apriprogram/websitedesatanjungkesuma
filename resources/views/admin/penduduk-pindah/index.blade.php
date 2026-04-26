@@ -853,7 +853,7 @@
                                                     <div class="resident-table__person">
                                                         <div class="resident-avatar">
                                                             @if ($resident && $resident->foto_profil)
-                                                                <img src="{{ \Illuminate\Support\Facades\Storage::url($resident->foto_profil) }}"
+                                                                <img src="{{ asset('storage/' . ltrim($resident->foto_profil, '/')) }}"
                                                                     alt="Foto {{ $resident->nama }}" loading="lazy"
                                                                     style="width: 100%; height: 100%; border-radius: 14px; object-fit: cover;">
                                                             @else
@@ -918,7 +918,7 @@
                                                                     data-modal-open="migrantDetailModal" data-pindah-detail="{{ json_encode([
                                 'nama' => $resident->nama ?? 'Penduduk Terhapus',
                                 'nik' => $resident->nik ?? '-',
-                                'foto' => $resident?->foto_profil ? \Illuminate\Support\Facades\Storage::url($resident->foto_profil) : null,
+                                'foto' => $resident?->foto_profil ? asset('storage/' . ltrim($resident->foto_profil, '/')) : null,
                                 'tanggal' => $record->tanggal_pindah?->translatedFormat('d M Y'),
                                 'alasan' => $record->alasan_pindah,
                                 'tujuan' => $record->alamat_tujuan,

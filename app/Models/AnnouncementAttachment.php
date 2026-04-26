@@ -40,9 +40,14 @@ class AnnouncementAttachment extends Model
         if (Str::startsWith($path, ['http://', 'https://'])) {
             return $path;
         }
-        if (Storage::disk('public')->exists($path)) {
-            return Storage::url($path);
+        if ($path && file_exists(public_path('storage/' . $path))) {
+            return asset('storage/' . $path);
         }
-        return asset($path);
+        
+        if ($path && file_exists(public_path($path))) {
+            return asset($path);
+        }
+
+        return '';
     }
 }

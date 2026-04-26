@@ -13,9 +13,9 @@
     @php
         $hamilValue = old('hamil', $penduduk->hamil === null ? '' : ((string) (int) $penduduk->hamil));
         $ktpElValue = old('ktp_el', $penduduk->ktp_el ? '1' : '0');
-        $fotoProfilUrl = $penduduk->foto_profil ? Storage::url($penduduk->foto_profil) : null;
-        $fotoKtpUrl = $penduduk->foto_ktp ? Storage::url($penduduk->foto_ktp) : null;
-        $fotoKkUrl = $penduduk->foto_kk ? Storage::url($penduduk->foto_kk) : null;
+        $fotoProfilUrl = $penduduk->foto_profil ? asset('storage/' . ltrim($penduduk->foto_profil, '/')) : null;
+        $fotoKtpUrl = $penduduk->foto_ktp ? asset('storage/' . ltrim($penduduk->foto_ktp, '/')) : null;
+        $fotoKkUrl = $penduduk->foto_kk ? asset('storage/' . ltrim($penduduk->foto_kk, '/')) : null;
     @endphp
 
     <section class="page-title">

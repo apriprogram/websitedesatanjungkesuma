@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 
 @php
@@ -12,9 +12,13 @@
         if (Str::startsWith($path, ['http://', 'https://'])) {
             return $path;
         }
-        if (Storage::disk('public')->exists($path)) {
-            return Storage::url($path);
+        
+        // Cek file di folder storage/ secara langsung (lebih aman untuk hosting)
+        $storagePath = 'storage/' . ltrim($path, '/');
+        if (file_exists(public_path($storagePath))) {
+            return asset($storagePath);
         }
+        
         if (file_exists(public_path($path))) {
             return asset($path);
         }

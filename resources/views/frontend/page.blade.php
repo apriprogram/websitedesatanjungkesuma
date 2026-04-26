@@ -1,30 +1,12 @@
 @php
-    use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Str;
-
-    $mediaUrl = function ($path, $default = null) {
-        if (empty($path)) {
-            return $default;
-        }
-        if (Str::startsWith($path, ['http://', 'https://'])) {
-            return $path;
-        }
-        if (Storage::disk('public')->exists($path)) {
-            return Storage::url($path);
-        }
-        if (file_exists(public_path($path))) {
-            return asset($path);
-        }
-
-        return $default;
-    };
 
     $attachments = $page->attachments ?? collect();
     $imageAttachments = $attachments->where('type', 'image')->values();
     $fileAttachments = $attachments->where('type', 'file')->values();
 
     // Media upload (feature image) tampil di atas konten
-    $topImageUrl = $page->feature_image ? $mediaUrl($page->feature_image) : null;
+    $topImageUrl = $page->feature_image ? image_url($page->feature_image) : null;
 @endphp
 <!DOCTYPE html>
 <html lang="id">

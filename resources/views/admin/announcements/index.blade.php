@@ -236,7 +236,7 @@
                                     'views' => $announcement->views ?? 0,
                                     'attachments' => $announcement->attachments->map(fn($att) => [
                                         'type' => $att->type,
-                                        'url' => \Illuminate\Support\Facades\Storage::url($att->path),
+                                        'url' => asset('storage/' . ltrim($att->path, '/')),
                                         'name' => $att->original_name
                                     ]),
                                 ];
@@ -248,7 +248,7 @@
                                 <td style="text-align: left;">
                                     <div style="display:flex;align-items:flex-start;gap:12px;">
                                         @if($thumb = $announcement->imageAttachments->first())
-                                            <img src="{{ \Illuminate\Support\Facades\Storage::url($thumb->path) }}" alt=""
+                                            <img src="{{ asset('storage/' . ltrim($thumb->path, '/')) }}" alt=""
                                                 style="width:56px;height:56px;border-radius:6px;object-fit:cover;border:1px solid #e2e8f0;flex-shrink:0;">
                                         @endif
                                         <div>

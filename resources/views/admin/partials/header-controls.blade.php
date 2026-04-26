@@ -1,7 +1,7 @@
 @php
     $headerUser = $headerUser ?? auth()->user();
-    $defaultAvatar = \Illuminate\Support\Facades\Storage::disk('public')->exists('default/user.jpg')
-        ? \Illuminate\Support\Facades\Storage::url('default/user.jpg')
+    $defaultAvatar = file_exists(public_path('storage/default/user.jpg'))
+        ? asset('storage/default/user.jpg')
         : asset('assets/default/user.jpg');
 
     $headerAvatar = $headerAvatar ?? ($headerUser?->avatar_url ?: $defaultAvatar);

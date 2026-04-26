@@ -186,11 +186,11 @@
                                 data-updated="<?php    echo e($slide->updated_at->timestamp); ?>"
                                 data-updated-human="<?php    echo e($slide->updated_at->format('d M Y H:i')); ?>"
                                 data-created-human="<?php    echo e($slide->created_at->format('d M Y H:i')); ?>"
-                                data-image-url="<?php    echo e($slide->background_url ? Storage::url($slide->background_url) : ''); ?>">
+                                data-image-url="<?php    echo e($slide->background_url ? asset('storage/' . ltrim($slide->background_url, '/')) : ''); ?>">
                                 <td>
                                     <div class="table-label">
                                         <?php    if ($slide->background_url): ?>
-                                        <img src="<?php        echo e(Storage::url($slide->background_url)); ?>"
+                                        <img src="<?php        echo e(asset('storage/' . ltrim($slide->background_url, '/'))); ?>"
                                             alt="<?php        echo e($slide->title); ?>">
                                         <?php    else: ?>
                                         <span class="table-label__placeholder"><i class="fas fa-image"></i></span>
@@ -305,10 +305,10 @@
                                 data-description="<?php    echo e($info->description); ?>"
                                 data-status="<?php    echo e($info->status); ?>"
                                 data-sort-order="<?php    echo e($info->sort_order); ?>"
-                                data-image-url="<?php    echo e(Storage::url($info->image_url)); ?>"
+                                data-image-url="<?php    echo e(asset('storage/' . ltrim($info->image_url, '/'))); ?>"
                                 data-created="<?php    echo e(optional($info->created_at)->format('d M Y H:i')); ?>"
                                 data-updated="<?php    echo e(optional($info->updated_at)->format('d M Y H:i')); ?>">
-                                <td><img src="<?php    echo e(Storage::url($info->image_url)); ?>"
+                                <td><img src="<?php    echo e(asset('storage/' . ltrim($info->image_url, '/'))); ?>"
                                         alt="<?php    echo e($info->title); ?>" loading="lazy"></td>
                                 <td>
                                     <strong><?php    echo e($info->title ?: 'Tanpa judul'); ?></strong>
@@ -406,10 +406,10 @@
                                 data-description="<?php    echo e($graphic->description); ?>"
                                 data-status="<?php    echo e($graphic->status); ?>"
                                 data-sort-order="<?php    echo e($graphic->sort_order); ?>"
-                                data-image-url="<?php    echo e(Storage::url($graphic->image_url)); ?>"
+                                data-image-url="<?php    echo e(asset('storage/' . ltrim($graphic->image_url, '/'))); ?>"
                                 data-created="<?php    echo e(optional($graphic->created_at)->format('d M Y H:i')); ?>"
                                 data-updated="<?php    echo e(optional($graphic->updated_at)->format('d M Y H:i')); ?>">
-                                <td><img src="<?php    echo e(Storage::url($graphic->image_url)); ?>"
+                                <td><img src="<?php    echo e(asset('storage/' . ltrim($graphic->image_url, '/'))); ?>"
                                         alt="<?php    echo e($graphic->title); ?>" loading="lazy"></td>
                                 <td>
                                     <strong><?php    echo e($graphic->title ?: 'Tanpa judul'); ?></strong>
