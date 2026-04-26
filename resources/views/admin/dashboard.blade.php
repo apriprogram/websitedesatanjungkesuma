@@ -718,12 +718,18 @@
             </nav>
         </header>
 
-        <section class="page-title">
-            <div>
-                <h1>Dashboard Overview</h1>
-                <p>Selamat datang kembali, {{ $user->nama }}!</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <div>
+                    <h1>Dashboard Overview</h1>
+                    <p>Selamat datang kembali, {{ $user->nama }}!</p>
+                </div>
+                <form action="{{ route('admin.seed-village-data') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-primary" style="background: var(--primary-color); border: none; padding: 0.75rem 1.25rem; border-radius: 0.75rem; color: white; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;" onclick="return confirm('Apakah Anda yakin ingin memperbarui data informasi desa secara otomatis? Ini akan mengisi halaman Visi Misi, Sejarah, Wilayah, dll dengan data asli Desa Tanjung Kesuma.')">
+                        <i class="fas fa-magic"></i> Update Info Desa Otomatis
+                    </button>
+                </form>
             </div>
-        </section>
 
         <!-- Kependudukan Stats -->
         <div class="section-title section-kependudukan">

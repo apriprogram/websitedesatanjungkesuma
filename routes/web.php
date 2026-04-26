@@ -442,6 +442,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('dashboard', DashboardController::class)->name('dashboard');
+        Route::post('seed-village-data', [DashboardController::class, 'seedVillageData'])->name('seed-village-data');
 
         // Settings & media
         Route::get('settings', [UserController::class, 'index'])->name('users.index');
