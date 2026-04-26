@@ -14,6 +14,8 @@ if (!function_exists('image_url')) {
     {
         return ImageHelper::getImageUrl($path, $default);
     }
+}
+
 if (!function_exists('safe_store')) {
     /**
      * Store uploaded file safely without 'finfo' dependency.

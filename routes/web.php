@@ -598,5 +598,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
 
+// Route redirect untuk link lama /pages/slug ke /slug
+Route::get('/pages/{slug}', function ($slug) {
+    return redirect()->to('/' . $slug, 301);
+});
+
 // Route catch-all untuk halaman dinamis (pindahkan ke paling bawah agar tidak bentrok dengan route lain)
 Route::get('/{page:slug}', [\App\Http\Controllers\Admin\PageController::class, 'show'])->name('pages.show');
