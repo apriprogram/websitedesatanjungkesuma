@@ -1375,51 +1375,52 @@
                     </div>
                 @empty
                     <p style="color: var(--text-secondary); text-align: center; padding: 1rem;">Tidak ada agenda aktif.</p>
+                @endforelse
+            </div>
+
+            <!-- 2. Distribusi Pekerjaan -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h3 class="card-title">Distribusi Pekerjaan</h3>
+                </div>
+                @if(isset($statistics['pekerjaan']))
+                    @foreach($statistics['pekerjaan']->take(5) as $stat)
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                                <span style="font-size: 0.875rem; color: var(--text-primary);">{{ $stat->label }}</span>
+                                <span style="font-size: 0.875rem; font-weight: 600;">{{ number_format($stat->value) }}</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar"
+                                    style="width: {{ ($stat->value / max($summary['kependudukan']['total_penduduk'], 1)) * 100 }}%; background-color: var(--primary-color);">
+                                </div>
+                            </div>
                         </div>
+                    @endforeach
+                @endif
+            </div>
 
-                <!-- 2. Distribusi Pekerjaan -->
-                <div class="content-card">
-                    <div class="card-header">
-                        <h3 class="card-title">Distribusi Pekerjaan</h3>
-                    </div>
-                    @if(isset($statistics['pekerjaan']))
-                        @foreach($statistics['pekerjaan']->take(5) as $stat)
-                            <div style="margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
-                                    <span style="font-size: 0.875rem; color: var(--text-primary);">{{ $stat->label }}</span>
-                                    <span style="font-size: 0.875rem; font-weight: 600;">{{ number_format($stat->value) }}</span>
-                                </div>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar"
-                                        style="width: {{ ($stat->value / max($summary['kependudukan']['total_penduduk'], 1)) * 100 }}%; background-color: var(--primary-color);">
-                                    </div>
+            <!-- 3. Pendidikan -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h3 class="card-title">Pendidikan</h3>
+                </div>
+                @if(isset($statistics['pendidikan']))
+                    @foreach($statistics['pendidikan']->take(5) as $stat)
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                                <span style="font-size: 0.875rem; color: var(--text-primary);">{{ $stat->label }}</span>
+                                <span style="font-size: 0.875rem; font-weight: 600;">{{ number_format($stat->value) }}</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar"
+                                    style="width: {{ ($stat->value / max($summary['kependudukan']['total_penduduk'], 1)) * 100 }}%; background-color: var(--info-color);">
                                 </div>
                             </div>
-                        @endforeach
-                    @endif
-                </div>
-
-                <!-- 3. Pendidikan -->
-                <div class="content-card">
-                    <div class="card-header">
-                        <h3 class="card-title">Pendidikan</h3>
-                    </div>
-                    @if(isset($statistics['pendidikan']))
-                        @foreach($statistics['pendidikan']->take(5) as $stat)
-                            <div style="margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
-                                    <span style="font-size: 0.875rem; color: var(--text-primary);">{{ $stat->label }}</span>
-                                    <span style="font-size: 0.875rem; font-weight: 600;">{{ number_format($stat->value) }}</span>
-                                </div>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar"
-                                        style="width: {{ ($stat->value / max($summary['kependudukan']['total_penduduk'], 1)) * 100 }}%; background-color: var(--info-color);">
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    @endif
-                </div>
+                        </div>
+                    @endforeach
+                @endif
+            </div>
             </div>
 
             <!-- ROW 2: Activity Log (Full Width) -->
