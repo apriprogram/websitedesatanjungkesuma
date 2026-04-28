@@ -773,7 +773,7 @@
             $editContext = $modalContext === 'familyEditModal-' . $keluarga->id;
         @endphp
         <div class="dialog-backdrop" id="familyDetailModal-{{ $keluarga->id }}" aria-hidden="true">
-            <div class="dialog dialog--form" style="max-width: 1100px;" role="dialog" aria-modal="true" aria-labelledby="familyDetailTitle-{{ $keluarga->id }}">
+            <div class="dialog dialog--form" style="max-width: 1400px;" role="dialog" aria-modal="true" aria-labelledby="familyDetailTitle-{{ $keluarga->id }}">
                 <header class="dialog__header">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div style="width: 40px; height: 40px; background: #eff6ff; color: #2563eb; border-radius: 12px; display: grid; place-items: center;">
