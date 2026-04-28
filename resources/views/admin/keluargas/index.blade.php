@@ -111,6 +111,19 @@
                 width: 100% !important;
                 min-width: 100% !important;
             }
+
+            .title-actions {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 12px !important;
+                width: 100% !important;
+                margin-top: 15px !important;
+            }
+
+            .title-actions > * {
+                width: 100% !important;
+                margin: 0 !important;
+            }
         }
 
         /* Action Dropdown Sync */
@@ -219,7 +232,7 @@
         .family-detail-wrapper {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px;
+            gap: 16px;
             padding: 4px;
         }
 
@@ -232,41 +245,172 @@
             .family-detail-full { grid-column: span 1; }
         }
 
+        @media (max-width: 768px) {
+            .dialog--form {
+                width: 98% !important;
+                max-height: 98vh !important;
+                overflow-x: hidden !important;
+            }
+            
+            .dialog__body {
+                padding: 8px !important;
+                overflow-x: hidden !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            .family-detail-wrapper {
+                gap: 8px !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+
+            .detail-card {
+                padding: 10px !important;
+                border-radius: 10px !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            .detail-card__header {
+                margin-bottom: 8px !important;
+                padding-bottom: 6px !important;
+                gap: 6px !important;
+            }
+
+            .detail-card__header i {
+                width: 24px !important;
+                height: 24px !important;
+                font-size: 0.7rem !important;
+            }
+
+            .detail-card__header h3 {
+                font-size: 0.75rem !important;
+            }
+
+            .head-profile-section {
+                flex-direction: row !important;
+                align-items: flex-start !important;
+                text-align: left !important;
+                gap: 12px !important;
+            }
+
+            .head-profile-section h4 {
+                font-size: 0.9rem !important;
+                margin-bottom: 2px !important;
+            }
+
+            .head-profile-section span[style*="font-size: 0.95rem"] {
+                font-size: 0.7rem !important;
+            }
+
+            .head-profile-section .info-item__value {
+                font-size: 0.7rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .head-photo-container {
+                width: 80px !important;
+                height: 100px !important;
+                border-radius: 8px !important;
+            }
+
+            .head-photo-container i {
+                font-size: 1.8rem !important;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr !important;
+                gap: 6px !important;
+            }
+
+            .info-item__label {
+                font-size: 0.6rem !important;
+            }
+
+            .info-item__value {
+                font-size: 0.72rem !important;
+            }
+
+            .member-table th, 
+            .member-table td {
+                padding: 6px 8px !important;
+                font-size: 0.65rem !important;
+            }
+
+            .member-table-wrapper {
+                margin: 0 -4px;
+                border-radius: 8px;
+                width: 100% !important;
+                max-width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .dialog__footer {
+                flex-direction: column-reverse;
+                padding: 10px !important;
+                gap: 6px !important;
+            }
+
+            .dialog__footer .primary-btn,
+            .dialog__footer a.primary-btn {
+                width: 100% !important;
+                justify-content: center !important;
+                padding: 8px !important;
+                font-size: 0.7rem !important;
+            }
+
+            .dialog__footer .primary-btn i {
+                font-size: 0.65rem !important;
+            }
+        }
+
         .detail-card {
             background: #ffffff;
             border: 1px solid rgba(226, 232, 240, 0.8);
-            border-radius: 20px;
-            padding: 24px;
+            border-radius: 16px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
+            transition: border-color 0.2s ease;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .detail-card:hover {
+            border-color: #2563eb;
         }
 
         .detail-card__header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
             border-bottom: 1px dashed rgba(226, 232, 240, 1);
         }
 
         .detail-card__header i {
-            width: 36px;
-            height: 36px;
+            width: 30px;
+            height: 30px;
             background: #eff6ff;
             color: #2563eb;
-            border-radius: 10px;
+            border-radius: 8px;
             display: grid;
             place-items: center;
-            font-size: 1rem;
+            font-size: 0.85rem;
         }
 
         .detail-card__header h3 {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: #1e293b;
-            text-transform: uppercase;
-            letter-spacing: 0.02em;
+            text-transform: none;
+            letter-spacing: normal;
             margin: 0;
         }
 
@@ -299,7 +443,7 @@
 
         .info-item { display: flex; flex-direction: column; gap: 4px; }
         .info-item--full { grid-column: span 2; }
-        .info-item__label { font-size: 0.78rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+        .info-item__label { font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: none; letter-spacing: normal; }
         .info-item__value { font-size: 0.95rem; font-weight: 700; color: #1e293b; }
         .info-item__value--long { line-height: 1.5; color: #475569; font-weight: 500; background: #f8fafc; padding: 10px 14px; border-radius: 12px; border: 1px solid #f1f5f9; }
 
@@ -324,7 +468,7 @@
             font-weight: 700;
             color: #64748b;
             font-size: 0.7rem;
-            text-transform: uppercase;
+            text-transform: none;
             border-bottom: 2px solid #f1f5f9;
             white-space: nowrap;
         }
@@ -773,22 +917,21 @@
             $editContext = $modalContext === 'familyEditModal-' . $keluarga->id;
         @endphp
         <div class="dialog-backdrop" id="familyDetailModal-{{ $keluarga->id }}" aria-hidden="true">
-            <div class="dialog dialog--form" style="max-width: 1400px;" role="dialog" aria-modal="true" aria-labelledby="familyDetailTitle-{{ $keluarga->id }}">
-                <header class="dialog__header">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="width: 40px; height: 40px; background: #eff6ff; color: #2563eb; border-radius: 12px; display: grid; place-items: center;">
-                            <i class="fas fa-file-invoice"></i>
+            <div class="dialog dialog--form" style="width: 95%; max-width: 1600px;" role="dialog" aria-modal="true" aria-labelledby="familyDetailTitle-{{ $keluarga->id }}">
+                <header class="dialog__header" style="padding: 12px 20px 8px; border-bottom: 1px solid #f1f5f9;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 32px; height: 32px; background: #eff6ff; color: #2563eb; border-radius: 8px; display: grid; place-items: center;">
+                            <i class="fas fa-file-invoice" style="font-size: 0.9rem;"></i>
                         </div>
                         <div>
-                            <h2 id="familyDetailTitle-{{ $keluarga->id }}" style="margin: 0;">Detail Kartu Keluarga</h2>
-                            <p style="margin: 0; font-size: 0.8rem; color: #64748b;">Informasi lengkap data keluarga dan anggota.</p>
+                            <h2 id="familyDetailTitle-{{ $keluarga->id }}" style="margin: 0; font-size: 1.1rem; font-weight: 700;">Detail Kartu Keluarga</h2>
                         </div>
                     </div>
                     <button type="button" class="dialog__close" data-modal-close aria-label="Tutup detail KK {{ $keluarga->no_kk }}">
                         <i class="fas fa-times"></i>
                     </button>
                 </header>
-                <div class="dialog__body" style="background: #f8fafc; padding: 24px;">
+                <div class="dialog__body" style="background: #f8fafc; padding: 16px;">
                     <div class="family-detail-wrapper">
                         {{-- Row 1, Left: Head Info --}}
                         <div class="detail-card">
@@ -807,7 +950,9 @@
                             <div class="head-profile-section">
                                 <div class="head-photo-container">
                                     @if($kepala && $kepala->foto_profil)
-                                        <img src="{{ asset('storage/' . $kepala->foto_profil) }}" alt="Foto {{ $kepala->nama }}">
+                                        <a href="javascript:void(0)" onclick="openImagePreview('{{ asset('storage/' . $kepala->foto_profil) }}')" title="Buka foto profil" style="display: block; width: 100%; height: 100%; cursor: pointer;">
+                                            <img src="{{ asset('storage/' . $kepala->foto_profil) }}" alt="Foto {{ $kepala->nama }}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                        </a>
                                     @else
                                         <div class="head-placeholder">
                                             <i class="fas fa-user" style="font-size: 3rem; opacity: 0.3;"></i>
@@ -874,7 +1019,7 @@
                             
                             <!-- Berkas Kartu Keluarga Box -->
                             <div style="margin: 20px 0; padding: 15px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0; display: block;">
-                                <div style="font-size: 0.78rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">Berkas Kartu Keluarga</div>
+                                <div style="font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: none; letter-spacing: normal; margin-bottom: 8px;">Berkas Kartu Keluarga</div>
                                 @if($kepala && $kepala->foto_kk)
                                     <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer;" onclick="openImagePreview('{{ asset('storage/' . $kepala->foto_kk) }}')">
                                         <div style="width: 44px; height: 44px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; flex-shrink: 0;">
@@ -1054,14 +1199,13 @@
                         </div>
                     </div>
                 </div>
-                <footer class="dialog__footer" style="padding: 16px 24px; background: #fff; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 12px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
-                    <button type="button" class="ghost-btn ghost-btn--subtle" data-modal-close style="font-weight: 600; padding: 10px 20px; border-radius: 50px;">Tutup Detail</button>
-                    <a href="{{ route('admin.keluargas.print', $keluarga) }}" target="_blank" class="primary-btn" style="background: #ef4444; border-color: #ef4444; color: #ffffff; font-weight: 600; padding: 10px 20px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: 50px; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.25);" onmouseover="this.style.background='#dc2626'; this.style.borderColor='#dc2626'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 15px -3px rgba(239, 68, 68, 0.4)'" onmouseout="this.style.background='#ef4444'; this.style.borderColor='#ef4444'; this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(239, 68, 68, 0.25)'">
-                        <i class="fas fa-print" style="font-size: 0.85rem;"></i>
+                <footer class="dialog__footer" style="padding: 12px 24px; background: #fff; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
+                    <a href="{{ route('admin.keluargas.print', $keluarga) }}" target="_blank" class="primary-btn" style="background: #ef4444; border-color: #ef4444; color: #ffffff; font-weight: 600; padding: 7px 15px; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border-radius: 50px; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.25);" onmouseover="this.style.background='#dc2626'; this.style.borderColor='#dc2626'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='#ef4444'; this.style.borderColor='#ef4444'; this.style.transform='translateY(0)';">
+                        <i class="fas fa-print" style="font-size: 0.75rem;"></i>
                         <span>Cetak Detail (PDF)</span>
                     </a>
-                    <button type="button" class="primary-btn" data-modal-open="familyEditModal-{{ $keluarga->id }}" style="font-weight: 600; padding: 10px 20px; border-radius: 50px; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 15px -3px rgba(37, 99, 235, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(37, 99, 235, 0.2)'">
-                        <i class="fas fa-pen" style="font-size: 0.85rem;"></i>
+                    <button type="button" class="primary-btn" data-modal-open="familyEditModal-{{ $keluarga->id }}" style="font-weight: 600; padding: 7px 15px; font-size: 0.8rem; border-radius: 50px; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);" onmouseover="this.style.transform='translateY(-1px)';" onmouseout="this.style.transform='translateY(0)';">
+                        <i class="fas fa-pen" style="font-size: 0.75rem;"></i>
                         <span>Edit Data</span>
                     </button>
                 </footer>

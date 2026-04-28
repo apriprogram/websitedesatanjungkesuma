@@ -3,10 +3,8 @@
 @section('title', 'Pengaturan Banner Publik')
 
 @push('head')
-    <link rel="stylesheet" href="<?php echo e(asset('assets/css/admin-residents.css')); ?>">
-    <link rel="stylesheet" href="<?php echo e(asset('assets/css/admin-references.css')); ?>">
-    <link rel="stylesheet" href="<?php echo e(asset('assets/css/admin.css')); ?>">
-    <link rel="stylesheet" href="<?php echo e(asset('assets/css/admin-banner.css')); ?>">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin-residents.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin-banner.css') }}">
 @endpush
 
 @section('content')
@@ -37,8 +35,7 @@
     ];
         ?>
 
-    <main class="hero-banner-page">
-        <?php echo $__env->make('admin.partials.alerts', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    <div class="hero-banner-page">
         <header class="main-header">
             <div class="header-controls">
                 <div class="header-cluster header-cluster-left">
@@ -54,23 +51,26 @@
                 @include('admin.partials.header-controls')
             </div>
             <nav class="breadcrumbs header-breadcrumbs" aria-label="Peta navigasi">
-                <span>Dashboard</span>
-                <i class="fas fa-chevron-right"></i>
-                <span>Pengaturan Banner</span>
+                <a href="{{ route('admin.dashboard') }}" class="breadcrumb-link">Dashboard</a>
+                <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                <span class="breadcrumb-link breadcrumb-link--active">Pengaturan Banner</span>
             </nav>
-            <section class="page-title page-title--with-actions">
-                <div>
-                    <h1>Pengaturan Banner</h1>
-                    <p>Kelola hero-slide, status, dan layout banner agar konsisten dengan halaman referensi.</p>
-                </div>
-                <div class="title-actions">
-                    <button class="primary-btn hero-banners-action" id="newBannerBtn">
-                        <i class="fas fa-plus"></i>
-                        Tambah Banner
-                    </button>
-                </div>
-            </section>
         </header>
+
+        @include('admin.partials.alerts')
+
+        <section class="page-title page-title--with-actions">
+            <div>
+                <h1>Pengaturan Banner</h1>
+                <p>Kelola hero-slide, status, dan layout banner agar konsisten dengan halaman referensi.</p>
+            </div>
+            <div class="title-actions">
+                <button class="primary-btn hero-banners-action" id="newBannerBtn">
+                    <i class="fas fa-plus"></i>
+                    Tambah Banner
+                </button>
+            </div>
+        </section>
 
         <section class="summary-grid">
             <article class="stat-card stat-card--accent">
@@ -808,7 +808,7 @@
         <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST" hidden>
             <?php echo csrf_field(); ?>
         </form>
-    </main>
+    </div>
 @endsection
 
 @push('scripts')

@@ -263,11 +263,53 @@ body.stats-body {
 }
 
 @media (max-width: 768px) {
-    .stats-grid {
-        grid-template-columns: 1fr;
+    
+    @media (max-width: 768px) {
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .summary-grid {
+            grid-template-columns: 1fr;
+        }
+
+        /* Center overall content wrapper */
+        .stats-content-wrapper {
+            text-align: center;
+        }
+
+        /* Reduce icon and font sizes */
+        .stats-card h3 {
+            font-size: 1rem;
+        }
+        .stats-card h3 i {
+            font-size: 0.9rem;
+        }
+        .summary-icon {
+            width: 48px;
+            height: 48px;
+            font-size: 1.4rem;
+        }
+        .summary-content h4 {
+            font-size: 0.75rem;
+        }
+        .summary-content .count {
+            font-size: 1.5rem;
+        }
+        .summary-content .note {
+            font-size: 1rem;
+        }
+        .filter-group label,
+        .filter-group select {
+            font-size: 0.9rem;
+        }
+        .menu-trigger {
+            width: 28px;
+            height: 28px;
+        }
+        .menu-trigger i {
+            font-size: 0.9rem;
+        }
     }
 
-    .summary-grid {
-        grid-template-columns: 1fr;
-    }
 }

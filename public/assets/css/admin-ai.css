@@ -93,7 +93,7 @@
     /* Open upward from the FAB button, same pattern as .fab-card */
     bottom: calc(100% + 12px);
     right: 0;
-    width: 370px;
+    width: 850px;
     /* Gradient border outer shell matching agenda fab-card */
     background: linear-gradient(135deg, #034afc 0%, #00aaff 40%, #034afc 100%);
     border-radius: 24px;
@@ -122,7 +122,7 @@
     border-radius: 21px;
     display: flex;
     flex-direction: column;
-    height: 520px;
+    height: 700px;
     overflow: hidden;
 }
 
@@ -272,6 +272,8 @@
     border-radius: 6px;
     object-fit: cover;
     display: block;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 /* ── Message Bubbles ───────────────────────────── */
@@ -281,7 +283,7 @@
     min-width: 50px;
     padding: 12px 18px;
     border-radius: 20px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     line-height: 1.45;
     word-break: normal;
     overflow-wrap: break-word;
@@ -317,7 +319,9 @@
     font-size: 0.8rem;
     background: #fff;
     border-radius: 8px;
-    overflow: hidden;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     border: 1px solid var(--ai-border);
 }
 
@@ -499,14 +503,172 @@
 @media (max-width: 640px) {
     .ai-chat-window {
         position: fixed;
-        bottom: 96px; /* Sits above the FAB buttons */
-        right: 16px;
-        width: calc(100vw - 32px);
-        border-radius: 20px;
+        bottom: 80px; /* Sits above the FAB buttons */
+        right: 12px;
+        width: calc(100vw - 24px);
+        border-radius: 18px;
     }
 
     .ai-chat-inner {
-        height: min(480px, calc(100vh - 130px));
-        border-radius: 17px;
+        height: min(500px, calc(100vh - 120px));
+        border-radius: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* ── Shrink Bottom Row ── */
+    .fab-container {
+        bottom: 12px !important;
+        right: 12px !important;
+    }
+
+    .fab-bottom-row {
+        gap: 8px !important;
+    }
+
+    /* ── AI FAB Button — smaller ── */
+    .ai-fab {
+        width: 44px !important;
+        height: 44px !important;
+    }
+
+    .ai-fab-logo {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    .ai-badge {
+        font-size: 7px !important;
+        padding: 1px 4px !important;
+        top: -3px !important;
+        right: -3px !important;
+    }
+
+    /* ── AI Chat Window — compact ── */
+    .ai-chat-window {
+        position: fixed;
+        bottom: 70px;
+        right: 10px;
+        width: calc(100vw - 20px);
+        border-radius: 16px;
+        padding: 2px;
+    }
+
+    .ai-chat-inner {
+        height: min(650px, calc(100vh - 80px));
+        border-radius: 14px;
+    }
+
+    .ai-chat-header {
+        padding: 10px 12px !important;
+    }
+
+    .ai-header-avatar {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .ai-chat-title h4 {
+        font-size: 0.78rem !important;
+    }
+
+    .ai-status-dot {
+        font-size: 0.6rem !important;
+    }
+
+    .ai-chat-body {
+        padding: 8px 10px 6px !important;
+        gap: 8px !important;
+    }
+
+    .message {
+        font-size: 0.72rem !important;
+        padding: 9px 13px !important;
+    }
+
+    .ai-quick-replies {
+        padding: 6px 10px !important;
+        gap: 5px !important;
+    }
+
+    .ai-chip {
+        font-size: 0.65rem !important;
+        padding: 4px 9px !important;
+    }
+
+    .ai-chat-footer {
+        padding: 8px 10px !important;
+    }
+
+    .ai-input-group input {
+        font-size: 0.75rem !important;
+    }
+
+    .ai-send-btn {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    /* ── Clock Widget — compact ── */
+    .fab-clock {
+        padding: 4px 10px !important;
+        gap: 4px !important;
+        border-radius: 20px !important;
+    }
+
+    .fab-clock i {
+        font-size: 0.7rem !important;
+    }
+
+    .fab-clock-time {
+        font-size: 0.72rem !important;
+    }
+
+    .fab-clock-date {
+        font-size: 0.58rem !important;
+    }
+
+    /* ── Agenda FAB Button — smaller ── */
+    .fab-button {
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 1rem !important;
+    }
+
+    /* ── Agenda Card — more compact ── */
+    .fab-card {
+        width: 280px !important;
+        bottom: 60px !important;
+        right: 0 !important;
+    }
+
+    .fab-header {
+        padding: 12px 14px !important;
+    }
+
+    .fab-title {
+        font-size: 0.85rem !important;
+    }
+
+    .fab-subtitle {
+        font-size: 0.68rem !important;
+    }
+
+    .fab-badge {
+        font-size: 0.6rem !important;
+        padding: 2px 8px !important;
+    }
+
+    .fab-list-item {
+        padding: 8px 10px !important;
+        gap: 10px !important;
+    }
+
+    .fab-title-click {
+        font-size: 0.78rem !important;
+    }
+
+    .fab-subtitle-wrap {
+        font-size: 0.65rem !important;
     }
 }

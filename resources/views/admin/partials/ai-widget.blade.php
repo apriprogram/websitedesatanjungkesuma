@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let isTyping = false;
     let chatHistory = [];
+    const botLogoUrl = "{{ asset('img/Logo/logo_apriprogram.jpg') }}";
 
     const toggleChat = () => {
         chatWindow.classList.toggle('active');
@@ -99,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const makeBotAvatar = () => `
         <div class="ai-msg-avatar">
-            <img src="{{ asset('img/Logo/logo_apriprogram.jpg') }}" alt="Bot" class="ai-msg-logo">
+            <img src="${botLogoUrl}" alt="Bot" class="ai-msg-logo" style="width:100%;height:100%;display:block;object-fit:cover;">
         </div>
     `;
 
@@ -128,7 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const row = document.createElement('div');
             row.className = 'message-row message-row--ai';
             row.id = 'aiTypingIndicator';
-            row.innerHTML = `${makeBotAvatar()}
+            row.innerHTML = `
+                ${makeBotAvatar()}
                 <div class="typing-indicator">
                     <div class="typing-dot"></div>
                     <div class="typing-dot"></div>
