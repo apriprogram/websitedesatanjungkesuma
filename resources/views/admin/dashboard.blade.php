@@ -18,9 +18,13 @@
         }
 
         .dashboard-container {
-            padding: 0;
+            padding: 0 1.5rem 2rem 1.5rem;
             background-color: transparent;
             min-height: 100vh;
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            box-sizing: border-box;
         }
 
         .section-title {
@@ -226,9 +230,10 @@
         }
 
         .section-title {
+            margin: 2.5rem 0 1.25rem 0;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             justify-content: space-between;
         }
 
@@ -254,31 +259,51 @@
             margin-top: 1.5rem;
         }
 
-        /* Metric cards (new layout) */
-        .metric-grid {
+        /* Consolidated Grid System */
+        .metric-grid, 
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.25rem;
             margin-bottom: 2rem;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        .metric-card {
+        .metric-card.full-width {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 1200px) {
+            .metric-card.full-width {
+                grid-column: 1 / -1;
+            }
+        }
+
+        .grid-cols-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .metric-card,
+        .content-card {
             background: #ffffff;
             border: 1.5px solid #dfe7ff;
             border-radius: 22px;
-            padding: 1.25rem 1.4rem;
-            box-shadow: none;
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
-            gap: 0.45rem;
             transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        .metric-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 14px 40px rgba(35, 61, 128, 0.18);
-            border-color: #4f46e5;
+        .metric-card {
+            gap: 0.5rem;
+            cursor: pointer;
         }
 
         .metric-header {
@@ -442,6 +467,19 @@
         .list-subtitle {
             font-size: 0.875rem;
             color: var(--text-secondary);
+        }
+
+        .grid-cols-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        @media (max-width: 1400px) {
+            .grid-cols-3 {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
         }
 
         .progress-bar-container {
@@ -676,7 +714,64 @@
         /* Mobile specific refinements */
         @media (max-width: 768px) {
             .dashboard-container {
-                padding: 0 2.5rem 2.5rem 2.5rem;
+                padding: 0 1rem 1.5rem 1rem !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            .main-header {
+                margin-left: -1rem !important;
+                margin-right: -1rem !important;
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+                width: calc(100% + 2rem) !important;
+                border-radius: 0 !important;
+            }
+
+            .metric-grid, 
+            .grid-cols-3 {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 0.75rem !important;
+                margin-bottom: 1.5rem !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                align-items: stretch !important;
+            }
+
+            .metric-card,
+            .content-card {
+                box-shadow: none !important;
+                flex: 1 1 calc(50% - 0.375rem) !important;
+                min-width: calc(50% - 0.375rem) !important;
+                max-width: calc(50% - 0.375rem) !important;
+                display: flex !important;
+                flex-direction: column !important;
+                height: auto !important;
+            }
+
+            .metric-card.full-width,
+            .content-card.full-width {
+                flex: 1 1 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            .metric-card:hover,
+            .content-card:hover {
+                box-shadow: 0 14px 40px rgba(35, 61, 128, 0.12) !important;
+            }
+
+            /* Content cards (Agenda, Work, etc) should be full width on mobile */
+            .grid-cols-3 {
+                grid-template-columns: 1fr !important;
+            }
+
+            .metric-card,
+            .content-card {
+                padding: 1rem !important;
+                border-radius: 18px !important;
             }
 
             /* Dashboard Header */
@@ -691,7 +786,7 @@
                 margin: 0 !important;
                 line-height: 1.2;
             }
-            
+
             .dashboard-header-wrapper {
                 padding-top: 1.5rem;
             }
@@ -722,9 +817,24 @@
                 font-size: 0.8rem !important;
             }
 
-            .metric-grid {
+            .metric-grid, 
+            .section-kependudukan-grid {
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 0.75rem !important;
+                width: 100% !important;
+                margin: 0 !important;
+            }
+
+            .grid-cols-3 {
+                grid-template-columns: 1fr !important;
+                gap: 1.5rem !important;
+                width: 100% !important;
+                margin: 0 !important;
+            }
+
+            .content-card {
+                width: 100% !important;
+                margin: 0 !important;
             }
 
             .metric-card {
@@ -735,7 +845,6 @@
                 flex-direction: column !important;
                 justify-content: flex-start !important;
                 min-height: 130px !important;
-                width: 100% !important;
             }
 
             .metric-card.full-width {
@@ -873,7 +982,7 @@
             <span><i class="fas fa-users"></i> Statistik Kependudukan</span>
             <a class="section-link" href="{{ route('admin.penduduks.index') }}"><span>Lihat</span><i class="fas fa-arrow-right"></i></a>
         </div>
-        <div class="metric-grid section-kependudukan-grid">
+        <div class="metric-grid">
             <div class="metric-card full-width">
                 <div class="metric-header">
                     <div class="metric-icon"><i class="fas fa-users"></i></div>
@@ -1024,24 +1133,6 @@
             <a class="section-link" href="{{ route('admin.penduduks.index') }}"><span>Lihat</span><i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="metric-grid">
-            <div class="metric-card">
-                <div class="metric-header">
-                    <div class="metric-icon green"><i class="fas fa-heart"></i></div>
-                    <span class="metric-badge"><i class="fas fa-check"></i> Aktif</span>
-                </div>
-                <div class="metric-title">Hidup</div>
-                <div class="metric-value">{{ number_format($age['hidup'] ?? 0) }}</div>
-                <div class="metric-desc">Penduduk hidup/aktif</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-header">
-                    <div class="metric-icon red"><i class="fas fa-heart-broken"></i></div>
-                    <span class="metric-badge neutral"><i class="fas fa-exclamation"></i> Vital</span>
-                </div>
-                <div class="metric-title">Meninggal</div>
-                <div class="metric-value">{{ number_format($age['mati'] ?? 0) }}</div>
-                <div class="metric-desc">Data kematian tercatat</div>
-            </div>
             <div class="metric-card full-width">
                 <div class="metric-header">
                     <div class="metric-icon purple"><i class="fas fa-male"></i></div>
@@ -1078,6 +1169,24 @@
                 </div>
                 <div class="metric-desc">Penduduk perempuan</div>
             </div>
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon green"><i class="fas fa-heart"></i></div>
+                    <span class="metric-badge"><i class="fas fa-check"></i> Aktif</span>
+                </div>
+                <div class="metric-title">Hidup</div>
+                <div class="metric-value">{{ number_format($age['hidup'] ?? 0) }}</div>
+                <div class="metric-desc">Penduduk hidup/aktif</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon red"><i class="fas fa-heart-broken"></i></div>
+                    <span class="metric-badge neutral"><i class="fas fa-exclamation"></i> Vital</span>
+                </div>
+                <div class="metric-title">Meninggal</div>
+                <div class="metric-value">{{ number_format($age['mati'] ?? 0) }}</div>
+                <div class="metric-desc">Data kematian tercatat</div>
+            </div>
 
             @foreach ([
                     'bayi' => 'Bayi (0-1 tahun)',
@@ -1089,18 +1198,18 @@
                     'paruh_baya' => 'Paruh Baya (45-65 tahun)',
                     'lansia' => 'Lansia (Di atas 60/65 tahun)',
                 ] as $key => $label)
-                    @php
-                        $val = $ageGroups[$key]['total'] ?? 0;
-                    @endphp
-                    <div class="metric-card">
-                        <div class="metric-header">
-                            <div class="metric-icon neutral"><i class="fas fa-user-clock"></i></div>
-                            <span class="metric-badge neutral"><i class="fas fa-list"></i> Usia</span>
-                        </div>
-                        <div class="metric-title">{{ $label }}</div>
-                        <div class="metric-value">{{ number_format($val) }}</div>
-                        <div class="metric-desc">Kelompok usia</div>
-                    </div>
+                            @php
+                                $val = $ageGroups[$key]['total'] ?? 0;
+                            @endphp
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <div class="metric-icon neutral"><i class="fas fa-user-clock"></i></div>
+                                    <span class="metric-badge neutral"><i class="fas fa-list"></i> Usia</span>
+                                </div>
+                                <div class="metric-title">{{ $label }}</div>
+                                <div class="metric-value">{{ number_format($val) }}</div>
+                                <div class="metric-desc">Kelompok usia</div>
+                            </div>
             @endforeach
         </div>
 
@@ -1250,24 +1359,6 @@
             <a class="section-link" href="{{ route('admin.budget-items.index') }}"><span>Lihat</span><i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="metric-grid">
-            <div class="metric-card">
-                <div class="metric-header">
-                    <div class="metric-icon green"><i class="fas fa-list"></i></div>
-                    <span class="metric-badge"><i class="fas fa-check"></i> Publish</span>
-                </div>
-                <div class="metric-title">Banyak Anggaran</div>
-                <div class="metric-value">{{ number_format($trans['total_items'] ?? 0) }}</div>
-                <div class="metric-desc">Total entri anggaran</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-header">
-                    <div class="metric-icon blue"><i class="fas fa-check-circle"></i></div>
-                    <span class="metric-badge neutral"><i class="fas fa-bullseye"></i> Terbit</span>
-                </div>
-                <div class="metric-title">Publish</div>
-                <div class="metric-value">{{ number_format($trans['published_items'] ?? 0) }}</div>
-                <div class="metric-desc">Item dipublikasikan</div>
-            </div>
             <div class="metric-card full-width">
                 <div class="metric-header">
                     <div class="metric-icon yellow"><i class="fas fa-coins"></i></div>
@@ -1295,6 +1386,15 @@
                 </div>
                 <div class="metric-desc">Realisasi dibanding total anggaran</div>
             </div>
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon green"><i class="fas fa-list"></i></div>
+                    <span class="metric-badge"><i class="fas fa-check"></i> Publish</span>
+                </div>
+                <div class="metric-title">Banyak Anggaran</div>
+                <div class="metric-value">{{ number_format($trans['total_items'] ?? 0) }}</div>
+                <div class="metric-desc">Total entri anggaran</div>
+            </div>
         </div>
 
         <!-- Data Pegawai -->
@@ -1304,53 +1404,56 @@
         </div>
         <div class="metric-grid">
             <div class="metric-card">
-                <div class="metric-icon purple"><i class="fas fa-users"></i></div>
-                <span class="metric-badge neutral"><i class="fas fa-arrow-up"></i> Stabil</span>
+                <div class="metric-header">
+                    <div class="metric-icon purple"><i class="fas fa-users"></i></div>
+                    <span class="metric-badge neutral"><i class="fas fa-arrow-up"></i> Stabil</span>
+                </div>
+                <div class="metric-title">Total Pegawai</div>
+                <div class="metric-value">{{ number_format($summary['pegawai_detail']['total'] ?? 0) }}</div>
+                <div class="metric-desc">Data staf & perangkat</div>
             </div>
-            <div class="metric-title">Total Pegawai</div>
-            <div class="metric-value">{{ number_format($summary['pegawai_detail']['total'] ?? 0) }}</div>
-            <div class="metric-desc">Data staf & perangkat</div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-header">
-                <div class="metric-icon green"><i class="fas fa-check-circle"></i></div>
-                <span class="metric-badge"><i class="fas fa-check"></i> Aktif</span>
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon green"><i class="fas fa-check-circle"></i></div>
+                    <span class="metric-badge"><i class="fas fa-check"></i> Aktif</span>
+                </div>
+                <div class="metric-title">Status Aktif</div>
+                <div class="metric-value">{{ number_format($summary['pegawai_detail']['aktif'] ?? 0) }}</div>
+                <div class="metric-desc">Sedang bertugas</div>
             </div>
-            <div class="metric-title">Status Aktif</div>
-            <div class="metric-value">{{ number_format($summary['pegawai_detail']['aktif'] ?? 0) }}</div>
-            <div class="metric-desc">Sedang bertugas</div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-header">
-                <div class="metric-icon yellow"><i class="fas fa-plane-departure"></i></div>
-                <span class="metric-badge neutral"><i class="fas fa-umbrella-beach"></i> Cuti</span>
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon yellow"><i class="fas fa-plane-departure"></i></div>
+                    <span class="metric-badge neutral"><i class="fas fa-umbrella-beach"></i> Cuti</span>
+                </div>
+                <div class="metric-title">Cuti</div>
+                <div class="metric-value">{{ number_format($summary['pegawai_detail']['cuti'] ?? 0) }}</div>
+                <div class="metric-desc">Sedang cuti</div>
             </div>
-            <div class="metric-title">Cuti</div>
-            <div class="metric-value">{{ number_format($summary['pegawai_detail']['cuti'] ?? 0) }}</div>
-            <div class="metric-desc">Sedang cuti</div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-header">
-                <div class="metric-icon red"><i class="fas fa-user-slash"></i></div>
-                <span class="metric-badge neutral"><i class="fas fa-ban"></i> Tidak Aktif</span>
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon red"><i class="fas fa-user-slash"></i></div>
+                    <span class="metric-badge neutral"><i class="fas fa-ban"></i> Tidak Aktif</span>
+                </div>
+                <div class="metric-title">Tidak Aktif</div>
+                <div class="metric-value">{{ number_format($summary['pegawai_detail']['tidak_aktif'] ?? 0) }}</div>
+                <div class="metric-desc">Nonaktif/berhenti</div>
             </div>
-            <div class="metric-title">Tidak Aktif</div>
-            <div class="metric-value">{{ number_format($summary['pegawai_detail']['tidak_aktif'] ?? 0) }}</div>
-            <div class="metric-desc">Nonaktif/berhenti</div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-header">
-                <div class="metric-icon blue"><i class="fas fa-award"></i></div>
-                <span class="metric-badge neutral"><i class="fas fa-flag"></i> Pensiun</span>
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon blue"><i class="fas fa-award"></i></div>
+                    <span class="metric-badge neutral"><i class="fas fa-flag"></i> Pensiun</span>
+                </div>
+                <div class="metric-title">Pensiun</div>
+                <div class="metric-value">{{ number_format($summary['pegawai_detail']['pensiun'] ?? 0) }}</div>
+                <div class="metric-desc">Pegawai pensiun</div>
             </div>
-            <div class="metric-title">Pensiun</div>
-            <div class="metric-value">{{ number_format($summary['pegawai_detail']['pensiun'] ?? 0) }}</div>
-            <div class="metric-desc">Pegawai pensiun</div>
         </div>
     </div>
 
     <!-- Main Content Grid -->
-    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+    <div class="dashboard-container" style="padding-top: 0;">
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
 
         <!-- ROW 1: 3 Columns (Agenda, Pekerjaan, Pendidikan) -->
         <div class="grid-cols-3">

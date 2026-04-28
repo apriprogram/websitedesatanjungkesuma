@@ -20,7 +20,12 @@
         }
 
         /* Ensure Icons retain Font Awesome family */
-        i.fas, i.far, i.fab, .fas, .far, .fab {
+        i.fas,
+        i.far,
+        i.fab,
+        .fas,
+        .far,
+        .fab {
             font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
         }
 
@@ -88,18 +93,22 @@
         @media (max-width: 768px) {
             #residentPanelHeader {
                 display: flex !important;
-                flex-direction: column !important; /* Forces vertical stacking */
-                align-items: flex-start !important; /* Aligns both to the left */
+                flex-direction: column !important;
+                /* Forces vertical stacking */
+                align-items: flex-start !important;
+                /* Aligns both to the left */
                 gap: 16px !important;
             }
 
             .resident-panel__title {
-                order: 1 !important; /* Ensures title stays on top */
+                order: 1 !important;
+                /* Ensures title stays on top */
                 width: 100% !important;
             }
 
             #residentSearchForm {
-                order: 2 !important; /* Ensures search stays below title */
+                order: 2 !important;
+                /* Ensures search stays below title */
                 margin-left: 0 !important;
                 flex-direction: column !important;
                 align-items: stretch !important;
@@ -112,17 +121,36 @@
                 min-width: 100% !important;
             }
 
-            .title-actions {
-                display: flex !important;
-                flex-direction: column !important;
-                gap: 12px !important;
-                width: 100% !important;
-                margin-top: 15px !important;
+            .page-title p {
+                margin-bottom: 6px !important;
             }
 
-            .title-actions > * {
+            .title-actions {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 6px !important;
                 width: 100% !important;
+                margin-top: 0 !important;
+            }
+
+            .title-actions>* {
+                flex: 1 !important;
                 margin: 0 !important;
+                height: 32px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                font-size: 0.68rem !important;
+            }
+
+            .title-actions i {
+                font-size: 0.7rem !important;
+                margin-right: 4px !important;
+            }
+
+            .export-dropdown__toggle {
+                height: 100% !important;
+                width: 100% !important;
             }
         }
 
@@ -183,8 +211,13 @@
             color: #1e293b;
         }
 
-        .resident-action-item--danger { color: #dc2626; }
-        .resident-action-item--danger:hover { background: rgba(220, 38, 38, 0.05); }
+        .resident-action-item--danger {
+            color: #dc2626;
+        }
+
+        .resident-action-item--danger:hover {
+            background: rgba(220, 38, 38, 0.05);
+        }
 
         .avatar-stack {
             display: flex;
@@ -203,14 +236,35 @@
             overflow: hidden;
             background: #f1f5f9;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
-        .avatar-item:first-child { margin-left: 0; }
-        .avatar-item:hover { transform: translateY(-3px); z-index: 10; border-color: #2563eb; }
+        .avatar-item:first-child {
+            margin-left: 0;
+        }
 
-        .avatar-item img { width: 100%; height: 100%; object-fit: cover; }
-        .avatar-item .avatar-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #475569; }
+        .avatar-item:hover {
+            transform: translateY(-3px);
+            z-index: 10;
+            border-color: #2563eb;
+        }
+
+        .avatar-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-item .avatar-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #475569;
+        }
 
         .avatar-more {
             width: 34px;
@@ -225,7 +279,7 @@
             font-size: 11px;
             font-weight: 700;
             color: #475569;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         /* Detail Modal Professional Style (Penduduk Pindah Inspired) */
@@ -241,8 +295,13 @@
         }
 
         @media (max-width: 992px) {
-            .family-detail-wrapper { grid-template-columns: 1fr; }
-            .family-detail-full { grid-column: span 1; }
+            .family-detail-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .family-detail-full {
+                grid-column: span 1;
+            }
         }
 
         @media (max-width: 768px) {
@@ -251,7 +310,7 @@
                 max-height: 98vh !important;
                 overflow-x: hidden !important;
             }
-            
+
             .dialog__body {
                 padding: 8px !important;
                 overflow-x: hidden !important;
@@ -334,7 +393,7 @@
                 font-size: 0.72rem !important;
             }
 
-            .member-table th, 
+            .member-table th,
             .member-table td {
                 padding: 6px 8px !important;
                 font-size: 0.65rem !important;
@@ -414,7 +473,13 @@
             margin: 0;
         }
 
-        .head-profile-section { display: flex; align-items: start; gap: 24px; margin-bottom: 20px; flex: 1; }
+        .head-profile-section {
+            display: flex;
+            align-items: start;
+            gap: 24px;
+            margin-bottom: 20px;
+            flex: 1;
+        }
 
         .head-photo-container {
             width: 160px;
@@ -427,12 +492,21 @@
             flex-shrink: 0;
         }
 
-        .head-photo-container img { width: 100%; height: 100%; object-fit: cover; }
+        .head-photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
         .head-placeholder {
-            width: 100%; height: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: #94a3b8; gap: 12px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            gap: 12px;
         }
 
         .info-grid {
@@ -441,14 +515,44 @@
             gap: 16px;
         }
 
-        .info-item { display: flex; flex-direction: column; gap: 4px; }
-        .info-item--full { grid-column: span 2; }
-        .info-item__label { font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: none; letter-spacing: normal; }
-        .info-item__value { font-size: 0.95rem; font-weight: 700; color: #1e293b; }
-        .info-item__value--long { line-height: 1.5; color: #475569; font-weight: 500; background: #f8fafc; padding: 10px 14px; border-radius: 12px; border: 1px solid #f1f5f9; }
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
 
-        .member-list-section { margin-top: 24px; }
-        
+        .info-item--full {
+            grid-column: span 2;
+        }
+
+        .info-item__label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+
+        .info-item__value {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .info-item__value--long {
+            line-height: 1.5;
+            color: #475569;
+            font-weight: 500;
+            background: #f8fafc;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .member-list-section {
+            margin-top: 24px;
+        }
+
         .member-table-wrapper {
             overflow-x: auto;
             border-radius: 16px;
@@ -481,18 +585,46 @@
             font-size: 0.82rem;
         }
 
-        .member-profile { display: flex; align-items: center; gap: 10px; }
-        
-        .member-avatar {
-            width: 32px; height: 32px; border-radius: 8px; overflow: hidden;
-            background: #f1f5f9; border: 1px solid #e2e8f0; flex-shrink: 0;
+        .member-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .member-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .member-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            flex-shrink: 0;
+        }
 
-        .member-info { display: flex; flex-direction: column; gap: 1px; }
-        .member-name { font-weight: 700; color: #1e293b; font-size: 0.85rem; line-height: 1.2; }
-        .member-nik { font-family: monospace; font-size: 0.72rem; color: #64748b; }
+        .member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .member-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .member-name {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 0.85rem;
+            line-height: 1.2;
+        }
+
+        .member-nik {
+            font-family: monospace;
+            font-size: 0.72rem;
+            color: #64748b;
+        }
 
         .badge-role {
             display: inline-flex;
@@ -505,9 +637,20 @@
             white-space: nowrap;
         }
 
-        .badge-role--head { background: #eff6ff; color: #2563eb; }
-        .badge-role--spouse { background: #fef2f2; color: #ef4444; }
-        .badge-role--child { background: #f0fdf4; color: #22c55e; }
+        .badge-role--head {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .badge-role--spouse {
+            background: #fef2f2;
+            color: #ef4444;
+        }
+
+        .badge-role--child {
+            background: #f0fdf4;
+            color: #22c55e;
+        }
     </style>
 @endpush
 
@@ -591,7 +734,8 @@
             <i class="fas fa-chevron-right" aria-hidden="true"></i>
             <span class="breadcrumb-link">Kependudukan</span>
             <i class="fas fa-chevron-right" aria-hidden="true"></i>
-            <a href="{{ route('admin.keluargas.index') }}" class="breadcrumb-link breadcrumb-link--active" aria-current="page">Data Kartu Keluarga</a>
+            <a href="{{ route('admin.keluargas.index') }}" class="breadcrumb-link breadcrumb-link--active"
+                aria-current="page">Data Kartu Keluarga</a>
         </nav>
     </header>
 
@@ -609,14 +753,9 @@
         </div>
         <div class="title-actions">
             <div class="export-dropdown">
-                <button
-                    type="button"
-                    class="soft-action-btn soft-action-btn--outline export-dropdown__toggle"
-                    id="exportDropdownToggleFamilies"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    aria-controls="exportDropdownMenuFamilies"
-                >
+                <button type="button" class="soft-action-btn soft-action-btn--outline export-dropdown__toggle"
+                    id="exportDropdownToggleFamilies" aria-haspopup="true" aria-expanded="false"
+                    aria-controls="exportDropdownMenuFamilies">
                     <i class="fas fa-file-export" aria-hidden="true"></i>
                     <span>Ekspor</span>
                     <i class="fas fa-chevron-down export-dropdown__chevron" aria-hidden="true"></i>
@@ -624,11 +763,7 @@
                 <div class="export-dropdown__menu" id="exportDropdownMenuFamilies" role="menu" hidden>
                     <div class="export-dropdown__header">Pilih Ekspor</div>
                     <div class="export-dropdown__grid">
-                        <a
-                            href="{{ route('admin.keluargas.export.excel') }}"
-                            class="export-dropdown__item"
-                            role="menuitem"
-                        >
+                        <a href="{{ route('admin.keluargas.export.excel') }}" class="export-dropdown__item" role="menuitem">
                             <span class="export-dropdown__icon export-dropdown__icon--green" aria-hidden="true">
                                 <i class="fas fa-file-excel"></i>
                             </span>
@@ -637,11 +772,7 @@
                                 <small>Unduh format spreadsheet</small>
                             </div>
                         </a>
-                        <a
-                            href="{{ route('admin.keluargas.export.pdf') }}"
-                            class="export-dropdown__item"
-                            role="menuitem"
-                        >
+                        <a href="{{ route('admin.keluargas.export.pdf') }}" class="export-dropdown__item" role="menuitem">
                             <span class="export-dropdown__icon export-dropdown__icon--rose" aria-hidden="true">
                                 <i class="fas fa-file-pdf"></i>
                             </span>
@@ -650,11 +781,7 @@
                                 <small>Siap cetak (F4)</small>
                             </div>
                         </a>
-                        <a
-                            href="{{ route('admin.keluargas.export.word') }}"
-                            class="export-dropdown__item"
-                            role="menuitem"
-                        >
+                        <a href="{{ route('admin.keluargas.export.word') }}" class="export-dropdown__item" role="menuitem">
                             <span class="export-dropdown__icon export-dropdown__icon--blue" aria-hidden="true">
                                 <i class="fas fa-file-word"></i>
                             </span>
@@ -665,11 +792,11 @@
                         </a>
                     </div>
                 </div>
-            <button type="button" class="primary-btn" data-modal-open="familyCreateModal">
-                <i class="fas fa-plus"></i>
-                <span>Tambah KK</span>
-            </button>
-        </div>
+                <button type="button" class="primary-btn" data-modal-open="familyCreateModal">
+                    <i class="fas fa-plus"></i>
+                    <span>Tambah KK</span>
+                </button>
+            </div>
     </section>
 
     <article class="panel panel--flush agenda-panel resident-panel">
@@ -680,15 +807,18 @@
                     <p>Manajemen data kartu keluarga (KK) dan relasi wilayah administrasi desa.</p>
                 </div>
 
-                <form id="familyFilterForm" method="GET" action="{{ route('admin.keluargas.index') }}" class="panel-toolbar-inline">
+                <form id="familyFilterForm" method="GET" action="{{ route('admin.keluargas.index') }}"
+                    class="panel-toolbar-inline">
                     <div class="panel-filters">
-                        <select id="familyDusun" name="dusun_id" onchange="this.form.submit()" aria-label="Filter Dusun" class="form-select-sm panel-filter-select">
+                        <select id="familyDusun" name="dusun_id" onchange="this.form.submit()" aria-label="Filter Dusun"
+                            class="form-select-sm panel-filter-select">
                             <option value="">Semua Dusun</option>
                             @foreach ($dusuns as $dusun)
                                 <option value="{{ $dusun->id }}" @selected($dusunId === $dusun->id)>{{ $dusun->nama }}</option>
                             @endforeach
                         </select>
-                        <select id="familyEntries" name="entries" onchange="this.form.submit()" aria-label="Jumlah entri" class="form-select-sm panel-filter-select">
+                        <select id="familyEntries" name="entries" onchange="this.form.submit()" aria-label="Jumlah entri"
+                            class="form-select-sm panel-filter-select">
                             @foreach ($entriesOptions as $option)
                                 <option value="{{ $option }}" @selected($entries == $option)>{{ $option }} Baris</option>
                             @endforeach
@@ -699,7 +829,8 @@
                         <div class="search-input-wrapper">
                             <i class="fas fa-search search-icon-left"></i>
                             <input id="familySearch" type="search" name="search" value="{{ $search }}"
-                                placeholder="Cari nomor KK atau kepala..." aria-label="Cari nomor KK atau kepala" autocomplete="off">
+                                placeholder="Cari nomor KK atau kepala..." aria-label="Cari nomor KK atau kepala"
+                                autocomplete="off">
                         </div>
                     </div>
                 </form>
@@ -708,119 +839,128 @@
 
         <div class="news-table-wrap agenda-table-scroll-active">
             <div class="news-table">
-                    <table class="table-budget">
-                        <thead>
+                <table class="table-budget">
+                    <thead>
+                        <tr>
+                            <th style="width: 60px; text-align: center;">#</th>
+                            <th style="width: 180px; text-align: center;">Nomor KK</th>
+                            <th style="width: 200px; text-align: left;">Kepala Keluarga</th>
+                            <th style="min-width: 250px; text-align: left;">Alamat Lengkap</th>
+                            <th style="width: 220px; text-align: left;">Wilayah (RW/RT)</th>
+                            <th style="width: 100px; text-align: center;">Anggota</th>
+                            <th style="width: 140px; text-align: center;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php $startIndex = ($keluargas->currentPage() - 1) * $keluargas->perPage(); @endphp
+                        @forelse ($keluargas as $keluarga)
                             <tr>
-                                <th style="width: 60px; text-align: center;">#</th>
-                                <th style="width: 180px; text-align: center;">Nomor KK</th>
-                                <th style="width: 200px; text-align: left;">Kepala Keluarga</th>
-                                <th style="min-width: 250px; text-align: left;">Alamat Lengkap</th>
-                                <th style="width: 220px; text-align: left;">Wilayah (RW/RT)</th>
-                                <th style="width: 100px; text-align: center;">Anggota</th>
-                                <th style="width: 140px; text-align: center;">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php $startIndex = ($keluargas->currentPage() - 1) * $keluargas->perPage(); @endphp
-                            @forelse ($keluargas as $keluarga)
-                                <tr>
-                                    <td style="text-align: center;">{{ $startIndex + $loop->iteration }}</td>
-                                    <td style="text-align: center;">
-                                        <div style="display: flex; flex-direction: column; gap: 2px;">
-                                            <strong style="color: #1e293b; font-size: 0.95rem;">{{ $keluarga->no_kk }}</strong>
-                                            <span style="font-size: 0.75rem; color: #64748b; font-weight: 500;">Dibuat: {{ $keluarga->created_at?->format('d/m/Y') ?? '-' }}</span>
+                                <td style="text-align: center;">{{ $startIndex + $loop->iteration }}</td>
+                                <td style="text-align: center;">
+                                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                                        <strong style="color: #1e293b; font-size: 0.95rem;">{{ $keluarga->no_kk }}</strong>
+                                        <span style="font-size: 0.75rem; color: #64748b; font-weight: 500;">Dibuat:
+                                            {{ $keluarga->created_at?->format('d/m/Y') ?? '-' }}</span>
+                                    </div>
+                                </td>
+                                <td style="text-align: left;">
+                                    @php
+                                        $headOfFamily = $keluarga->penduduks->firstWhere('kk_level_id', 1) ?: $keluarga->penduduks->first();
+                                    @endphp
+                                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                                        <strong
+                                            style="color: #334155;">{{ $headOfFamily?->nama ?: ($keluarga->kepala_nama ?: 'Belum terdata') }}</strong>
+                                        <span
+                                            style="font-family: monospace; font-size: 0.8rem; color: #64748b; letter-spacing: 0.02em;">NIK
+                                            {{ $headOfFamily?->nik ?: ($keluarga->kepala_nik ?: '-') }}</span>
+                                    </div>
+                                </td>
+                                <td
+                                    style="text-align: left; color: #475569; font-weight: 500; font-size: 0.88rem; line-height: 1.5;">
+                                    {{ $keluarga->alamat ?: 'Belum diisi' }}
+                                </td>
+                                <td style="text-align: left;">
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                            <span
+                                                style="display: inline-block; padding: 2px 8px; background: #f1f5f9; border-radius: 4px; font-size: 0.75rem; font-weight: 700; color: #475569;">Dusun</span>
+                                            <span
+                                                style="font-weight: 600; color: #334155; font-size: 0.88rem;">{{ $keluarga->dusun?->nama ?? '-' }}</span>
                                         </div>
-                                    </td>
-                                    <td style="text-align: left;">
-                                        @php
-                                            $headOfFamily = $keluarga->penduduks->firstWhere('kk_level_id', 1) ?: $keluarga->penduduks->first();
-                                        @endphp
-                                        <div style="display: flex; flex-direction: column; gap: 2px;">
-                                            <strong style="color: #334155;">{{ $headOfFamily?->nama ?: ($keluarga->kepala_nama ?: 'Belum terdata') }}</strong>
-                                            <span style="font-family: monospace; font-size: 0.8rem; color: #64748b; letter-spacing: 0.02em;">NIK {{ $headOfFamily?->nik ?: ($keluarga->kepala_nik ?: '-') }}</span>
-                                        </div>
-                                    </td>
-                                    <td style="text-align: left; color: #475569; font-weight: 500; font-size: 0.88rem; line-height: 1.5;">
-                                        {{ $keluarga->alamat ?: 'Belum diisi' }}
-                                    </td>
-                                    <td style="text-align: left;">
-                                        <div style="display: flex; flex-direction: column; gap: 4px;">
-                                            <div style="display: flex; align-items: center; gap: 6px;">
-                                                <span style="display: inline-block; padding: 2px 8px; background: #f1f5f9; border-radius: 4px; font-size: 0.75rem; font-weight: 700; color: #475569;">Dusun</span>
-                                                <span style="font-weight: 600; color: #334155; font-size: 0.88rem;">{{ $keluarga->dusun?->nama ?? '-' }}</span>
+                                        <span style="font-size: 0.8rem; color: #64748b; font-weight: 500; padding-left: 4px;">
+                                            RW {{ $keluarga->rw?->nomor ?? '-' }} &middot; RT {{ $keluarga->rt?->nomor ?? '-' }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td style="text-align: center !important;">
+                                    <div class="avatar-stack">
+                                        @foreach ($keluarga->penduduks->take(4) as $member)
+                                            <div class="avatar-item" title="{{ $member->nama }} ({{ $member->kkLevel?->nama }})">
+                                                @if ($member->foto_profil)
+                                                    <img src="{{ asset('storage/' . $member->foto_profil) }}" alt="{{ $member->nama }}">
+                                                @else
+                                                    <div class="avatar-placeholder">
+                                                        {{ strtoupper(substr($member->nama, 0, 1)) }}
+                                                    </div>
+                                                @endif
                                             </div>
-                                            <span style="font-size: 0.8rem; color: #64748b; font-weight: 500; padding-left: 4px;">
-                                                RW {{ $keluarga->rw?->nomor ?? '-' }} &middot; RT {{ $keluarga->rt?->nomor ?? '-' }}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td style="text-align: center !important;">
-                                        <div class="avatar-stack">
-                                            @foreach ($keluarga->penduduks->take(4) as $member)
-                                                <div class="avatar-item" title="{{ $member->nama }} ({{ $member->kkLevel?->nama }})">
-                                                    @if ($member->foto_profil)
-                                                        <img src="{{ asset('storage/' . $member->foto_profil) }}" alt="{{ $member->nama }}">
-                                                    @else
-                                                        <div class="avatar-placeholder">
-                                                            {{ strtoupper(substr($member->nama, 0, 1)) }}
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            @endforeach
-                                            @if ($keluarga->penduduks_count > 4)
-                                                <div class="avatar-more">+{{ $keluarga->penduduks_count - 4 }}</div>
-                                            @endif
-                                        </div>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <div class="resident-actions">
-                                            <details class="resident-action-dropdown" data-action-menu>
-                                                <summary class="action-button--dots" aria-haspopup="menu" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </summary>
-                                                <div class="resident-action-menu" role="menu">
-                                                    <button type="button" class="resident-action-item"
-                                                        data-modal-open="familyDetailModal-{{ $keluarga->id }}">
-                                                        <i class="fas fa-eye"></i><span>Detail</span>
-                                                    </button>
-                                                    <button type="button" class="resident-action-item"
-                                                        data-modal-open="familyEditModal-{{ $keluarga->id }}">
-                                                        <i class="fas fa-pen"></i><span>Edit</span>
-                                                    </button>
-                                                    <button type="button" class="resident-action-item resident-action-item--danger"
-                                                        data-modal-open="familyDeleteModal-{{ $keluarga->id }}">
-                                                        <i class="fas fa-trash"></i><span>Hapus</span>
-                                                    </button>
-                                                </div>
-                                            </details>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="7" style="text-align: center; padding: 60px 0;">
-                                        <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; color: #94a3b8;">
-                                            <i class="fas fa-people-roof" style="font-size: 3rem; opacity: 0.3;"></i>
-                                            <p style="font-size: 0.95rem; font-weight: 500;">Belum ada data kartu keluarga yang tercatat.</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                                        @endforeach
+                                        @if ($keluarga->penduduks_count > 4)
+                                            <div class="avatar-more">+{{ $keluarga->penduduks_count - 4 }}</div>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td style="text-align: center;">
+                                    <div class="resident-actions">
+                                        <details class="resident-action-dropdown" data-action-menu>
+                                            <summary class="action-button--dots" aria-haspopup="menu" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </summary>
+                                            <div class="resident-action-menu" role="menu">
+                                                <button type="button" class="resident-action-item"
+                                                    data-modal-open="familyDetailModal-{{ $keluarga->id }}">
+                                                    <i class="fas fa-eye"></i><span>Detail</span>
+                                                </button>
+                                                <button type="button" class="resident-action-item"
+                                                    data-modal-open="familyEditModal-{{ $keluarga->id }}">
+                                                    <i class="fas fa-pen"></i><span>Edit</span>
+                                                </button>
+                                                <button type="button" class="resident-action-item resident-action-item--danger"
+                                                    data-modal-open="familyDeleteModal-{{ $keluarga->id }}">
+                                                    <i class="fas fa-trash"></i><span>Hapus</span>
+                                                </button>
+                                            </div>
+                                        </details>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 60px 0;">
+                                    <div
+                                        style="display: flex; flex-direction: column; align-items: center; gap: 12px; color: #94a3b8;">
+                                        <i class="fas fa-people-roof" style="font-size: 3rem; opacity: 0.3;"></i>
+                                        <p style="font-size: 0.95rem; font-weight: 500;">Belum ada data kartu keluarga yang
+                                            tercatat.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
+        </div>
 
-            <div class="panel-footer resident-panel__footer">
-                <div class="resident-panel__footer-info">
-                    Menampilkan {{ $keluargas->firstItem() ?? 0 }} - {{ $keluargas->lastItem() ?? 0 }} dari
-                    {{ $keluargas->total() }} keluarga
-                </div>
-                <div class="resident-pagination__links">
-                    {{ $keluargas->withQueryString()->onEachSide(1)->links('admin.partials.pagination') }}
-                </div>
+        <div class="panel-footer resident-panel__footer">
+            <div class="resident-panel__footer-info">
+                Menampilkan {{ $keluargas->firstItem() ?? 0 }} - {{ $keluargas->lastItem() ?? 0 }} dari
+                {{ $keluargas->total() }} keluarga
             </div>
-        </article>
+            <div class="resident-pagination__links">
+                {{ $keluargas->withQueryString()->onEachSide(1)->links('admin.partials.pagination') }}
+            </div>
+        </div>
+    </article>
 
     {{-- Modal: Create --}}
     <div class="dialog-backdrop" id="familyCreateModal" aria-hidden="true">
@@ -837,18 +977,23 @@
                 <input type="hidden" name="form_context" value="familyCreateModal">
                 <div class="dialog__body">
                     <div class="form-grid--2 mb-4">
-                        <label class="form-field @if($modalContext === 'familyCreateModal' && $errors->has('no_kk')) form-field--error @endif">
+                        <label
+                            class="form-field @if($modalContext === 'familyCreateModal' && $errors->has('no_kk')) form-field--error @endif">
                             <span>Nomor KK <sup>*</sup></span>
-                            <input type="text" name="no_kk" value="{{ $modalContext === 'familyCreateModal' ? old('no_kk') : '' }}" maxlength="30" required>
+                            <input type="text" name="no_kk"
+                                value="{{ $modalContext === 'familyCreateModal' ? old('no_kk') : '' }}" maxlength="30"
+                                required>
                             @if ($modalContext === 'familyCreateModal')
                                 @error('no_kk')
                                     <span class="form-error">{{ $message }}</span>
                                 @enderror
                             @endif
                         </label>
-                        <label class="form-field @if($modalContext === 'familyCreateModal' && $errors->has('kepala_nik')) form-field--error @endif">
+                        <label
+                            class="form-field @if($modalContext === 'familyCreateModal' && $errors->has('kepala_nik')) form-field--error @endif">
                             <span>NIK Kepala Keluarga</span>
-                            <input type="text" name="kepala_nik" value="{{ $modalContext === 'familyCreateModal' ? old('kepala_nik') : '' }}" maxlength="20">
+                            <input type="text" name="kepala_nik"
+                                value="{{ $modalContext === 'familyCreateModal' ? old('kepala_nik') : '' }}" maxlength="20">
                             @if ($modalContext === 'familyCreateModal')
                                 @error('kepala_nik')
                                     <span class="form-error">{{ $message }}</span>
@@ -860,7 +1005,8 @@
                     <div class="mb-4">
                         <label class="form-field form-field--full">
                             <span>Alamat Lengkap</span>
-                            <textarea name="alamat" rows="2">{{ $modalContext === 'familyCreateModal' ? old('alamat') : '' }}</textarea>
+                            <textarea name="alamat"
+                                rows="2">{{ $modalContext === 'familyCreateModal' ? old('alamat') : '' }}</textarea>
                         </label>
                     </div>
 
@@ -917,17 +1063,21 @@
             $editContext = $modalContext === 'familyEditModal-' . $keluarga->id;
         @endphp
         <div class="dialog-backdrop" id="familyDetailModal-{{ $keluarga->id }}" aria-hidden="true">
-            <div class="dialog dialog--form" style="width: 95%; max-width: 1600px;" role="dialog" aria-modal="true" aria-labelledby="familyDetailTitle-{{ $keluarga->id }}">
+            <div class="dialog dialog--form" style="width: 95%; max-width: 1600px;" role="dialog" aria-modal="true"
+                aria-labelledby="familyDetailTitle-{{ $keluarga->id }}">
                 <header class="dialog__header" style="padding: 12px 20px 8px; border-bottom: 1px solid #f1f5f9;">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 32px; height: 32px; background: #eff6ff; color: #2563eb; border-radius: 8px; display: grid; place-items: center;">
+                        <div
+                            style="width: 32px; height: 32px; background: #eff6ff; color: #2563eb; border-radius: 8px; display: grid; place-items: center;">
                             <i class="fas fa-file-invoice" style="font-size: 0.9rem;"></i>
                         </div>
                         <div>
-                            <h2 id="familyDetailTitle-{{ $keluarga->id }}" style="margin: 0; font-size: 1.1rem; font-weight: 700;">Detail Kartu Keluarga</h2>
+                            <h2 id="familyDetailTitle-{{ $keluarga->id }}"
+                                style="margin: 0; font-size: 1.1rem; font-weight: 700;">Detail Kartu Keluarga</h2>
                         </div>
                     </div>
-                    <button type="button" class="dialog__close" data-modal-close aria-label="Tutup detail KK {{ $keluarga->no_kk }}">
+                    <button type="button" class="dialog__close" data-modal-close
+                        aria-label="Tutup detail KK {{ $keluarga->no_kk }}">
                         <i class="fas fa-times"></i>
                     </button>
                 </header>
@@ -939,7 +1089,7 @@
                                 <i class="fas fa-user-tie"></i>
                                 <h3>Data Kepala Keluarga</h3>
                             </div>
-                            
+
                             @php
                                 $kepala = $keluarga->penduduks->firstWhere('kk_level_id', 1);
                                 if (!$kepala) {
@@ -950,8 +1100,14 @@
                             <div class="head-profile-section">
                                 <div class="head-photo-container">
                                     @if($kepala && $kepala->foto_profil)
-                                        <a href="javascript:void(0)" onclick="openImagePreview('{{ asset('storage/' . $kepala->foto_profil) }}')" title="Buka foto profil" style="display: block; width: 100%; height: 100%; cursor: pointer;">
-                                            <img src="{{ asset('storage/' . $kepala->foto_profil) }}" alt="Foto {{ $kepala->nama }}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                        <a href="javascript:void(0)"
+                                            onclick="openImagePreview('{{ asset('storage/' . $kepala->foto_profil) }}')"
+                                            title="Buka foto profil"
+                                            style="display: block; width: 100%; height: 100%; cursor: pointer;">
+                                            <img src="{{ asset('storage/' . $kepala->foto_profil) }}" alt="Foto {{ $kepala->nama }}"
+                                                style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;"
+                                                onmouseover="this.style.transform='scale(1.05)'"
+                                                onmouseout="this.style.transform='scale(1)'">
                                         </a>
                                     @else
                                         <div class="head-placeholder">
@@ -962,12 +1118,17 @@
                                 </div>
                                 <div style="display: flex; flex-direction: column; gap: 8px;">
                                     <div>
-                                        <h4 style="margin: 0 0 4px; font-size: 1.15rem; color: #1e293b;">{{ $kepala?->nama ?: ($keluarga->kepala_nama ?: 'Belum terdata') }}</h4>
-                                        <span style="font-family: monospace; font-size: 0.95rem; color: #2563eb; font-weight: 700;">NIK {{ $kepala?->nik ?: ($keluarga->kepala_nik ?: '-') }}</span>
+                                        <h4 style="margin: 0 0 4px; font-size: 1.15rem; color: #1e293b;">
+                                            {{ $kepala?->nama ?: ($keluarga->kepala_nama ?: 'Belum terdata') }}</h4>
+                                        <span
+                                            style="font-family: monospace; font-size: 0.95rem; color: #2563eb; font-weight: 700;">NIK
+                                            {{ $kepala?->nik ?: ($keluarga->kepala_nik ?: '-') }}</span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-item__label">Alamat Lengkap</span>
-                                        <div class="info-item__value" style="font-size: 0.88rem; color: #475569; font-weight: 500; line-height: 1.4;">{{ $keluarga->alamat ?: 'Alamat belum diisi.' }}</div>
+                                        <div class="info-item__value"
+                                            style="font-size: 0.88rem; color: #475569; font-weight: 500; line-height: 1.4;">
+                                            {{ $keluarga->alamat ?: 'Alamat belum diisi.' }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -1005,7 +1166,8 @@
                                 </div>
                                 <div class="info-item">
                                     <span class="info-item__label">RW / RT</span>
-                                    <span class="info-item__value">RW {{ $keluarga->rw?->nomor ?? '-' }} &middot; RT {{ $keluarga->rt?->nomor ?? '-' }}</span>
+                                    <span class="info-item__value">RW {{ $keluarga->rw?->nomor ?? '-' }} &middot; RT
+                                        {{ $keluarga->rt?->nomor ?? '-' }}</span>
                                 </div>
                                 <div class="info-item">
                                     <span class="info-item__label">Kabupaten</span>
@@ -1013,29 +1175,39 @@
                                 </div>
                                 <div class="info-item">
                                     <span class="info-item__label">Terakhir Diperbarui</span>
-                                    <span class="info-item__value" style="font-size: 0.85rem; color: #64748b;">{{ $keluarga->updated_at?->format('d M Y, H:i') ?: '-' }}</span>
+                                    <span class="info-item__value"
+                                        style="font-size: 0.85rem; color: #64748b;">{{ $keluarga->updated_at?->format('d M Y, H:i') ?: '-' }}</span>
                                 </div>
                             </div>
-                            
+
                             <!-- Berkas Kartu Keluarga Box -->
-                            <div style="margin: 20px 0; padding: 15px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0; display: block;">
-                                <div style="font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: none; letter-spacing: normal; margin-bottom: 8px;">Berkas Kartu Keluarga</div>
+                            <div
+                                style="margin: 20px 0; padding: 15px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0; display: block;">
+                                <div
+                                    style="font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: none; letter-spacing: normal; margin-bottom: 8px;">
+                                    Berkas Kartu Keluarga</div>
                                 @if($kepala && $kepala->foto_kk)
-                                    <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer;" onclick="openImagePreview('{{ asset('storage/' . $kepala->foto_kk) }}')">
-                                        <div style="width: 44px; height: 44px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; flex-shrink: 0;">
-                                            <img src="{{ asset('storage/' . $kepala->foto_kk) }}" alt="Foto KK" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer;"
+                                        onclick="openImagePreview('{{ asset('storage/' . $kepala->foto_kk) }}')">
+                                        <div
+                                            style="width: 44px; height: 44px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; flex-shrink: 0;">
+                                            <img src="{{ asset('storage/' . $kepala->foto_kk) }}" alt="Foto KK"
+                                                style="width: 100%; height: 100%; object-fit: cover;">
                                         </div>
                                         <div style="flex: 1;">
                                             <div style="font-weight: 600; font-size: 0.9rem; color: #1e293b;">Lihat Pindai KK</div>
-                                            <div style="font-size: 0.75rem; color: #2563eb; display: flex; align-items: center; gap: 4px;">
+                                            <div
+                                                style="font-size: 0.75rem; color: #2563eb; display: flex; align-items: center; gap: 4px;">
                                                 <span>Buka pratinjau</span>
                                                 <i class="fas fa-external-link-alt" style="font-size: 0.65rem;"></i>
                                             </div>
                                         </div>
                                     </div>
                                 @else
-                                    <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(241, 245, 249, 0.5); border: 1px dashed #cbd5e1; border-radius: 8px;">
-                                        <div style="width: 44px; height: 44px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #cbd5e1; border: 1px solid #e2e8f0;">
+                                    <div
+                                        style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(241, 245, 249, 0.5); border: 1px dashed #cbd5e1; border-radius: 8px;">
+                                        <div
+                                            style="width: 44px; height: 44px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #cbd5e1; border: 1px solid #e2e8f0;">
                                             <i class="fas fa-image" style="font-size: 1.2rem;"></i>
                                         </div>
                                         <div style="flex: 1;">
@@ -1045,7 +1217,8 @@
                                     </div>
                                 @endif
                             </div>
-                            <div style="margin-top: auto; padding-top: 20px; border-top: 1px dashed #e2e8f0; display: flex; align-items: center; gap: 10px; color: #64748b; font-size: 0.82rem;">
+                            <div
+                                style="margin-top: auto; padding-top: 20px; border-top: 1px dashed #e2e8f0; display: flex; align-items: center; gap: 10px; color: #64748b; font-size: 0.82rem;">
                                 <i class="fas fa-info-circle"></i>
                                 <span>Data disinkronkan dengan basis data kependudukan desa.</span>
                             </div>
@@ -1057,7 +1230,7 @@
                                 <i class="fas fa-users"></i>
                                 <h3>Detail Anggota Keluarga</h3>
                             </div>
-                            
+
                             <div class="member-table-wrapper">
                                 <table class="member-table">
                                     <thead>
@@ -1103,27 +1276,37 @@
                                             @php
                                                 $roleClass = '';
                                                 $roleName = $member->kkLevel?->nama ?? 'Anggota';
-                                                if(str_contains(strtolower($roleName), 'kepala')) $roleClass = 'badge-role--head';
-                                                elseif(str_contains(strtolower($roleName), 'istri') || str_contains(strtolower($roleName), 'suami')) $roleClass = 'badge-role--spouse';
-                                                elseif(str_contains(strtolower($roleName), 'anak')) $roleClass = 'badge-role--child';
+                                                if (str_contains(strtolower($roleName), 'kepala'))
+                                                    $roleClass = 'badge-role--head';
+                                                elseif (str_contains(strtolower($roleName), 'istri') || str_contains(strtolower($roleName), 'suami'))
+                                                    $roleClass = 'badge-role--spouse';
+                                                elseif (str_contains(strtolower($roleName), 'anak'))
+                                                    $roleClass = 'badge-role--child';
                                             @endphp
                                             <tr>
                                                 <td>
                                                     <div class="member-profile">
                                                         <div class="member-avatar">
                                                             @if($member->foto_profil)
-                                                                <a href="javascript:void(0)" onclick="openImagePreview('{{ asset('storage/' . $member->foto_profil) }}')" title="Buka foto profil" style="display: block; width: 100%; height: 100%;">
-                                                                    <img src="{{ asset('storage/' . $member->foto_profil) }}" alt="{{ $member->nama }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                                                <a href="javascript:void(0)"
+                                                                    onclick="openImagePreview('{{ asset('storage/' . $member->foto_profil) }}')"
+                                                                    title="Buka foto profil"
+                                                                    style="display: block; width: 100%; height: 100%;">
+                                                                    <img src="{{ asset('storage/' . $member->foto_profil) }}"
+                                                                        alt="{{ $member->nama }}"
+                                                                        style="width: 100%; height: 100%; object-fit: cover;">
                                                                 </a>
                                                             @else
-                                                                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #f1f5f9; color: #94a3b8; font-size: 0.75rem;">
+                                                                <div
+                                                                    style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #f1f5f9; color: #94a3b8; font-size: 0.75rem;">
                                                                     <i class="fas fa-user"></i>
                                                                 </div>
                                                             @endif
                                                         </div>
                                                         <div class="member-info">
                                                             <span class="member-name">{{ $member->nama }}</span>
-                                                            <span class="member-nik" style="font-size: 0.65rem;">{{ $member->nik }}</span>
+                                                            <span class="member-nik"
+                                                                style="font-size: 0.65rem;">{{ $member->nik }}</span>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -1131,7 +1314,8 @@
                                                 <td><span class="badge-role {{ $roleClass }}">{{ $roleName }}</span></td>
                                                 <td style="white-space: nowrap;">
                                                     <div style="font-weight: 600;">{{ $member->nomor_hp ?: '-' }}</div>
-                                                    <div style="font-size: 0.72rem; color: #94a3b8;">{{ $member->email ?: '-' }}</div>
+                                                    <div style="font-size: 0.72rem; color: #94a3b8;">{{ $member->email ?: '-' }}
+                                                    </div>
                                                 </td>
                                                 <td style="white-space: nowrap;">{{ $member->statusDasar?->nama ?? '-' }}</td>
                                                 <td style="white-space: nowrap;">{{ $member->statusRekam?->nama ?? '-' }}</td>
@@ -1141,19 +1325,37 @@
                                                 <td style="white-space: nowrap;">
                                                     <div style="display: flex; gap: 8px; align-items: center;">
                                                         @if($member->foto_ktp)
-                                                            <a href="javascript:void(0)" onclick="openImagePreview('{{ asset('storage/' . $member->foto_ktp) }}')" title="Buka foto KTP" style="display: block; width: 40px; height: 28px; border-radius: 4px; overflow: hidden; border: 1px solid #cbd5e1; flex-shrink: 0; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-                                                                <img src="{{ asset('storage/' . $member->foto_ktp) }}" alt="KTP {{ $member->nama }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                                            <a href="javascript:void(0)"
+                                                                onclick="openImagePreview('{{ asset('storage/' . $member->foto_ktp) }}')"
+                                                                title="Buka foto KTP"
+                                                                style="display: block; width: 40px; height: 28px; border-radius: 4px; overflow: hidden; border: 1px solid #cbd5e1; flex-shrink: 0; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: transform 0.2s;"
+                                                                onmouseover="this.style.transform='scale(1.1)'"
+                                                                onmouseout="this.style.transform='scale(1)'">
+                                                                <img src="{{ asset('storage/' . $member->foto_ktp) }}"
+                                                                    alt="KTP {{ $member->nama }}"
+                                                                    style="width: 100%; height: 100%; object-fit: cover;">
                                                             </a>
                                                         @else
-                                                            <div style="width: 40px; height: 28px; border-radius: 4px; background: #f8fafc; display: flex; align-items: center; justify-content: center; font-size: 0.55rem; color: #94a3b8; border: 1px dashed #cbd5e1; text-transform: uppercase;">KTP</div>
+                                                            <div
+                                                                style="width: 40px; height: 28px; border-radius: 4px; background: #f8fafc; display: flex; align-items: center; justify-content: center; font-size: 0.55rem; color: #94a3b8; border: 1px dashed #cbd5e1; text-transform: uppercase;">
+                                                                KTP</div>
                                                         @endif
 
                                                         @if($member->foto_kk)
-                                                            <a href="javascript:void(0)" onclick="openImagePreview('{{ asset('storage/' . $member->foto_kk) }}')" title="Buka foto KK" style="display: block; width: 40px; height: 28px; border-radius: 4px; overflow: hidden; border: 1px solid #cbd5e1; flex-shrink: 0; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-                                                                <img src="{{ asset('storage/' . $member->foto_kk) }}" alt="KK {{ $member->nama }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                                            <a href="javascript:void(0)"
+                                                                onclick="openImagePreview('{{ asset('storage/' . $member->foto_kk) }}')"
+                                                                title="Buka foto KK"
+                                                                style="display: block; width: 40px; height: 28px; border-radius: 4px; overflow: hidden; border: 1px solid #cbd5e1; flex-shrink: 0; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: transform 0.2s;"
+                                                                onmouseover="this.style.transform='scale(1.1)'"
+                                                                onmouseout="this.style.transform='scale(1)'">
+                                                                <img src="{{ asset('storage/' . $member->foto_kk) }}"
+                                                                    alt="KK {{ $member->nama }}"
+                                                                    style="width: 100%; height: 100%; object-fit: cover;">
                                                             </a>
                                                         @else
-                                                            <div style="width: 40px; height: 28px; border-radius: 4px; background: #f8fafc; display: flex; align-items: center; justify-content: center; font-size: 0.55rem; color: #94a3b8; border: 1px dashed #cbd5e1; text-transform: uppercase;">KK</div>
+                                                            <div
+                                                                style="width: 40px; height: 28px; border-radius: 4px; background: #f8fafc; display: flex; align-items: center; justify-content: center; font-size: 0.55rem; color: #94a3b8; border: 1px dashed #cbd5e1; text-transform: uppercase;">
+                                                                KK</div>
                                                         @endif
                                                     </div>
                                                 </td>
@@ -1162,33 +1364,46 @@
                                                 <td style="white-space: nowrap;">{{ $member->statusKawin?->nama ?? '-' }}</td>
                                                 <td style="white-space: nowrap;">
                                                     <div>{{ $member->tempat_lahir ?: '-' }}</div>
-                                                    <div style="font-size: 0.72rem; color: #94a3b8;">{{ $member->tanggal_lahir?->format('d/m/Y') ?: '-' }}</div>
+                                                    <div style="font-size: 0.72rem; color: #94a3b8;">
+                                                        {{ $member->tanggal_lahir?->format('d/m/Y') ?: '-' }}</div>
                                                 </td>
-                                                <td style="white-space: nowrap;" title="{{ $member->pendidikanKk?->nama }}">{{ \Illuminate\Support\Str::limit($member->pendidikanKk?->nama ?? '-', 20) }}</td>
-                                                <td style="white-space: nowrap;" title="{{ $member->pendidikanSedang?->nama }}">{{ \Illuminate\Support\Str::limit($member->pendidikanSedang?->nama ?? '-', 20) }}</td>
-                                                <td style="white-space: nowrap;" title="{{ $member->pekerjaan?->nama }}">{{ \Illuminate\Support\Str::limit($member->pekerjaan?->nama ?? '-', 20) }}</td>
+                                                <td style="white-space: nowrap;" title="{{ $member->pendidikanKk?->nama }}">
+                                                    {{ \Illuminate\Support\Str::limit($member->pendidikanKk?->nama ?? '-', 20) }}
+                                                </td>
+                                                <td style="white-space: nowrap;" title="{{ $member->pendidikanSedang?->nama }}">
+                                                    {{ \Illuminate\Support\Str::limit($member->pendidikanSedang?->nama ?? '-', 20) }}
+                                                </td>
+                                                <td style="white-space: nowrap;" title="{{ $member->pekerjaan?->nama }}">
+                                                    {{ \Illuminate\Support\Str::limit($member->pekerjaan?->nama ?? '-', 20) }}</td>
                                                 <td style="white-space: nowrap;">{{ $member->warganegara?->nama ?? '-' }}</td>
                                                 <td style="white-space: nowrap;">{{ $member->golonganDarah?->nama ?? '-' }}</td>
                                                 <td style="white-space: nowrap;">{{ $member->suku?->nama ?? '-' }}</td>
-                                                <td style="white-space: nowrap;" title="{{ $keluarga->alamat }}">{{ $keluarga->alamat ?: '-' }}</td>
-                                                <td style="white-space: nowrap;" title="{{ $member->alamat_sekarang }}">{{ $member->alamat_sekarang ?: '-' }}</td>
-                                                <td style="white-space: nowrap;">Dusun {{ $keluarga->dusun?->nama ?? '-' }} - RT {{ $keluarga->rt?->nomor ?? '-' }}/RW {{ $keluarga->rw?->nomor ?? '-' }}</td>
+                                                <td style="white-space: nowrap;" title="{{ $keluarga->alamat }}">
+                                                    {{ $keluarga->alamat ?: '-' }}</td>
+                                                <td style="white-space: nowrap;" title="{{ $member->alamat_sekarang }}">
+                                                    {{ $member->alamat_sekarang ?: '-' }}</td>
+                                                <td style="white-space: nowrap;">Dusun {{ $keluarga->dusun?->nama ?? '-' }} - RT
+                                                    {{ $keluarga->rt?->nomor ?? '-' }}/RW {{ $keluarga->rw?->nomor ?? '-' }}</td>
                                                 <td style="white-space: nowrap;">{{ $member->caraKb?->nama ?? '-' }}</td>
                                                 <td style="white-space: nowrap;">{{ $member->cacat?->nama ?? '-' }}</td>
                                                 <td>{{ $member->hamil ? 'Ya' : 'Tidak' }}</td>
                                                 <td style="white-space: nowrap;">{{ $member->akta_lahir ?: '-' }}</td>
                                                 <td style="white-space: nowrap;">{{ $member->dokumen_pasport ?: '-' }}</td>
-                                                <td style="white-space: nowrap;">{{ $member->tanggal_akhir_paspor?->format('d/m/Y') ?: '-' }}</td>
+                                                <td style="white-space: nowrap;">
+                                                    {{ $member->tanggal_akhir_paspor?->format('d/m/Y') ?: '-' }}</td>
                                                 <td style="white-space: nowrap;">{{ $member->dokumen_kitas ?: '-' }}</td>
                                                 <td style="white-space: nowrap;">{{ $member->akta_perkawinan ?: '-' }}</td>
-                                                <td style="white-space: nowrap;">{{ $member->tanggal_perkawinan?->format('d/m/Y') ?: '-' }}</td>
+                                                <td style="white-space: nowrap;">
+                                                    {{ $member->tanggal_perkawinan?->format('d/m/Y') ?: '-' }}</td>
                                                 <td style="white-space: nowrap;">{{ $member->akta_perceraian ?: '-' }}</td>
-                                                <td style="white-space: nowrap;">{{ $member->tanggal_perceraian?->format('d/m/Y') ?: '-' }}</td>
+                                                <td style="white-space: nowrap;">
+                                                    {{ $member->tanggal_perceraian?->format('d/m/Y') ?: '-' }}</td>
                                             </tr>
                                         @empty
                                             <tr>
                                                 <td colspan="34" style="text-align: center; color: #94a3b8; padding: 30px;">
-                                                    <i class="fas fa-user-slash" style="display: block; font-size: 1.5rem; margin-bottom: 10px; opacity: 0.5;"></i>
+                                                    <i class="fas fa-user-slash"
+                                                        style="display: block; font-size: 1.5rem; margin-bottom: 10px; opacity: 0.5;"></i>
                                                     Belum ada anggota terdaftar.
                                                 </td>
                                             </tr>
@@ -1199,12 +1414,19 @@
                         </div>
                     </div>
                 </div>
-                <footer class="dialog__footer" style="padding: 12px 24px; background: #fff; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
-                    <a href="{{ route('admin.keluargas.print', $keluarga) }}" target="_blank" class="primary-btn" style="background: #ef4444; border-color: #ef4444; color: #ffffff; font-weight: 600; padding: 7px 15px; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border-radius: 50px; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.25);" onmouseover="this.style.background='#dc2626'; this.style.borderColor='#dc2626'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='#ef4444'; this.style.borderColor='#ef4444'; this.style.transform='translateY(0)';">
+                <footer class="dialog__footer"
+                    style="padding: 12px 24px; background: #fff; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
+                    <a href="{{ route('admin.keluargas.print', $keluarga) }}" target="_blank" class="primary-btn"
+                        style="background: #ef4444; border-color: #ef4444; color: #ffffff; font-weight: 600; padding: 7px 15px; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border-radius: 50px; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.25);"
+                        onmouseover="this.style.background='#dc2626'; this.style.borderColor='#dc2626'; this.style.transform='translateY(-1px)';"
+                        onmouseout="this.style.background='#ef4444'; this.style.borderColor='#ef4444'; this.style.transform='translateY(0)';">
                         <i class="fas fa-print" style="font-size: 0.75rem;"></i>
                         <span>Cetak Detail (PDF)</span>
                     </a>
-                    <button type="button" class="primary-btn" data-modal-open="familyEditModal-{{ $keluarga->id }}" style="font-weight: 600; padding: 7px 15px; font-size: 0.8rem; border-radius: 50px; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);" onmouseover="this.style.transform='translateY(-1px)';" onmouseout="this.style.transform='translateY(0)';">
+                    <button type="button" class="primary-btn" data-modal-open="familyEditModal-{{ $keluarga->id }}"
+                        style="font-weight: 600; padding: 7px 15px; font-size: 0.8rem; border-radius: 50px; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);"
+                        onmouseover="this.style.transform='translateY(-1px)';"
+                        onmouseout="this.style.transform='translateY(0)';">
                         <i class="fas fa-pen" style="font-size: 0.75rem;"></i>
                         <span>Edit Data</span>
                     </button>
@@ -1213,10 +1435,12 @@
         </div>
 
         <div class="dialog-backdrop" id="familyEditModal-{{ $keluarga->id }}" aria-hidden="true">
-            <div class="dialog dialog--form" role="dialog" aria-modal="true" aria-labelledby="familyEditTitle-{{ $keluarga->id }}">
+            <div class="dialog dialog--form" role="dialog" aria-modal="true"
+                aria-labelledby="familyEditTitle-{{ $keluarga->id }}">
                 <header class="dialog__header">
                     <h2 id="familyEditTitle-{{ $keluarga->id }}">Edit KK {{ $keluarga->no_kk }}</h2>
-                    <button type="button" class="dialog__close" data-modal-close aria-label="Tutup form edit KK {{ $keluarga->no_kk }}">
+                    <button type="button" class="dialog__close" data-modal-close
+                        aria-label="Tutup form edit KK {{ $keluarga->no_kk }}">
                         <i class="fas fa-times"></i>
                     </button>
                 </header>
@@ -1229,7 +1453,9 @@
                         <div class="form-grid--2 mb-4">
                             <label class="form-field @if($editContext && $errors->has('no_kk')) form-field--error @endif">
                                 <span>Nomor KK <sup>*</sup></span>
-                                <input type="text" name="no_kk" value="{{ $editContext ? old('no_kk', $keluarga->no_kk) : $keluarga->no_kk }}" maxlength="30" required>
+                                <input type="text" name="no_kk"
+                                    value="{{ $editContext ? old('no_kk', $keluarga->no_kk) : $keluarga->no_kk }}"
+                                    maxlength="30" required>
                                 @if ($editContext)
                                     @error('no_kk')
                                         <span class="form-error">{{ $message }}</span>
@@ -1238,7 +1464,9 @@
                             </label>
                             <label class="form-field @if($editContext && $errors->has('kepala_nik')) form-field--error @endif">
                                 <span>NIK Kepala Keluarga</span>
-                                <input type="text" name="kepala_nik" value="{{ $editContext ? old('kepala_nik', $keluarga->kepala_nik) : $keluarga->kepala_nik }}" maxlength="20">
+                                <input type="text" name="kepala_nik"
+                                    value="{{ $editContext ? old('kepala_nik', $keluarga->kepala_nik) : $keluarga->kepala_nik }}"
+                                    maxlength="20">
                                 @if ($editContext)
                                     @error('kepala_nik')
                                         <span class="form-error">{{ $message }}</span>
@@ -1249,7 +1477,8 @@
                         <div class="mb-4">
                             <label class="form-field form-field--full">
                                 <span>Alamat Lengkap</span>
-                                <textarea name="alamat" rows="2">{{ $editContext ? old('alamat', $keluarga->alamat) : $keluarga->alamat }}</textarea>
+                                <textarea name="alamat"
+                                    rows="2">{{ $editContext ? old('alamat', $keluarga->alamat) : $keluarga->alamat }}</textarea>
                             </label>
                         </div>
                         <div class="form-grid--3">
@@ -1300,15 +1529,18 @@
         </div>
 
         <div class="dialog-backdrop" id="familyDeleteModal-{{ $keluarga->id }}" aria-hidden="true">
-            <div class="dialog dialog--confirm" role="dialog" aria-modal="true" aria-labelledby="familyDeleteTitle-{{ $keluarga->id }}">
+            <div class="dialog dialog--confirm" role="dialog" aria-modal="true"
+                aria-labelledby="familyDeleteTitle-{{ $keluarga->id }}">
                 <header class="dialog__header">
                     <h2 id="familyDeleteTitle-{{ $keluarga->id }}">Hapus KK {{ $keluarga->no_kk }}</h2>
-                    <button type="button" class="dialog__close" data-modal-close aria-label="Tutup konfirmasi hapus {{ $keluarga->no_kk }}">
+                    <button type="button" class="dialog__close" data-modal-close
+                        aria-label="Tutup konfirmasi hapus {{ $keluarga->no_kk }}">
                         <i class="fas fa-times"></i>
                     </button>
                 </header>
                 <div class="dialog__body">
-                    <p>Anda yakin ingin menghapus data keluarga dengan nomor KK <strong>{{ $keluarga->no_kk }}</strong>? Tindakan ini tidak dapat dibatalkan.</p>
+                    <p>Anda yakin ingin menghapus data keluarga dengan nomor KK <strong>{{ $keluarga->no_kk }}</strong>?
+                        Tindakan ini tidak dapat dibatalkan.</p>
                 </div>
                 <footer class="dialog__footer dialog__footer--split">
                     <button type="button" class="ghost-btn ghost-btn--subtle" data-modal-close>Batal</button>
@@ -1328,14 +1560,18 @@
     @endforeach
 
     <!-- Image Preview Lightbox -->
-    <div id="imagePreviewModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 99999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;">
+    <div id="imagePreviewModal"
+        style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 99999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;">
         <div style="position: relative; max-width: 90vw; max-height: 90vh;">
-            <button type="button" onclick="closeImagePreview()" style="position: absolute; right: -15px; top: -40px; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; text-shadow: 0 2px 4px rgba(0,0,0,0.5); z-index: 100000;">
+            <button type="button" onclick="closeImagePreview()"
+                style="position: absolute; right: -15px; top: -40px; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; text-shadow: 0 2px 4px rgba(0,0,0,0.5); z-index: 100000;">
                 <i class="fas fa-times"></i>
             </button>
-            <img id="imagePreviewElement" src="" alt="Pratinjau Dokumen" style="max-height: 80vh; max-width: 100%; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+            <img id="imagePreviewElement" src="" alt="Pratinjau Dokumen"
+                style="max-height: 80vh; max-width: 100%; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
             <div style="text-align: center; margin-top: 15px;">
-                <a id="imagePreviewDownload" href="#" download style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(255,255,255,0.9); color: #1e293b; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 0.85rem; font-family: 'Poppins', sans-serif;">
+                <a id="imagePreviewDownload" href="#" download
+                    style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(255,255,255,0.9); color: #1e293b; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 0.85rem; font-family: 'Poppins', sans-serif;">
                     <i class="fas fa-download"></i> Unduh Gambar
                 </a>
             </div>
@@ -1346,11 +1582,11 @@
 
 @push('scripts')
     <script>
-        window.openImagePreview = function(url) {
+        window.openImagePreview = function (url) {
             const modal = document.getElementById('imagePreviewModal');
             const img = document.getElementById('imagePreviewElement');
             const downloadBtn = document.getElementById('imagePreviewDownload');
-            if(modal && img) {
+            if (modal && img) {
                 img.src = url;
                 downloadBtn.href = url;
                 modal.style.opacity = '1';
@@ -1358,10 +1594,10 @@
                 document.addEventListener('keydown', window.handleEscKey);
             }
         };
-        
-        window.closeImagePreview = function() {
+
+        window.closeImagePreview = function () {
             const modal = document.getElementById('imagePreviewModal');
-            if(modal) {
+            if (modal) {
                 modal.style.opacity = '0';
                 modal.style.pointerEvents = 'none';
                 document.removeEventListener('keydown', window.handleEscKey);
@@ -1370,15 +1606,15 @@
                 }, 300);
             }
         };
-        
-        window.handleEscKey = function(e) {
+
+        window.handleEscKey = function (e) {
             if (e.key === 'Escape') {
                 window.closeImagePreview();
             }
         };
 
         // Click outside image to close
-        document.getElementById('imagePreviewModal').addEventListener('click', function(e) {
+        document.getElementById('imagePreviewModal').addEventListener('click', function (e) {
             if (e.target === this) {
                 window.closeImagePreview();
             }

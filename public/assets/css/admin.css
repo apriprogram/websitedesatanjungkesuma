@@ -4524,16 +4524,34 @@ input[type="file"]::file-selector-button:hover {
   height: 60px;
   border-radius: 50%;
   background: linear-gradient(135deg, #FFD3A5 0%, #FD6585 45%, #3b82f6 70%, #00d2ff 100%);
-  /* Restored colorful gradient (no purple) */
-  color: #ffffff;
+  padding: 3px;
   border: none;
   box-shadow: 0 8px 25px rgba(253, 101, 133, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.6rem;
   cursor: pointer;
+  position: relative;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  outline: none;
+}
+
+.fab-button::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: #ffffff;
+  z-index: 0;
+}
+
+.fab-button i {
+  position: relative;
+  z-index: 1;
+  font-size: 1.4rem;
+  background: linear-gradient(135deg, #FFD3A5 0%, #FD6585 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .fab-button:hover {
@@ -4611,7 +4629,7 @@ body.dark-mode .fab-clock-date {
   position: absolute;
   bottom: 70px;
   right: 0;
-  width: 660px;
+  width: 850px;
   max-width: calc(100vw - 3rem);
   border-radius: 20px;
   /* Outer border radius */
