@@ -598,22 +598,27 @@ class PendudukController extends Controller
 
         try {
             // Hapus folder penduduk secara massal (jauh lebih cepat daripada loop satu per satu)
-            Storage::disk('public')->deleteDirectory('penduduk');
+            // Dibungkus try-catch agar jika folder tidak ada/terkunci tidak mematikan seluruh proses
+            try {
+                if (Storage::disk('public')->exists('penduduk')) {
+                    Storage::disk('public')->deleteDirectory('penduduk');
+                }
+            } catch (\Throwable $e) {
+                // Lanjut jika gagal menghapus folder
+            }
 
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             
-            // Truncate tabel log dan relasi
-            DB::table('penduduk_meninggals')->truncate();
-            DB::table('penduduk_pindahs')->truncate();
+            // Gunakan delete() alih-alih truncate() karena beberapa hosting membatasi truncate
+            DB::table('penduduk_meninggals')->delete();
+            DB::table('penduduk_pindahs')->delete();
+            DB::table('penduduks')->delete();
+            DB::table('keluargas')->delete();
             
-            // Truncate tabel penduduk dan keluarga
-            DB::table('penduduks')->truncate();
-            DB::table('keluargas')->truncate();
-            
-            // Truncate tabel wilayah
-            DB::table('rts')->truncate();
-            DB::table('rws')->truncate();
-            DB::table('dusuns')->truncate();
+            // Truncate wilayah tetap dicoba, jika gagal gunakan delete
+            try { DB::table('rts')->truncate(); } catch (\Throwable $e) { DB::table('rts')->delete(); }
+            try { DB::table('rws')->truncate(); } catch (\Throwable $e) { DB::table('rws')->delete(); }
+            try { DB::table('dusuns')->truncate(); } catch (\Throwable $e) { DB::table('dusuns')->delete(); }
             
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
