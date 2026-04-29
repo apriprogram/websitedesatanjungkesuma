@@ -28,6 +28,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -600,8 +601,9 @@ class PendudukController extends Controller
             // Hapus folder penduduk secara massal (jauh lebih cepat daripada loop satu per satu)
             // Dibungkus try-catch agar jika folder tidak ada/terkunci tidak mematikan seluruh proses
             try {
-                if (Storage::disk('public')->exists('penduduk')) {
-                    Storage::disk('public')->deleteDirectory('penduduk');
+                $pendudukPath = storage_path('app/public/penduduk');
+                if (File::isDirectory($pendudukPath)) {
+                    File::deleteDirectory($pendudukPath);
                 }
             } catch (\Throwable $e) {
                 // Lanjut jika gagal menghapus folder
