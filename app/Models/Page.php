@@ -23,6 +23,10 @@ class Page extends Model
         'views',
     ];
 
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
+
     public function attachments(): HasMany
     {
         return $this->hasMany(PageAttachment::class)->orderBy('sort_order')->orderBy('id');

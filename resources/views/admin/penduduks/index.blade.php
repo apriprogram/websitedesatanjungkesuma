@@ -366,6 +366,32 @@
                 });
             });
         });
+
+        function confirmDeleteAllResidents() {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Tindakan ini akan menghapus SELURUH data penduduk, keluarga, dan wilayah. Data yang sudah dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'Ya, Hapus Semua!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Sedang memproses...',
+                        text: 'Mohon tunggu sebentar',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    document.getElementById('deleteAllResidentsForm').submit();
+                }
+            });
+        }
     </script>
 @endpush
 
@@ -1015,16 +1041,27 @@
                     <h2>Daftar Penduduk</h2>
                     <p>Manajemen data penduduk desa dengan filter pencarian cepat.</p>
                 </div>
-                <form id="residentSearchForm" method="GET" action="{{ route('admin.penduduks.index') }}"
-                    class="panel-toolbar-inline">
-                    <div class="search-input-group">
-                        <div class="search-input-wrapper">
-                            <i class="fas fa-search search-icon-left"></i>
-                            <input id="searchPenduduk" type="search" name="search" value="{{ $filters['search'] }}"
-                                placeholder="Cari Penduduk..." autocomplete="off" aria-label="Cari Penduduk">
+                <div class="panel-toolbar-inline" style="display: flex; align-items: center; gap: 12px; margin-left: auto;">
+                    <form id="deleteAllResidentsForm" action="{{ route('admin.penduduks.destroy-all') }}" method="POST" class="d-none">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                    <button type="button" class="soft-action-btn soft-action-btn--rose" onclick="confirmDeleteAllResidents()" style="height: 42px; border-radius: 10px;">
+                        <i class="fas fa-trash-alt"></i>
+                        <span>Hapus Semua</span>
+                    </button>
+                    
+                    <form id="residentSearchForm" method="GET" action="{{ route('admin.penduduks.index') }}"
+                        class="panel-toolbar-inline" style="margin-left: 0;">
+                        <div class="search-input-group">
+                            <div class="search-input-wrapper">
+                                <i class="fas fa-search search-icon-left"></i>
+                                <input id="searchPenduduk" type="search" name="search" value="{{ $filters['search'] }}"
+                                    placeholder="Cari Penduduk..." autocomplete="off" aria-label="Cari Penduduk">
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </header>
 
@@ -1295,32 +1332,31 @@
                     <i class="fas fa-times"></i>
                 </button>
             </header>
-            <div class="dialog__body">
-                @if ($formHasErrors)
-                    <div class="form-alert form-alert--error" role="alert">
-                        <div class="form-alert__icon"><i class="fas fa-circle-exclamation" aria-hidden="true"></i></div>
-                        <div class="form-alert__body">
-                            <strong>Periksa kembali isian Anda.</strong>
-                            <ul class="form-alert__list">
-                                @foreach ($errors->all() as $message)
-                                    <li>{{ $message }}</li>
-                                @endforeach
-                            </ul>
-                            <p class="form-alert__hint">Isi kolom wajib (berlabel "Wajib") sesuai instruksi agar data bisa
-                                disimpan.</p>
+            <form id="residentForm" class="dialog__form resident-form" method="POST" action="{{ route('admin.penduduks.store') }}"
+                enctype="multipart/form-data" data-create-action="{{ route('admin.penduduks.store') }}"
+                data-has-errors="{{ $formHasErrors ? 'true' : 'false' }}" data-old-payload='@json($oldResident)'
+                data-old-mode="{{ $oldMode }}" data-old-update-url="{{ $oldUpdateUrl }}">
+                @csrf
+                <input type="hidden" name="form_mode" value="{{ $oldMode }}">
+                <input type="hidden" name="resident_id" value="{{ $oldResident['resident_id'] ?? '' }}">
+                <input type="hidden" name="resident_update_url" value="{{ $oldResident['resident_update_url'] ?? '' }}">
+                <input type="hidden" name="_method" value="PUT" disabled>
+                <div class="dialog__body">
+                    @if ($formHasErrors)
+                        <div class="form-alert form-alert--error" role="alert">
+                            <div class="form-alert__icon"><i class="fas fa-circle-exclamation" aria-hidden="true"></i></div>
+                            <div class="form-alert__body">
+                                <strong>Periksa kembali isian Anda.</strong>
+                                <ul class="form-alert__list">
+                                    @foreach ($errors->all() as $message)
+                                        <li>{{ $message }}</li>
+                                    @endforeach
+                                </ul>
+                                <p class="form-alert__hint">Isi kolom wajib (berlabel "Wajib") sesuai instruksi agar data bisa
+                                    disimpan.</p>
+                            </div>
                         </div>
-                    </div>
-                @endif
-
-                <form id="residentForm" class="resident-form" method="POST" action="{{ route('admin.penduduks.store') }}"
-                    enctype="multipart/form-data" data-create-action="{{ route('admin.penduduks.store') }}"
-                    data-has-errors="{{ $formHasErrors ? 'true' : 'false' }}" data-old-payload='@json($oldResident)'
-                    data-old-mode="{{ $oldMode }}" data-old-update-url="{{ $oldUpdateUrl }}">
-                    @csrf
-                    <input type="hidden" name="form_mode" value="{{ $oldMode }}">
-                    <input type="hidden" name="resident_id" value="{{ $oldResident['resident_id'] ?? '' }}">
-                    <input type="hidden" name="resident_update_url" value="{{ $oldResident['resident_update_url'] ?? '' }}">
-                    <input type="hidden" name="_method" value="PUT" disabled>
+                    @endif
 
                     <div class="resident-form__grid">
                         <section class="form-section">
@@ -1330,14 +1366,12 @@
                                             class="fas fa-id-card"></i></span>
                                     <div>
                                         <h2>Identitas Penduduk</h2>
-                                        <p>Isi data dasar sesuai KTP dan kartu keluarga resmi.</p>
+                                        <span class="form-section__badge">Bidang bertanda "Wajib" harus diisi.</span>
                                     </div>
                                 </div>
-                                <span class="form-section__badge"><i class="fas fa-asterisk"></i> Bidang bertanda "Wajib"
-                                    harus diisi.</span>
                             </div>
                             <div class="form-section__body">
-                                <div class="settings-form-grid two-columns">
+                                <div class="settings-form-grid four-columns">
                                     <div class="form-field kk-dropdown" data-kk-picker>
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-address-book"></i>No. KK</span>
@@ -1396,7 +1430,7 @@
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-map-marker-alt"></i>Tempat
                                                 Lahir</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <input type="text" name="tempat_lahir" value="{{ old('tempat_lahir') }}"
                                             maxlength="100">
@@ -1405,14 +1439,14 @@
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-calendar-alt"></i>Tanggal
                                                 Lahir</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <input type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}">
                                     </label>
                                     <label class="form-field">
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-pray"></i>Agama</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <select name="agama_id">
                                             <option value="">Pilih agama</option>
@@ -1427,7 +1461,7 @@
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-book-reader"></i>Pendidikan
                                                 (dalam KK)</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <select name="pendidikan_kk_id">
                                             <option value="">Pilih pendidikan</option>
@@ -1441,7 +1475,7 @@
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-school"></i>Pendidikan Sedang
                                                 Ditempuh</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <select name="pendidikan_sedang_id">
                                             <option value="">Pilih pendidikan</option>
@@ -1455,7 +1489,7 @@
                                     <label class="form-field">
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-briefcase"></i>Pekerjaan</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <div class="job-input-group">
                                             <select name="pekerjaan_id">
@@ -1479,14 +1513,14 @@
                                     <label class="form-field">
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-phone"></i>No. HP / WhatsApp</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <input type="text" name="nomor_hp" value="{{ old('nomor_hp') }}" maxlength="20" placeholder="Contoh: 0812...">
                                     </label>
                                     <label class="form-field">
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-envelope"></i>Email Aktif</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <input type="email" name="email" value="{{ old('email') }}" maxlength="100" placeholder="contoh@email.com">
                                     </label>
@@ -1501,64 +1535,65 @@
                                             class="fas fa-camera"></i></span>
                                     <div>
                                         <h2>Foto Penduduk</h2>
-                                        <p>Unggah foto profil serta dokumentasi KTP dan KK. Kosongkan jika tidak ingin
-                                            mengubah.</p>
+                                        <span class="form-section__badge form-section__badge--soft">Format JPG/PNG, maks 5 MB per berkas.</span>
                                     </div>
                                 </div>
-                                <span class="form-section__badge form-section__badge--soft"><i class="fas fa-images"></i>
-                                    Format JPG/PNG, maks 5 MB per berkas.</span>
                             </div>
                             <div class="form-section__body">
-                                <div class="settings-form-grid three-columns">
-                                    <div class="form-field">
-                                        <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-user-circle"></i>Foto
-                                                Profil</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <input type="file" name="foto_profil" accept="image/*">
-                                        <div class="media-preview" data-photo-preview="foto_profil">
-                                            <span class="media-preview__placeholder">Belum ada foto.</span>
+                                <div class="settings-form-grid four-columns">
+                                    <div class="form-field" data-photo-field="foto_profil">
+                                        <span class="form-field__label"><span class="form-field__title"><i class="fas fa-user-circle"></i>Foto Profil</span></span>
+                                        <div class="photo-box">
+                                            <div class="photo-box__frame" data-photo-frame="foto_profil">
+                                                <div class="photo-box__preview" data-photo-preview="foto_profil">
+                                                    <div class="photo-box__placeholder"><i class="fas fa-image"></i><span>Belum ada foto</span></div>
+                                                </div>
+                                                <div class="photo-box__overlay" data-photo-delete-overlay="foto_profil"><i class="fas fa-trash-alt"></i><span>Akan dihapus</span></div>
+                                            </div>
+                                            <div class="photo-box__actions">
+                                                <label class="photo-box__upload-btn" for="photo_input_foto_profil"><i class="fas fa-cloud-upload-alt"></i><span>Pilih Foto</span></label>
+                                                <input type="file" id="photo_input_foto_profil" name="foto_profil" accept="image/*" data-photo-input="foto_profil" class="sr-only">
+                                                <button type="button" class="photo-box__delete-btn" data-photo-delete="foto_profil" style="display:none"><i class="fas fa-trash-alt"></i><span>Hapus</span></button>
+                                                <button type="button" class="photo-box__undo-btn" data-photo-undo="foto_profil" style="display:none"><i class="fas fa-undo-alt"></i><span>Batalkan</span></button>
+                                            </div>
+                                            <input type="hidden" name="remove_foto_profil" value="" data-photo-remove="foto_profil">
                                         </div>
-                                        <label class="media-preview__remove">
-                                            <input type="checkbox" name="remove_foto_profil" value="1"
-                                                @checked(old('remove_foto_profil'))>
-                                            <span>Hapus foto profil saat ini</span>
-                                        </label>
-                                        <small class="form-field__hint">Gunakan foto wajah terbaru. Biarkan kosong jika
-                                            tidak ingin mengganti.</small>
                                     </div>
-                                    <div class="form-field">
-                                        <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-id-card"></i>Foto KTP</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <input type="file" name="foto_ktp" accept="image/*">
-                                        <div class="media-preview" data-photo-preview="foto_ktp">
-                                            <span class="media-preview__placeholder">Belum ada foto.</span>
+                                    <div class="form-field" data-photo-field="foto_ktp">
+                                        <span class="form-field__label"><span class="form-field__title"><i class="fas fa-id-card"></i>Foto KTP</span></span>
+                                        <div class="photo-box">
+                                            <div class="photo-box__frame" data-photo-frame="foto_ktp">
+                                                <div class="photo-box__preview" data-photo-preview="foto_ktp">
+                                                    <div class="photo-box__placeholder"><i class="fas fa-image"></i><span>Belum ada foto</span></div>
+                                                </div>
+                                                <div class="photo-box__overlay" data-photo-delete-overlay="foto_ktp"><i class="fas fa-trash-alt"></i><span>Akan dihapus</span></div>
+                                            </div>
+                                            <div class="photo-box__actions">
+                                                <label class="photo-box__upload-btn" for="photo_input_foto_ktp"><i class="fas fa-cloud-upload-alt"></i><span>Pilih Foto</span></label>
+                                                <input type="file" id="photo_input_foto_ktp" name="foto_ktp" accept="image/*" data-photo-input="foto_ktp" class="sr-only">
+                                                <button type="button" class="photo-box__delete-btn" data-photo-delete="foto_ktp" style="display:none"><i class="fas fa-trash-alt"></i><span>Hapus</span></button>
+                                                <button type="button" class="photo-box__undo-btn" data-photo-undo="foto_ktp" style="display:none"><i class="fas fa-undo-alt"></i><span>Batalkan</span></button>
+                                            </div>
+                                            <input type="hidden" name="remove_foto_ktp" value="" data-photo-remove="foto_ktp">
                                         </div>
-                                        <label class="media-preview__remove">
-                                            <input type="checkbox" name="remove_foto_ktp" value="1"
-                                                @checked(old('remove_foto_ktp'))>
-                                            <span>Hapus foto KTP saat ini</span>
-                                        </label>
-                                        <small class="form-field__hint">Pastikan teks KTP terbaca jelas.</small>
                                     </div>
-                                    <div class="form-field">
-                                        <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-users"></i>Foto KK</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <input type="file" name="foto_kk" accept="image/*">
-                                        <div class="media-preview" data-photo-preview="foto_kk">
-                                            <span class="media-preview__placeholder">Belum ada foto.</span>
+                                    <div class="form-field" data-photo-field="foto_kk">
+                                        <span class="form-field__label"><span class="form-field__title"><i class="fas fa-users"></i>Foto KK</span></span>
+                                        <div class="photo-box">
+                                            <div class="photo-box__frame" data-photo-frame="foto_kk">
+                                                <div class="photo-box__preview" data-photo-preview="foto_kk">
+                                                    <div class="photo-box__placeholder"><i class="fas fa-image"></i><span>Belum ada foto</span></div>
+                                                </div>
+                                                <div class="photo-box__overlay" data-photo-delete-overlay="foto_kk"><i class="fas fa-trash-alt"></i><span>Akan dihapus</span></div>
+                                            </div>
+                                            <div class="photo-box__actions">
+                                                <label class="photo-box__upload-btn" for="photo_input_foto_kk"><i class="fas fa-cloud-upload-alt"></i><span>Pilih Foto</span></label>
+                                                <input type="file" id="photo_input_foto_kk" name="foto_kk" accept="image/*" data-photo-input="foto_kk" class="sr-only">
+                                                <button type="button" class="photo-box__delete-btn" data-photo-delete="foto_kk" style="display:none"><i class="fas fa-trash-alt"></i><span>Hapus</span></button>
+                                                <button type="button" class="photo-box__undo-btn" data-photo-undo="foto_kk" style="display:none"><i class="fas fa-undo-alt"></i><span>Batalkan</span></button>
+                                            </div>
+                                            <input type="hidden" name="remove_foto_kk" value="" data-photo-remove="foto_kk">
                                         </div>
-                                        <label class="media-preview__remove">
-                                            <input type="checkbox" name="remove_foto_kk" value="1"
-                                                @checked(old('remove_foto_kk'))>
-                                            <span>Hapus foto KK saat ini</span>
-                                        </label>
-                                        <small class="form-field__hint">Gunakan salinan KK terbaru.</small>
                                     </div>
                                 </div>
                             </div>
@@ -1571,19 +1606,17 @@
                                             class="fas fa-users"></i></span>
                                     <div>
                                         <h2>Relasi Keluarga</h2>
-                                        <p>Lengkapi hubungan keluarga, kewarganegaraan, serta data orang tua.</p>
+                                        <span class="form-section__badge form-section__badge--soft">Data boleh dikosongkan bila belum tersedia.</span>
                                     </div>
                                 </div>
-                                <span class="form-section__badge form-section__badge--soft"><i
-                                        class="fas fa-circle-info"></i> Data boleh dikosongkan bila belum tersedia.</span>
                             </div>
                             <div class="form-section__body">
-                                <div class="settings-form-grid three-columns">
+                                <div class="settings-form-grid four-columns">
                                     <label class="form-field">
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-heart"></i>Status
                                                 Perkawinan</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <select name="status_kawin_id">
                                             <option value="">Pilih status perkawinan</option>
@@ -1597,7 +1630,7 @@
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-user-friends"></i>Hubungan
                                                 dalam KK</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <select name="kk_level_id">
                                             <option value="">Pilih hubungan</option>
@@ -1612,7 +1645,7 @@
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i
                                                     class="fas fa-flag"></i>Kewarganegaraan</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <select name="warganegara_id">
                                             <option value="">Pilih kewarganegaraan</option>
@@ -1626,28 +1659,28 @@
                                     <label class="form-field">
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-user-tie"></i>Nama Ayah</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <input type="text" name="nama_ayah" value="{{ old('nama_ayah') }}" maxlength="100">
                                     </label>
                                     <label class="form-field">
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-id-card"></i>NIK Ayah</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <input type="text" name="ayah_nik" value="{{ old('ayah_nik') }}" maxlength="20">
                                     </label>
                                     <label class="form-field">
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-female"></i>Nama Ibu</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <input type="text" name="nama_ibu" value="{{ old('nama_ibu') }}" maxlength="100">
                                     </label>
                                     <label class="form-field">
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-id-card"></i>NIK Ibu</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <input type="text" name="ibu_nik" value="{{ old('ibu_nik') }}" maxlength="20">
                                     </label>
@@ -1661,143 +1694,11 @@
                                             class="fas fa-file-alt"></i></span>
                                     <div>
                                         <h2>Dokumen &amp; Status Administrasi</h2>
-                                        <p>Catat dokumen penting, status kependudukan, serta identifikasi tambahan.</p>
                                     </div>
                                 </div>
-                                <span class="form-section__badge"><i class="fas fa-circle-check"></i> Pastikan status dasar
-                                    terisi.</span>
                             </div>
                             <div class="form-section__body">
-                                <div class="settings-form-grid two-columns">
-                                    <label class="form-field">
-                                        <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-tint"></i>Golongan Darah</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <select name="golongan_darah_id">
-                                            <option value="">Pilih golongan darah</option>
-                                            @foreach ($golonganDarahOptions as $option)
-                                                <option value="{{ $option->id }}"
-                                                    @selected(old('golongan_darah_id') == $option->id)>{{ $option->nama }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </label>
-                                    <label class="form-field">
-                                        <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-file-signature"></i>Akta
-                                                Lahir</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <input type="text" name="akta_lahir" value="{{ old('akta_lahir') }}"
-                                            maxlength="100">
-                                    </label>
-                                    <label class="form-field">
-                                        <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-passport"></i>Dokumen
-                                                Paspor</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <input type="text" name="dokumen_pasport" value="{{ old('dokumen_pasport') }}"
-                                            maxlength="100">
-                                    </label>
-                                    <label class="form-field">
-                                        <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-calendar-alt"></i>Tanggal Akhir
-                                                Paspor</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <input type="date" name="tanggal_akhir_paspor"
-                                            value="{{ old('tanggal_akhir_paspor') }}">
-                                    </label>
-                                    <label class="form-field">
-                                        <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-id-badge"></i>Dokumen
-                                                KITAS</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <input type="text" name="dokumen_kitas" value="{{ old('dokumen_kitas') }}"
-                                            maxlength="100">
-                                    </label>
-                                    <label class="form-field">
-                                        <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-heart"></i>Akta
-                                                Perkawinan</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <input type="text" name="akta_perkawinan" value="{{ old('akta_perkawinan') }}"
-                                            maxlength="100">
-                                    </label>
-                                    <label class="form-field">
-                                        <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-calendar-check"></i>Tanggal
-                                                Perkawinan</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <input type="date" name="tanggal_perkawinan"
-                                            value="{{ old('tanggal_perkawinan') }}">
-                                    </label>
-                                    <label class="form-field">
-                                        <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-user-times"></i>Akta
-                                                Perceraian</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <input type="text" name="akta_perceraian" value="{{ old('akta_perceraian') }}"
-                                            maxlength="100">
-                                    </label>
-                                    <label class="form-field">
-                                        <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-calendar-times"></i>Tanggal
-                                                Perceraian</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <input type="date" name="tanggal_perceraian"
-                                            value="{{ old('tanggal_perceraian') }}">
-                                    </label>
-                                    <label class="form-field">
-                                        <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-wheelchair"></i>Jenis
-                                                Cacat</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <select name="cacat_id">
-                                            <option value="">Tidak ada</option>
-                                            @foreach ($cacatOptions as $option)
-                                                <option value="{{ $option->id }}" @selected(old('cacat_id') == $option->id)>
-                                                    {{ $option->nama }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </label>
-                                    <label class="form-field">
-                                        <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-pray"></i>Cara KB</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <select name="cara_kb_id">
-                                            <option value="">Tidak menggunakan</option>
-                                            @foreach ($caraKbOptions as $option)
-                                                <option value="{{ $option->id }}" @selected(old('cara_kb_id') == $option->id)>
-                                                    {{ $option->nama }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </label>
-                                    <label class="form-field">
-                                        <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-id-card"></i>Status Rekam
-                                                KTP</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <select name="status_rekam_id">
-                                            <option value="">Belum ditentukan</option>
-                                            @foreach ($statusRekamOptions as $option)
-                                                <option value="{{ $option->id }}"
-                                                    @selected(old('status_rekam_id') == $option->id)>{{ $option->nama }}</option>
-                                            @endforeach
-                                        </select>
-                                    </label>
+                                <div class="settings-form-grid four-columns">
                                     <label class="form-field">
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-project-diagram"></i>Status
@@ -1814,8 +1715,148 @@
                                     </label>
                                     <label class="form-field">
                                         <span class="form-field__label">
+                                            <span class="form-field__title"><i class="fas fa-tint"></i>Golongan Darah</span>
+                                            
+                                        </span>
+                                        <select name="golongan_darah_id">
+                                            <option value="">Pilih golongan darah</option>
+                                            @foreach ($golonganDarahOptions as $option)
+                                                <option value="{{ $option->id }}"
+                                                    @selected(old('golongan_darah_id') == $option->id)>{{ $option->nama }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </label>
+                                    <label class="form-field">
+                                        <span class="form-field__label">
+                                            <span class="form-field__title"><i class="fas fa-id-card"></i>Status Rekam
+                                                KTP</span>
+                                            
+                                        </span>
+                                        <select name="status_rekam_id">
+                                            <option value="">Belum ditentukan</option>
+                                            @foreach ($statusRekamOptions as $option)
+                                                <option value="{{ $option->id }}"
+                                                    @selected(old('status_rekam_id') == $option->id)>{{ $option->nama }}</option>
+                                            @endforeach
+                                        </select>
+                                    </label>
+                                    <label class="form-field">
+                                        <span class="form-field__label">
+                                            <span class="form-field__title"><i class="fas fa-id-card"></i>Memiliki
+                                                KTP-el</span>
+                                            
+                                        </span>
+                                        <select name="ktp_el">
+                                            <option value="0" @selected($ktpElValue === '0')>Tidak</option>
+                                            <option value="1" @selected($ktpElValue === '1')>Ya</option>
+                                        </select>
+                                    </label>
+                                    <label class="form-field">
+                                        <span class="form-field__label">
+                                            <span class="form-field__title"><i class="fas fa-file-signature"></i>Akta
+                                                Lahir</span>
+                                            
+                                        </span>
+                                        <input type="text" name="akta_lahir" value="{{ old('akta_lahir') }}"
+                                            maxlength="100">
+                                    </label>
+                                    <label class="form-field">
+                                        <span class="form-field__label">
+                                            <span class="form-field__title"><i class="fas fa-passport"></i>Dokumen
+                                                Paspor</span>
+                                            
+                                        </span>
+                                        <input type="text" name="dokumen_pasport" value="{{ old('dokumen_pasport') }}"
+                                            maxlength="100">
+                                    </label>
+                                    <label class="form-field">
+                                        <span class="form-field__label">
+                                            <span class="form-field__title"><i class="fas fa-calendar-alt"></i>Tanggal Akhir
+                                                Paspor</span>
+                                            
+                                        </span>
+                                        <input type="date" name="tanggal_akhir_paspor"
+                                            value="{{ old('tanggal_akhir_paspor') }}">
+                                    </label>
+                                    <label class="form-field">
+                                        <span class="form-field__label">
+                                            <span class="form-field__title"><i class="fas fa-id-badge"></i>Dokumen
+                                                KITAS</span>
+                                            
+                                        </span>
+                                        <input type="text" name="dokumen_kitas" value="{{ old('dokumen_kitas') }}"
+                                            maxlength="100">
+                                    </label>
+                                    <label class="form-field">
+                                        <span class="form-field__label">
+                                            <span class="form-field__title"><i class="fas fa-heart"></i>Akta
+                                                Perkawinan</span>
+                                            
+                                        </span>
+                                        <input type="text" name="akta_perkawinan" value="{{ old('akta_perkawinan') }}"
+                                            maxlength="100">
+                                    </label>
+                                    <label class="form-field">
+                                        <span class="form-field__label">
+                                            <span class="form-field__title"><i class="fas fa-calendar-check"></i>Tanggal
+                                                Perkawinan</span>
+                                            
+                                        </span>
+                                        <input type="date" name="tanggal_perkawinan"
+                                            value="{{ old('tanggal_perkawinan') }}">
+                                    </label>
+                                    <label class="form-field">
+                                        <span class="form-field__label">
+                                            <span class="form-field__title"><i class="fas fa-user-times"></i>Akta
+                                                Perceraian</span>
+                                            
+                                        </span>
+                                        <input type="text" name="akta_perceraian" value="{{ old('akta_perceraian') }}"
+                                            maxlength="100">
+                                    </label>
+                                    <label class="form-field">
+                                        <span class="form-field__label">
+                                            <span class="form-field__title"><i class="fas fa-calendar-times"></i>Tanggal
+                                                Perceraian</span>
+                                            
+                                        </span>
+                                        <input type="date" name="tanggal_perceraian"
+                                            value="{{ old('tanggal_perceraian') }}">
+                                    </label>
+                                    <label class="form-field">
+                                        <span class="form-field__label">
+                                            <span class="form-field__title"><i class="fas fa-wheelchair"></i>Jenis
+                                                Cacat</span>
+                                            
+                                        </span>
+                                        <select name="cacat_id">
+                                            <option value="">Tidak ada</option>
+                                            @foreach ($cacatOptions as $option)
+                                                <option value="{{ $option->id }}" @selected(old('cacat_id') == $option->id)>
+                                                    {{ $option->nama }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </label>
+                                    <label class="form-field">
+                                        <span class="form-field__label">
+                                            <span class="form-field__title"><i class="fas fa-pray"></i>Cara KB</span>
+                                            
+                                        </span>
+                                        <select name="cara_kb_id">
+                                            <option value="">Tidak menggunakan</option>
+                                            @foreach ($caraKbOptions as $option)
+                                                <option value="{{ $option->id }}" @selected(old('cara_kb_id') == $option->id)>
+                                                    {{ $option->nama }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </label>
+                                    <label class="form-field">
+                                        <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-users"></i>Suku</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <select name="suku_id">
                                             <option value="">Tidak diketahui</option>
@@ -1830,7 +1871,7 @@
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-female"></i>Sedang
                                                 Hamil?</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <select name="hamil">
                                             <option value="" @selected($hamilValue === '')>Tidak diketahui</option>
@@ -1840,19 +1881,8 @@
                                     </label>
                                     <label class="form-field">
                                         <span class="form-field__label">
-                                            <span class="form-field__title"><i class="fas fa-id-card"></i>Memiliki
-                                                KTP-el</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
-                                        </span>
-                                        <select name="ktp_el">
-                                            <option value="0" @selected($ktpElValue === '0')>Tidak</option>
-                                            <option value="1" @selected($ktpElValue === '1')>Ya</option>
-                                        </select>
-                                    </label>
-                                    <label class="form-field">
-                                        <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-tag"></i>Tag ID Card</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <input type="text" name="tag_id_card" value="{{ old('tag_id_card') }}"
                                             maxlength="100">
@@ -1861,7 +1891,7 @@
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-shield-alt"></i>ID
                                                 Asuransi</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <input type="text" name="id_asuransi" value="{{ old('id_asuransi') }}"
                                             maxlength="100">
@@ -1870,7 +1900,7 @@
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-hashtag"></i>No.
                                                 Asuransi</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <input type="text" name="no_asuransi" value="{{ old('no_asuransi') }}"
                                             maxlength="100">
@@ -1886,19 +1916,16 @@
                                             class="fas fa-map-marked-alt"></i></span>
                                     <div>
                                         <h2>Alamat &amp; Wilayah</h2>
-                                        <p>Perbarui domisili sesuai KK dan alamat terkini termasuk dusun/RW/RT.</p>
                                     </div>
                                 </div>
-                                <span class="form-section__badge form-section__badge--soft"><i
-                                        class="fas fa-map-marker-alt"></i> Lengkapi jika sudah diketahui.</span>
                             </div>
                             <div class="form-section__body">
-                                <div class="settings-form-grid two-columns">
+                                <div class="settings-form-grid four-columns">
                                     <label class="form-field form-field--full">
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-home"></i>Alamat Domisili
                                                 (sesuai KK)</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <textarea name="alamat" rows="2">{{ old('alamat') }}</textarea>
                                     </label>
@@ -1906,14 +1933,14 @@
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-map-marker-alt"></i>Alamat Saat
                                                 Ini</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <textarea name="alamat_sekarang" rows="2">{{ old('alamat_sekarang') }}</textarea>
                                     </label>
                                     <label class="form-field">
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-tree"></i>Dusun</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <select name="dusun_id">
                                             <option value="">Pilih dusun</option>
@@ -1927,7 +1954,7 @@
                                     <label class="form-field">
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-stream"></i>RW</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <select name="rw_id">
                                             <option value="">Pilih RW</option>
@@ -1941,7 +1968,7 @@
                                     <label class="form-field">
                                         <span class="form-field__label">
                                             <span class="form-field__title"><i class="fas fa-align-left"></i>RT</span>
-                                            <span class="form-field__tag form-field__tag--optional">Opsional</span>
+                                            
                                         </span>
                                         <select name="rt_id">
                                             <option value="">Pilih RT</option>
@@ -1955,20 +1982,18 @@
                                 </div>
                             </div>
                         </section>
-                    </div>
+                    </div> {{-- end resident-form__grid --}}
+                </div> {{-- end dialog__body --}}
 
-                    <div class="dialog__footer form-actions-bar">
-                        <button type="button" class="ghost-btn ghost-btn--subtle" data-modal-close>
-                            <i class="fas fa-arrow-left"></i>
-                            <span>Batal</span>
-                        </button>
-                        <button type="submit" class="primary-btn">
-                            <i class="fas fa-save"></i>
-                            <span id="residentFormSubmitLabel">Simpan Data</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <div class="dialog__footer form-actions-bar">
+                    <button type="button" class="ghost-btn ghost-btn--subtle" data-modal-close>
+                        <span>Batal</span>
+                    </button>
+                    <button type="submit" class="primary-btn">
+                        <span id="residentFormSubmitLabel">Simpan</span>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
     <div class="dialog-backdrop" id="residentDetailModal" aria-hidden="true">

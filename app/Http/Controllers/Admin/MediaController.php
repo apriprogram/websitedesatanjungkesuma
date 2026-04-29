@@ -78,4 +78,22 @@ class MediaController extends Controller
         // Return 404 if no image found
         abort(404);
     }
+
+    /**
+     * Upload an image from the WYSIWYG editor.
+     *
+     * @param Request $request
+     */
+    public function editorUpload(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|max:10240'
+        ]);
+
+        $path = safe_store($request->file('image'), 'editor-images');
+        
+        return response()->json([
+            'url' => asset('storage/' . ltrim($path, '/'))
+        ]);
+    }
 }

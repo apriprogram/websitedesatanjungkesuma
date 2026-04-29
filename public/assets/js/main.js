@@ -1,4 +1,4 @@
-﻿// Hero slider functionality
+// Hero slider functionality
 if (typeof currentSlideIndex === 'undefined') {
     var currentSlideIndex = 0;
 }
@@ -1422,6 +1422,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const openAdmin = () => {
+    if (window.isUserAuthenticated) {
+      window.location.href = '/admin/dashboard';
+      return;
+    }
     if (!adminModal) return;
     adminModal.classList.add('open');
     adminModal.setAttribute('aria-hidden', 'false');

@@ -41,34 +41,10 @@
     @include('frontend.partials.nav', ['navMenus' => $navMenus])
 
     <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <ul>
-            @foreach ($navTree as $item)
-                @php
-                    $children = $item->children->where('is_active', true)->sortBy('position');
-                    $menuId = 'nav-' . $loop->index;
-                @endphp
-                <li>
-                    <a href="{{ $resolveUrl($item) }}"
-                        @if($children->count()) onclick="toggleMobileSubmenu(event, '{{ $menuId }}')" @endif
-                        @if($item->target_blank) target="_blank" rel="noopener" @endif>
-                        {{ $item->title }}
-                    </a>
-                    @if($children->count())
-                        <ul class="mobile-submenu" id="{{ $menuId }}-submenu">
-                            @foreach ($children as $child)
-                                <li>
-                                    <a href="{{ $resolveUrl($child) }}" @if($child->target_blank) target="_blank" rel="noopener" @endif>
-                                        {{ $child->title }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </li>
-            @endforeach
-        </ul>
-    </div>
+    @include('frontend.partials.mobile-menu', [
+        'navMenus' => $navMenus ?? collect(),
+        'extraLinks' => [['title' => 'Transparansi Anggaran', 'url' => route('budget.transparency.page')]]
+    ])
 
     <main class="stats-page">
         <section class="stats-hero">

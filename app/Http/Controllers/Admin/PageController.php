@@ -62,8 +62,14 @@ class PageController extends Controller
     {
         $data = $this->validatePage($request);
 
+        // Auto-fill meta title & description
+        $data['meta_title'] = $data['title'];
+        $data['meta_description'] = \Illuminate\Support\Str::limit(strip_tags($data['content'] ?? ''), 150);
+
         if ($request->hasFile('feature_image')) {
             $data['feature_image'] = safe_store($request->file('feature_image'), 'page-images');
+        } elseif ($request->input('remove_feature_image') === '1') {
+            $data['feature_image'] = null;
         }
 
         $page = Page::create($data);
@@ -90,36 +96,102 @@ class PageController extends Controller
         return view('admin.pages.form', compact('page'));
     }
 
-    public function update(Request $request, Page $page)
+    public function update(Request $request, $id)
     {
-        $data = $this->validatePage($request, $page->id);
+        // 1. Manually resolve the page to prevent Route Model Binding 404s
+        $page = Page::find($id);
+        
+        if (!$page) {
+            \Illuminate\Support\Facades\Log::error("UPDATE FAILED: Page with ID {$id} not found.");
+            return redirect()->route('admin.pages.index')
+                ->with('status', 'Gagal: Halaman tidak ditemukan atau mungkin telah dihapus.')
+                ->with('status_variant', 'danger');
+        }
+
+        // 2. Critical Post Size Check
+        if ($request->isMethod('put') && empty($request->all()) && empty($request->file())) {
+            return back()->with('status', 'Gagal: Ukuran file terlalu besar untuk server Anda. Mohon unggah secara bertahap.')->with('status_variant', 'danger');
+        }
+
+        // 3. Validation
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'slug' => ['required', 'string', 'max:255', 'unique:pages,slug,' . $id],
+            'status' => ['required', 'in:draft,published,archived'],
+            'content' => ['nullable', 'string'],
+            'published_at' => ['nullable', 'date'],
+        ]);
+
+        // 4. Automation
+        $data['meta_title'] = $data['title'];
+        $data['meta_description'] = \Illuminate\Support\Str::limit(strip_tags($data['content'] ?? ''), 150);
+
+        if ($request->input('published_at') === '') {
+            $data['published_at'] = null;
+        }
+
+        $removeCover = $request->input('remove_feature_image') === '1';
+        $oldImagePath = null;
 
         if ($request->hasFile('feature_image')) {
             if ($page->feature_image) {
-                try {
-                    if (file_exists(public_path('storage/' . $page->feature_image))) {
-                        @unlink(public_path('storage/' . $page->feature_image));
-                    }
-                } catch (\Exception $e) {
-                    // Abaikan error
-                }
+                $oldImagePath = public_path('storage/' . $page->feature_image);
             }
             $data['feature_image'] = safe_store($request->file('feature_image'), 'page-images');
+        } elseif ($removeCover) {
+            if ($page->feature_image) {
+                $oldImagePath = public_path('storage/' . $page->feature_image);
+            }
+            $data['feature_image'] = null;
         }
 
-        $page->update($data);
+        // 5. Transactional Execution
+        try {
+            \Illuminate\Support\Facades\DB::beginTransaction();
+            
+            // Re-fetch to lock for update if possible
+            $activePage = Page::lockForUpdate()->find($id);
+            if (!$activePage) throw new \Exception('Halaman hilang saat proses simpan.');
 
-        $this->storeAttachments($request, $page);
+            $activePage->update($data);
+            $this->storeAttachments($request, $activePage);
 
-        ActivityLogger::log('page.updated', $page, 'Halaman diperbarui', [
-            'title' => $page->title,
-            'slug' => $page->slug,
-            'status' => $page->status,
-        ]);
+            if ($request->has('attachment_order')) {
+                $orderRaw = $request->input('attachment_order');
+                if (!empty($orderRaw)) {
+                    $orders = json_decode($orderRaw, true);
+                    if (is_array($orders)) {
+                        foreach ($orders as $index => $attId) {
+                            \App\Models\PageAttachment::where('id', $attId)
+                                ->where('page_id', $activePage->id)
+                                ->update(['sort_order' => $index]);
+                        }
+                    }
+                }
+            }
 
-        return redirect()->route('admin.pages.index')
-            ->with('status', 'Halaman berhasil diperbarui.')
-            ->with('status_variant', 'success');
+            \Illuminate\Support\Facades\DB::commit();
+
+
+            if ($oldImagePath && file_exists($oldImagePath)) {
+                @unlink($oldImagePath);
+            }
+            try {
+                ActivityLogger::log('page.updated', $activePage, 'Halaman diperbarui', [
+                    'title' => $activePage->title,
+                    'status' => $activePage->status,
+                ]);
+            } catch (\Throwable $e) {}
+
+            return redirect()->route('admin.pages.index')
+                ->with('status', 'Halaman berhasil diperbarui.')
+                ->with('status_variant', 'success');
+
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\DB::rollBack();
+            \Illuminate\Support\Facades\Log::error("CRITICAL UPDATE ERROR ID {$id}: " . $e->getMessage());
+            return back()->withInput()->with('status', 'Gagal menyimpan: ' . $e->getMessage())->with('status_variant', 'danger');
+        }
     }
 
     public function destroy(Page $page)
@@ -168,19 +240,44 @@ class PageController extends Controller
         if (! Schema::hasTable('page_attachments')) {
             return;
         }
+
+        $unifiedFiles = $request->file('unified_attachments', []);
+        foreach ($unifiedFiles as $file) {
+            if (! $file) continue;
+            $mime = $file->getClientMimeType();
+            $type = str_starts_with($mime, 'image/') ? 'image' : 'file';
+            
+            $size = $file->getSize();
+            $originalName = $file->getClientOriginalName();
+            $path = safe_store($file, 'page-attachments');
+            
+            PageAttachment::create([
+                'page_id' => $page->id,
+                'type' => $type,
+                'path' => $path,
+                'original_name' => $originalName,
+                'mime' => $mime,
+                'size' => $size,
+            ]);
+        }
+
         $files = $request->file('attachments_files', []);
         foreach ($files as $file) {
             if (! $file) {
                 continue;
             }
+            $size = $file->getSize();
+            $mime = $file->getClientMimeType();
+            $originalName = $file->getClientOriginalName();
             $path = safe_store($file, 'page-attachments');
+            
             PageAttachment::create([
                 'page_id' => $page->id,
                 'type' => 'file',
                 'path' => $path,
-                'original_name' => $file->getClientOriginalName(),
-                'mime' => class_exists('finfo') ? $file->getMimeType() : $file->getClientMimeType(),
-                'size' => $file->getSize(),
+                'original_name' => $originalName,
+                'mime' => $mime,
+                'size' => $size,
             ]);
         }
 
@@ -189,14 +286,18 @@ class PageController extends Controller
             if (! $image) {
                 continue;
             }
+            $size = $image->getSize();
+            $mime = $image->getClientMimeType();
+            $originalName = $image->getClientOriginalName();
             $path = safe_store($image, 'page-attachments');
+            
             PageAttachment::create([
                 'page_id' => $page->id,
                 'type' => 'image',
                 'path' => $path,
-                'original_name' => $image->getClientOriginalName(),
-                'mime' => class_exists('finfo') ? $image->getMimeType() : $image->getClientMimeType(),
-                'size' => $image->getSize(),
+                'original_name' => $originalName,
+                'mime' => $mime,
+                'size' => $size,
             ]);
         }
     }
@@ -208,8 +309,6 @@ class PageController extends Controller
             'slug' => ['required', 'string', 'max:255', Rule::unique('pages', 'slug')->ignore($ignoreId)],
             'status' => ['required', Rule::in(['draft', 'published', 'archived'])],
             'feature_image' => ['nullable', 'image', 'max:4096'],
-            'meta_title' => ['nullable', 'string', 'max:255'],
-            'meta_description' => ['nullable', 'string'],
             'content' => ['nullable', 'string'],
             'published_at' => ['nullable', 'date'],
         ]);

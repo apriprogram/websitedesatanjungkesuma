@@ -349,6 +349,10 @@ class PendudukController extends Controller
     {
         abort_unless($request->user()?->is_admin, 403);
 
+        // Tingkatkan limit untuk proses besar
+        set_time_limit(0);
+        ini_set('memory_limit', '1G');
+
         try {
             $validated = $request->validate([
                 'file' => ['required', 'file', 'mimes:xlsx,xls'],
@@ -421,6 +425,26 @@ class PendudukController extends Controller
         }
 
         $this->warmTerritoryCaches();
+        
+        // Reset cache lokal karena kita akan truncate wilayah
+        $this->localReferenceCache = [];
+        $this->localDusunCache = [];
+        $this->localRwCache = [];
+        $this->localRtCache = [];
+        $this->localKeluargaCache = [];
+
+        // Kosongkan data lama sesuai permintaan: Log Kematian/Pindah serta Struktur Wilayah (Dusun/RW/RT)
+        try {
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            DB::table('penduduk_meninggals')->truncate();
+            DB::table('penduduk_pindahs')->truncate();
+            DB::table('rts')->truncate();
+            DB::table('rws')->truncate();
+            DB::table('dusuns')->truncate();
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        } catch (\Throwable $e) {
+            // Lanjut jika gagal
+        }
 
         $result = [
             'created' => 0,
@@ -430,7 +454,7 @@ class PendudukController extends Controller
             'errors' => [],
         ];
 
-        $importedIds = [];
+        $importedNiks = [];
 
         // Process rows AFTER the header row
         foreach ($rows as $rowIndex => $row) {
@@ -452,25 +476,28 @@ class PendudukController extends Controller
 
                 $payload = $this->transformImportRow($data);
 
-                DB::transaction(function () use (&$result, &$importedIds, $payload) {
+                DB::transaction(function () use (&$result, &$importedNiks, $payload) {
                     $existing = null;
-                    if (!empty($payload['id'])) {
-                        $existing = Penduduk::find($payload['id']);
-                    }
-                    if (!$existing && !empty($payload['nik'])) {
-                        $existing = Penduduk::query()->where('nik', $payload['nik'])->first();
+                    if (!empty($payload['nik'])) {
+                        // Gunakan withTrashed() agar tidak kena duplicate entry pada data yang sudah di-soft delete
+                        $existing = Penduduk::withTrashed()->where('nik', $payload['nik'])->first();
                     }
 
                     $saveData = $payload;
                     unset($saveData['id']);
 
                     if ($existing) {
+                        if ($existing->trashed()) {
+                            $existing->restore();
+                        }
+                        
+                        // Jangan update foto jika data sudah ada sesuai permintaan user
                         $existing->update($saveData);
-                        $importedIds[] = $existing->id;
+                        $importedNiks[] = $existing->nik;
                         $result['updated']++;
                     } else {
                         $newRecord = Penduduk::create($saveData);
-                        $importedIds[] = $newRecord->id;
+                        $importedNiks[] = $newRecord->nik;
                         $result['created']++;
                     }
                 });
@@ -483,9 +510,9 @@ class PendudukController extends Controller
             }
         }
 
-        // Hapus data yang tidak ada di file excel yang diimpor
-        if (!empty($importedIds)) {
-            $toDelete = Penduduk::whereNotIn('id', $importedIds)->get();
+        // Hapus data yang tidak ada di file excel yang diimpor (Sinkronisasi)
+        if (!empty($importedNiks)) {
+            $toDelete = Penduduk::whereNotIn('nik', $importedNiks)->get();
             $deletedCount = 0;
 
             foreach ($toDelete as $penduduk) {
@@ -496,6 +523,11 @@ class PendudukController extends Controller
             }
 
             $result['deleted'] = $deletedCount;
+            
+            // Cleanup keluarga yang sudah tidak memiliki anggota
+            try {
+                Keluarga::whereDoesntHave('penduduks')->delete();
+            } catch (\Throwable $e) {}
         }
 
         if ($result['created'] || $result['updated'] || $result['deleted']) {
@@ -555,6 +587,49 @@ class PendudukController extends Controller
         }
 
         return back()->withErrors($errors);
+    }
+
+    public function destroyAll(Request $request): RedirectResponse
+    {
+        abort_unless($request->user()?->is_admin, 403);
+
+        try {
+            // Hapus semua file foto penduduk sebelum truncate database
+            $allPenduduk = Penduduk::withTrashed()->get();
+            foreach ($allPenduduk as $penduduk) {
+                $this->deletePhotoFiles($penduduk);
+            }
+
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            
+            // Truncate tabel log dan relasi
+            DB::table('penduduk_meninggals')->truncate();
+            DB::table('penduduk_pindahs')->truncate();
+            
+            // Truncate tabel penduduk dan keluarga
+            DB::table('penduduks')->truncate();
+            DB::table('keluargas')->truncate();
+            
+            // Truncate tabel wilayah
+            DB::table('rts')->truncate();
+            DB::table('rws')->truncate();
+            DB::table('dusuns')->truncate();
+            
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+            ActivityLogger::log('penduduk.bulk_deleted_all', $request->user(), 'Seluruh data penduduk dan wilayah dikosongkan');
+
+            return redirect()
+                ->route('admin.penduduks.index')
+                ->with('status', 'Seluruh data penduduk dan wilayah berhasil dihapus.')
+                ->with('status_variant', 'danger')
+                ->with('status_description', 'Sistem sekarang bersih dan siap untuk impor data baru.');
+        } catch (\Exception $exception) {
+            return back()
+                ->with('status', 'Gagal menghapus data.')
+                ->with('status_variant', 'warning')
+                ->with('status_description', $exception->getMessage());
+        }
     }
 
     public function exportExcel(Request $request): StreamedResponse
@@ -807,7 +882,8 @@ class PendudukController extends Controller
             })
             ->when($filters['status_dasar_id'], fn($query, $statusId) => $query->where('status_dasar_id', $statusId))
             ->when($filters['dusun_id'], fn($query, $dusunId) => $query->where('dusun_id', $dusunId))
-            ->orderBy('nama');
+            ->orderBy('no_kk')
+            ->orderBy('kk_level_id');
     }
 
     /**
@@ -1473,7 +1549,7 @@ class PendudukController extends Controller
         if (!$payload['rt_id'])
             $payload['rt_id'] = $defaultTerritory['rt_id'];
 
-        $this->ensureKeluargaExists($payload['no_kk']);
+        $this->ensureKeluargaRecord($payload);
 
         return $payload;
     }
@@ -1521,6 +1597,12 @@ class PendudukController extends Controller
      * @param class-string<\Illuminate\Database\Eloquent\Model> $model
      * @param array<string,mixed> $row
      */
+    private $localReferenceCache = [];
+    private $localDusunCache = [];
+    private $localRwCache = [];
+    private $localRtCache = [];
+    private $localKeluargaCache = [];
+
     private function resolveReferenceId(string $model, array $row, string $idKey, string $nameKey, bool $nullable = false): ?int
     {
         $idValue = $row[$idKey] ?? null;
@@ -1537,18 +1619,17 @@ class PendudukController extends Controller
             throw new RuntimeException("Kolom {$nameKey} wajib diisi.");
         }
 
-        $lookup = $this->referenceLookup($model);
-        $key = Str::lower(trim((string) $nameValue));
-
-        if (!isset($lookup[$key])) {
-            if ($nullable) {
-                return null;
-            }
-
-            throw new RuntimeException("Referensi {$nameKey} '{$nameValue}' tidak ditemukan.");
+        $name = trim((string) $nameValue);
+        $cacheKey = $model . '|' . Str::lower($name);
+        
+        if (isset($this->localReferenceCache[$cacheKey])) {
+            return $this->localReferenceCache[$cacheKey];
         }
 
-        return $lookup[$key];
+        $record = $model::firstOrCreate(['nama' => $name]);
+        $this->localReferenceCache[$cacheKey] = $record->id;
+        
+        return $record->id;
     }
 
     /**
@@ -1584,14 +1665,17 @@ class PendudukController extends Controller
             throw new RuntimeException('Kolom dusun wajib diisi.');
         }
 
-        $key = $this->normaliseCode((string) $name);
-        $id = $this->dusunCache[$key] ?? null;
+        $nameTrimmed = trim((string) $name);
+        $cacheKey = Str::lower($nameTrimmed);
 
-        if (!$id) {
-            throw new RuntimeException("Dusun '{$name}' tidak ditemukan.");
+        if (isset($this->localDusunCache[$cacheKey])) {
+            return $this->localDusunCache[$cacheKey];
         }
 
-        return $id;
+        $dusun = Dusun::firstOrCreate(['nama' => $nameTrimmed]);
+        $this->localDusunCache[$cacheKey] = $dusun->id;
+        
+        return $dusun->id;
     }
 
     private function resolveNullableDusun(array $row): ?int
@@ -1618,16 +1702,20 @@ class PendudukController extends Controller
             throw new RuntimeException('Kolom RW wajib diisi.');
         }
 
-        $key = $dusunId . '|' . $this->normaliseCode((string) $value);
-        $alternate = $dusunId . '|' . ltrim($this->normaliseCode((string) $value), '0');
+        $valTrimmed = trim((string) $value);
+        $cacheKey = $dusunId . '|' . Str::lower($valTrimmed);
 
-        $id = $this->rwCache[$key] ?? $this->rwCache[$alternate] ?? null;
-
-        if (!$id) {
-            throw new RuntimeException("RW '{$value}' tidak ditemukan untuk dusun tersebut.");
+        if (isset($this->localRwCache[$cacheKey])) {
+            return $this->localRwCache[$cacheKey];
         }
 
-        return $id;
+        $rw = Rw::firstOrCreate([
+            'dusun_id' => $dusunId,
+            'nomor' => $valTrimmed
+        ]);
+        $this->localRwCache[$cacheKey] = $rw->id;
+
+        return $rw->id;
     }
 
     private function resolveNullableRw(array $row, ?int $dusunId): ?int
@@ -1658,16 +1746,20 @@ class PendudukController extends Controller
             throw new RuntimeException('Kolom RT wajib diisi.');
         }
 
-        $key = $rwId . '|' . $this->normaliseCode((string) $value);
-        $alternate = $rwId . '|' . ltrim($this->normaliseCode((string) $value), '0');
+        $valTrimmed = trim((string) $value);
+        $cacheKey = $rwId . '|' . Str::lower($valTrimmed);
 
-        $id = $this->rtCache[$key] ?? $this->rtCache[$alternate] ?? null;
-
-        if (!$id) {
-            throw new RuntimeException("RT '{$value}' tidak ditemukan untuk RW tersebut.");
+        if (isset($this->localRtCache[$cacheKey])) {
+            return $this->localRtCache[$cacheKey];
         }
 
-        return $id;
+        $rt = Rt::firstOrCreate([
+            'rw_id' => $rwId,
+            'nomor' => $valTrimmed
+        ]);
+        $this->localRtCache[$cacheKey] = $rt->id;
+
+        return $rt->id;
     }
 
     private function resolveNullableRt(array $row, ?int $rwId): ?int
@@ -1683,13 +1775,34 @@ class PendudukController extends Controller
         }
     }
 
-    private function ensureKeluargaExists(string $noKk): void
+    private function ensureKeluargaRecord(array $payload): void
     {
-        $exists = Keluarga::query()->where('no_kk', $noKk)->exists();
-
-        if (!$exists) {
-            throw new RuntimeException("No. KK '{$noKk}' belum terdaftar di sistem.");
+        $noKk = $payload['no_kk'];
+        
+        if (isset($this->localKeluargaCache[$noKk])) {
+            return;
         }
+
+        // Gunakan withTrashed() untuk menghindari duplicate entry pada field unik
+        $keluarga = Keluarga::withTrashed()->where('no_kk', $noKk)->first();
+
+        $data = [
+            'dusun_id' => $payload['dusun_id'] ?? null,
+            'rw_id' => $payload['rw_id'] ?? null,
+            'rt_id' => $payload['rt_id'] ?? null,
+            'alamat' => $payload['alamat'] ?? null,
+        ];
+
+        if ($keluarga) {
+            if ($keluarga->trashed()) {
+                $keluarga->restore();
+            }
+            $keluarga->update($data);
+        } else {
+            $keluarga = Keluarga::create(array_merge(['no_kk' => $noKk], $data));
+        }
+
+        $this->localKeluargaCache[$noKk] = $keluarga->id;
     }
 
     private function streamExcel(Spreadsheet $spreadsheet, string $filename): StreamedResponse

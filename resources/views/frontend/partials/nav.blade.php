@@ -2,6 +2,8 @@
     use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Str;
 
+    echo "<script>window.isUserAuthenticated = " . (auth()->check() ? 'true' : 'false') . ";</script>";
+
     $navTree = ($navMenus ?? collect())
         ->where('is_active', true)
         ->whereNull('parent_id')
@@ -25,14 +27,23 @@
                 $url = url($item->page_slug);
             }
 
+            $title = $item->title;
+            $displayUrl = $url;
+            $isAuth = auth()->check();
+
+            if ($isAuth && (Str::lower($title) === 'login' || Str::lower($title) === 'masuk')) {
+                $title = 'Dashboard';
+                $displayUrl = route('admin.dashboard');
+            }
+
             $html .= '<li>';
-            $html .= '<a href="' . e($url) . '"' . ($item->target_blank ? ' target="_blank"' : '') . '>';
+            $html .= '<a href="' . e($displayUrl) . '"' . ($item->target_blank ? ' target="_blank"' : '') . '>';
 
             if ($item->icon) {
                 $html .= '<i class="' . e($item->icon) . '"></i> ';
             }
 
-            $html .= e($item->title) . '</a>';
+            $html .= e($title) . '</a>';
 
             if ($children->count()) {
                 $html .= '<ul class="dropdown-menu">' . $renderMenu($children) . '</ul>';

@@ -87,11 +87,48 @@ document.addEventListener('DOMContentLoaded', () => {
         : {};
     const photoRemoveMap = residentForm
         ? {
-              foto_profil: residentForm.querySelector('input[name="remove_foto_profil"]'),
-              foto_ktp: residentForm.querySelector('input[name="remove_foto_ktp"]'),
-              foto_kk: residentForm.querySelector('input[name="remove_foto_kk"]'),
+              foto_profil: residentForm.querySelector('[data-photo-remove="foto_profil"]'),
+              foto_ktp: residentForm.querySelector('[data-photo-remove="foto_ktp"]'),
+              foto_kk: residentForm.querySelector('[data-photo-remove="foto_kk"]'),
           }
         : {};
+    const photoFrameMap = residentForm
+        ? {
+              foto_profil: residentForm.querySelector('[data-photo-frame="foto_profil"]'),
+              foto_ktp: residentForm.querySelector('[data-photo-frame="foto_ktp"]'),
+              foto_kk: residentForm.querySelector('[data-photo-frame="foto_kk"]'),
+          }
+        : {};
+    const photoOverlayMap = residentForm
+        ? {
+              foto_profil: residentForm.querySelector('[data-photo-delete-overlay="foto_profil"]'),
+              foto_ktp: residentForm.querySelector('[data-photo-delete-overlay="foto_ktp"]'),
+              foto_kk: residentForm.querySelector('[data-photo-delete-overlay="foto_kk"]'),
+          }
+        : {};
+    const photoDeleteBtnMap = residentForm
+        ? {
+              foto_profil: residentForm.querySelector('[data-photo-delete="foto_profil"]'),
+              foto_ktp: residentForm.querySelector('[data-photo-delete="foto_ktp"]'),
+              foto_kk: residentForm.querySelector('[data-photo-delete="foto_kk"]'),
+          }
+        : {};
+    const photoUndoBtnMap = residentForm
+        ? {
+              foto_profil: residentForm.querySelector('[data-photo-undo="foto_profil"]'),
+              foto_ktp: residentForm.querySelector('[data-photo-undo="foto_ktp"]'),
+              foto_kk: residentForm.querySelector('[data-photo-undo="foto_kk"]'),
+          }
+        : {};
+    const photoInputMap = residentForm
+        ? {
+              foto_profil: residentForm.querySelector('[data-photo-input="foto_profil"]'),
+              foto_ktp: residentForm.querySelector('[data-photo-input="foto_ktp"]'),
+              foto_kk: residentForm.querySelector('[data-photo-input="foto_kk"]'),
+          }
+        : {};
+    // Track whether each photo slot has a stored photo (url)
+    const photoUrlState = { foto_profil: '', foto_ktp: '', foto_kk: '' };
 
     const importForm = importModal?.querySelector('form') ?? null;
     const importTrigger = importModal?.querySelector('[data-import-trigger]') ?? null;
@@ -188,8 +225,15 @@ document.addEventListener('DOMContentLoaded', () => {
         element?.focus({ preventScroll: true });
     };
 
+    const closeAllActionMenus = () => {
+        document.querySelectorAll('details[data-action-menu][open]').forEach(menu => {
+            menu.removeAttribute('open');
+        });
+    };
+
     const openModal = (modal) => {
         if (!modal) return;
+        closeAllActionMenus();
         modal.setAttribute('aria-hidden', 'false');
         modal.classList.add('is-visible');
         syncBodyModalState();
@@ -242,30 +286,46 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const setPhotoDeleteState = (key, marked) => {
+        const overlay = photoOverlayMap[key];
+        const frame = photoFrameMap[key];
+        const deleteBtn = photoDeleteBtnMap[key];
+        const undoBtn = photoUndoBtnMap[key];
+        const removeInput = photoRemoveMap[key];
+        if (overlay) overlay.classList.toggle('is-active', marked);
+        if (frame) frame.classList.toggle('is-marked', marked);
+        if (deleteBtn) deleteBtn.style.display = marked ? 'none' : (photoUrlState[key] ? 'inline-flex' : 'none');
+        if (undoBtn) undoBtn.style.display = marked ? 'inline-flex' : 'none';
+        if (removeInput) removeInput.value = marked ? '1' : '';
+    };
+
     const setPhotoPreview = (key, url = '') => {
         const container = photoPreviewMap[key];
+        const deleteBtn = photoDeleteBtnMap[key];
         if (!container) return;
+        photoUrlState[key] = url;
         container.innerHTML = '';
         if (url) {
-            const label = key.replace(/_/g, ' ');
             const img = document.createElement('img');
             img.src = url;
-            img.alt = `Foto ${label}`;
+            img.alt = `Foto ${key.replace(/_/g, ' ')}`;
             container.appendChild(img);
+            if (deleteBtn) deleteBtn.style.display = 'inline-flex';
         } else {
-            const placeholder = document.createElement('span');
-            placeholder.className = 'media-preview__placeholder';
-            placeholder.textContent = 'Belum ada foto.';
-            container.appendChild(placeholder);
+            const ph = document.createElement('div');
+            ph.className = 'photo-box__placeholder';
+            ph.innerHTML = '<i class="fas fa-image"></i><span>Belum ada foto</span>';
+            container.appendChild(ph);
+            if (deleteBtn) deleteBtn.style.display = 'none';
         }
+        setPhotoDeleteState(key, false);
     };
 
     const resetPhotoControls = () => {
-        Object.keys(photoPreviewMap).forEach((key) => setPhotoPreview(key, ''));
-        Object.values(photoRemoveMap).forEach((checkbox) => {
-            if (checkbox) {
-                checkbox.checked = checkbox.defaultChecked;
-            }
+        Object.keys(photoPreviewMap).forEach((key) => {
+            setPhotoPreview(key, '');
+            const fileInput = photoInputMap[key];
+            if (fileInput) fileInput.value = '';
         });
     };
 
@@ -599,22 +659,14 @@ document.addEventListener('DOMContentLoaded', () => {
             setPhotoPreview('foto_profil', payload.foto_profil_url || '');
             setPhotoPreview('foto_ktp', payload.foto_ktp_url || '');
             setPhotoPreview('foto_kk', payload.foto_kk_url || '');
-            Object.values(photoRemoveMap).forEach((checkbox) => {
-                if (checkbox) {
-                    checkbox.checked = false;
-                }
-            });
             if (formTitle) {
                 formTitle.textContent = 'Edit Data Penduduk';
             }
             if (formSubtitle) {
-                const subtitle = payload.nama
-                    ? `Perbarui informasi penduduk <span class="resident-name-highlight">${payload.nama}</span>.`
-                    : 'Perbarui informasi penduduk.';
-                formSubtitle.innerHTML = subtitle;
+                formSubtitle.innerHTML = '';
             }
             if (submitLabel) {
-                submitLabel.textContent = 'Simpan Perubahan';
+                submitLabel.textContent = 'Simpan';
             }
         } else {
             residentForm.action = createAction;
@@ -629,13 +681,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 formTitle.textContent = 'Tambah Data Penduduk';
             }
             if (formSubtitle) {
-                formSubtitle.textContent = 'Lengkapi formulir untuk menambahkan penduduk baru ke sistem.';
+                formSubtitle.textContent = '';
             }
             if (submitLabel) {
-                submitLabel.textContent = 'Simpan Data';
+                submitLabel.textContent = 'Simpan';
             }
         }
     };
+
+    // ─── Photo Delete / Undo / File-input handlers ───────────────────────────
+    Object.entries(photoDeleteBtnMap).forEach(([key, btn]) => {
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+            setPhotoDeleteState(key, true);
+        });
+    });
+
+    Object.entries(photoUndoBtnMap).forEach(([key, btn]) => {
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+            setPhotoDeleteState(key, false);
+        });
+    });
+
+    Object.entries(photoInputMap).forEach(([key, input]) => {
+        if (!input) return;
+        input.addEventListener('change', () => {
+            const file = input.files?.[0];
+            if (!file) return;
+            // Cancel any pending deletion
+            setPhotoDeleteState(key, false);
+            // Show local preview of newly selected file
+            const container = photoPreviewMap[key];
+            if (container) {
+                container.innerHTML = '';
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.alt = `Preview ${key}`;
+                container.appendChild(img);
+            }
+            // Hide delete button since a new file was chosen (no stored photo to delete)
+            const deleteBtn = photoDeleteBtnMap[key];
+            if (deleteBtn) deleteBtn.style.display = 'none';
+        });
+    });
 
     document.querySelectorAll('[data-modal-open="residentFormModal"]').forEach((button) => {
         button.addEventListener('click', () => {

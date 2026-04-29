@@ -162,43 +162,10 @@
     @include('frontend.partials.nav', ['navMenus' => $navMenus ?? collect()])
 
     <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <ul>
-            @php
-                $navTree = ($navMenus ?? collect())->where('is_active', true)->whereNull('parent_id')->sortBy('position');
-                $resolveUrl = function ($item) {
-                    if ($item->type === 'custom' && $item->url) return $item->url;
-                    if ($item->page_slug) return url($item->page_slug);
-                    return '#';
-                };
-            @endphp
-            @foreach ($navTree as $item)
-                @php
-                    $children = $item->children->where('is_active', true)->sortBy('position');
-                    $menuId = 'nav-' . $loop->index;
-                @endphp
-                <li>
-                    <a href="{{ $resolveUrl($item) }}"
-                        @if($children->count()) onclick="toggleMobileSubmenu(event, '{{ $menuId }}')" @endif
-                        @if($item->target_blank) target="_blank" rel="noopener" @endif>
-                        {{ $item->title }}
-                    </a>
-                    @if($children->count())
-                        <ul class="mobile-submenu" id="{{ $menuId }}-submenu">
-                            @foreach ($children as $child)
-                                <li>
-                                    <a href="{{ $resolveUrl($child) }}" @if($child->target_blank) target="_blank" rel="noopener" @endif>
-                                        {{ $child->title }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </li>
-            @endforeach
-            <li><a href="{{ route('budget.transparency.page') }}">Transparansi Anggaran</a></li>
-        </ul>
-    </div>
+    @include('frontend.partials.mobile-menu', [
+        'navMenus' => $navMenus ?? collect(),
+        'extraLinks' => [['title' => 'Transparansi Anggaran', 'url' => route('budget.transparency.page')]]
+    ])
 
     <main class="page-main">
         <section class="page-hero">
@@ -224,8 +191,12 @@
                 </div>
             @endif
 
+            <div class="page-detail__body">
+                {!! $page->content !!}
+            </div>
+
             @if($imageAttachments->count())
-                <div class="announcement-attachments" style="margin-top:8px; margin-bottom: 20px;">
+                <div class="announcement-attachments" style="margin-top: 20px; margin-bottom: 8px;">
                     @foreach($imageAttachments as $att)
                         @if($att->url)
                             <div class="attachment-card">
@@ -237,10 +208,6 @@
                     @endforeach
                 </div>
             @endif
-
-            <div class="page-detail__body">
-                {!! $page->content !!}
-            </div>
 
             @if($fileAttachments->count())
                 <div class="announcement-attachments">

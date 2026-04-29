@@ -198,7 +198,7 @@
                                                 data-page-published="{{ optional($page->published_at)->translatedFormat('d M Y H:i') ?? '-' }}"
                                                 data-page-meta-title="{{ $page->meta_title ?: '-' }}"
                                                 data-page-meta-description="{{ $page->meta_description ?: '-' }}"
-                                                data-page-attachments="@json($attachments->map(function ($att) { return ['name' => $att->original_name ?: basename($att->path), 'url' => $att->url, 'type' => $att->type]; })->values())"
+                                                data-page-attachments="{{ json_encode($attachments->map(function ($att) { return ['name' => $att->original_name ?: basename($att->path), 'url' => asset('storage/' . ltrim($att->path, '/')), 'type' => $att->type]; })->values()) }}"
                                                 data-page-content="{{ \Illuminate\Support\Str::limit(strip_tags($page->content), 300) }}"
                                                 data-page-feature="{{ $page->feature_image ? (\Illuminate\Support\Str::startsWith($page->feature_image, ['http://', 'https://']) ? $page->feature_image : asset('storage/' . ltrim($page->feature_image, '/'))) : '' }}"
                                                 role="menuitem">
@@ -255,11 +255,12 @@
                     <div><dt>Diperbarui</dt><dd data-detail="updated"></dd></div>
                     <div><dt>Meta Title</dt><dd data-detail="metaTitle"></dd></div>
                     <div><dt>Meta Description</dt><dd data-detail="metaDesc"></dd></div>
-                    <div><dt>Lampiran</dt><dd data-detail="attachments" class="detail-attachments"></dd></div>
-                    <div><dt>Ringkasan Konten</dt><dd data-detail="content"></dd></div>
-                    <div class="detail-image-row" style="margin-top:10px; display:none;" data-detail="feature-wrapper">
+                    <div class="full-width"><dt>Lampiran</dt><dd data-detail="attachments" class="detail-attachments"></dd></div>
+                    <div class="full-width"><dt>Ringkasan Konten</dt><dd data-detail="content"></dd></div>
+
+                    <div class="full-width detail-image-row" style="margin-top:10px; display:none;" data-detail="feature-wrapper">
                         <dt>Feature Image</dt>
-                        <dd><img src="" alt="Feature image" style="max-width: 220px; border-radius: 10px; border:1px solid #e5e7eb;" data-detail="feature"></dd>
+                        <dd><img src="" alt="Feature image" data-detail="feature"></dd>
                     </div>
                 </dl>
             </div>
@@ -272,11 +273,13 @@
     {{-- Delete Confirm Modal --}}
     <div class="news-modal" id="pageDeleteModal" aria-hidden="true">
         <div class="news-modal__overlay" data-delete-close></div>
-        <div class="news-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+        <div class="news-modal__dialog news-modal__dialog--confirm" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
             <header class="news-modal__header">
-                <div>
+                <div class="confirm-header-content">
+                    <div class="confirm-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
                     <h3 id="deleteModalTitle">Hapus Halaman</h3>
-                    <p>Konfirmasi penghapusan data halaman.</p>
                 </div>
                 <button type="button" class="news-modal__close" data-delete-close aria-label="Tutup modal">
                     <i class="fas fa-times"></i>
@@ -287,7 +290,7 @@
             </div>
             <footer class="news-modal__footer">
                 <button type="button" class="ghost-btn" data-delete-close>Batal</button>
-                <button type="button" class="primary-btn" id="confirmDeleteBtn">Hapus</button>
+                <button type="button" class="primary-btn danger-btn" id="confirmDeleteBtn">Hapus</button>
             </footer>
         </div>
     </div>
@@ -334,7 +337,7 @@
 
             if (btn.dataset.pageFeature) {
                 detailTargets.feature.src = btn.dataset.pageFeature;
-                detailTargets.featureWrapper.style.display = 'flex';
+                detailTargets.featureWrapper.style.display = 'block';
             } else {
                 detailTargets.featureWrapper.style.display = 'none';
             }
@@ -353,13 +356,26 @@
                     detailTargets.attachments.textContent = '-';
                 } else {
                     attachments.forEach(att => {
-                        const link = document.createElement('a');
-                        link.href = att.url || '#';
-                        link.target = '_blank';
-                        link.rel = 'noopener';
-                        link.className = 'detail-chip';
-                        link.textContent = att.name || att.url || 'Lampiran';
-                        detailTargets.attachments.appendChild(link);
+                        if (att.type === 'image') {
+                            const imgWrapper = document.createElement('a');
+                            imgWrapper.href = att.url || '#';
+                            imgWrapper.target = '_blank';
+                            imgWrapper.rel = 'noopener';
+                            imgWrapper.className = 'detail-attachment-img';
+                            const img = document.createElement('img');
+                            img.src = att.url || '';
+                            img.alt = att.name;
+                            imgWrapper.appendChild(img);
+                            detailTargets.attachments.appendChild(imgWrapper);
+                        } else {
+                            const link = document.createElement('a');
+                            link.href = att.url || '#';
+                            link.target = '_blank';
+                            link.rel = 'noopener';
+                            link.className = 'detail-chip';
+                            link.innerHTML = '<i class="fas fa-paperclip"></i> ' + (att.name || 'Lampiran');
+                            detailTargets.attachments.appendChild(link);
+                        }
                     });
                 }
             }
@@ -401,6 +417,45 @@
                 if (deleteFormRef) deleteFormRef.submit();
             });
         }
+
+        // Dropdown Auto-close & Animation Logic
+        function closeDetails(details) {
+            details.classList.add('is-closing');
+            setTimeout(() => {
+                details.removeAttribute('open');
+                details.classList.remove('is-closing');
+            }, 260); // Matches CSS transition duration
+        }
+
+        document.addEventListener('click', (e) => {
+            const isDropdown = e.target.closest('details[data-action-menu]');
+            
+            // Close all if clicking outside
+            if (!isDropdown) {
+                document.querySelectorAll('details[data-action-menu][open]').forEach(details => {
+                    closeDetails(details);
+                });
+                return;
+            }
+
+            // If clicking a summary to open/close
+            const summary = e.target.closest('summary');
+            if (summary) {
+                e.preventDefault();
+                const currentDetails = summary.closest('details');
+
+                if (currentDetails.hasAttribute('open')) {
+                    closeDetails(currentDetails);
+                } else {
+                    currentDetails.setAttribute('open', '');
+                    document.querySelectorAll('details[data-action-menu][open]').forEach(details => {
+                        if (details !== currentDetails) {
+                            closeDetails(details);
+                        }
+                    });
+                }
+            }
+        });
     });
 </script>
 @endpush

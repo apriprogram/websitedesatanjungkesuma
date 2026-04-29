@@ -4,6 +4,296 @@
 
 @push('head')
     <link rel="stylesheet" href="{{ asset('assets/css/admin-news.css') }}">
+    <style>
+        /* Drag and Drop Redesign */
+        .file-drop-zone {
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            background: #f8fafc;
+            transition: all 0.2s ease;
+            margin-bottom: 1.5rem;
+        }
+        .file-drop-zone.drag-over {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        .drop-icon {
+            font-size: 3rem;
+            color: #94a3b8;
+            margin-bottom: 1rem;
+        }
+        .file-drop-zone h4 {
+            font-size: 1.1rem;
+            color: #0f172a;
+            margin: 0 0 0.5rem;
+            font-weight: 600;
+        }
+        .file-drop-zone p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin: 0 0 1.25rem;
+        }
+        .btn-browse {
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            color: #334155;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+        .btn-browse:hover {
+            border-color: #94a3b8;
+            background: #f1f5f9;
+        }
+
+        .btn-remove-preview {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            z-index: 10;
+            display: none;
+        }
+
+        .btn-remove-preview:hover {
+            background: #ef4444;
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        .news-upload-card__preview.is-visible .btn-remove-preview {
+            display: flex;
+        }
+
+        .attachments-list-styled {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .attachment-file-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+        }
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #334155;
+            font-weight: 500;
+            font-size: 0.95rem;
+            word-break: break-all;
+        }
+        .file-info i {
+            color: #64748b;
+        }
+        .file-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .file-size {
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+        .btn-remove, .btn-download {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.25rem;
+            border-radius: 4px;
+        }
+        .btn-remove:hover { color: #ef4444; background: #fef2f2; }
+        .btn-download:hover { color: #3b82f6; background: #eff6ff; }
+
+        .attachments-gallery-styled {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .attachment-image-card {
+            position: relative;
+            width: 140px;
+            height: 100px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .attachment-image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .attachment-size {
+            position: absolute;
+            bottom: 4px;
+            left: 4px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            backdrop-filter: blur(4px);
+        }
+        .btn-remove-img {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            color: #ef4444;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            font-size: 0.8rem;
+        }
+        .btn-remove-img:hover {
+            background: #ef4444;
+            color: #fff;
+        }
+        .attachment-file-card, .attachment-image-card {
+            cursor: grab;
+        }
+        .attachment-file-card:active, .attachment-image-card:active {
+            cursor: grabbing;
+        }
+        .sortable-ghost {
+            opacity: 0.4;
+            background: #e2e8f0;
+        }
+
+        /* Custom Confirmation Modal */
+        .confirm-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .confirm-modal.is-visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .confirm-modal__overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+        }
+        .confirm-modal__container {
+            position: relative;
+            background: #fff;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            padding: 2rem;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+        }
+        .confirm-modal.is-visible .confirm-modal__container {
+            transform: scale(1) translateY(0);
+        }
+        .confirm-modal__icon {
+            width: 64px;
+            height: 64px;
+            background: #fef2f2;
+            color: #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1.5rem;
+        }
+        .confirm-modal h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.75rem;
+        }
+        .confirm-modal p {
+            font-size: 0.95rem;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        .confirm-modal__actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .confirm-modal__btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            flex: 1;
+        }
+        .confirm-modal__btn--cancel {
+            background: #f1f5f9;
+            color: #475569;
+        }
+        .confirm-modal__btn--cancel:hover {
+            background: #e2e8f0;
+        }
+        .confirm-modal__btn--confirm {
+            background: #ef4444;
+            color: #fff;
+            box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);
+        }
+        .confirm-modal__btn--confirm:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.3);
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -48,7 +338,7 @@
         </section>
 
         <form id="page-form" class="news-form" method="post" enctype="multipart/form-data"
-              action="{{ $page->exists ? route('admin.pages.update', $page) : route('admin.pages.store') }}">
+              action="{{ $page->exists ? route('admin.pages.update', ['page' => $page->id]) : route('admin.pages.store') }}">
             @csrf
             @if($page->exists)
                 @method('PUT')
@@ -72,16 +362,7 @@
                             <small class="news-input-control__hint">Gunakan huruf kecil dan tanda hubung</small>
                             <input type="text" id="pageSlugInput" name="slug" value="{{ old('slug', $page->slug) }}" placeholder="contoh: profil-desa" required>
                         </div>
-                        <div class="news-form-grid">
-                            <div class="news-input-control">
-                                <label for="metaTitle">Meta Title (opsional)</label>
-                                <input id="metaTitle" type="text" name="meta_title" value="{{ old('meta_title', $page->meta_title) }}">
-                            </div>
-                            <div class="news-input-control">
-                                <label for="metaDesc">Meta Description (opsional)</label>
-                                <input id="metaDesc" type="text" name="meta_description" value="{{ old('meta_description', $page->meta_description) }}">
-                            </div>
-                        </div>
+
                         <div class="news-input-control news-input-control--editor">
                             <label>Konten</label>
                             <span class="news-input-control__hint">Gunakan toolbar untuk memformat teks dan menyisipkan media.</span>
@@ -169,27 +450,7 @@
                             <div class="news-editor-area" contenteditable="true" data-content-editor>
                                 {!! old('content', $page->content) !!}
                             </div>
-                            <div class="news-editor-input-modal" data-editor-input-modal aria-hidden="true">
-                                <div class="news-editor-input-modal__overlay" data-editor-input-modal-close></div>
-                                <div class="news-editor-input-modal__dialog">
-                                    <header class="news-editor-input-modal__header">
-                                        <div>
-                                            <h4 data-editor-input-modal-title>Input</h4>
-                                            <p data-editor-input-modal-description>Lengkapi form di bawah</p>
-                                        </div>
-                                        <button type="button" class="news-editor-input-modal__close" data-editor-input-modal-close aria-label="Tutup modal">
-                                            <i class="fas fa-xmark"></i>
-                                        </button>
-                                    </header>
-                                    <form data-editor-input-modal-form>
-                                        <div class="news-editor-input-modal__fields" data-editor-input-modal-fields></div>
-                                        <div class="news-editor-input-modal__actions">
-                                            <button type="button" class="news-btn news-btn--ghost" data-editor-input-modal-cancel>Batalkan</button>
-                                            <button type="submit" class="news-btn news-btn--primary">Simpan</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+
                             <textarea name="content" hidden data-content-textarea>{{ old('content', $page->content) }}</textarea>
                             @error('content')<span class="news-input-control__error">{{ $message }}</span>@enderror
                         </div>
@@ -197,55 +458,67 @@
 
                     <div class="news-content-card">
                         <div class="news-card-heading">
-                            <h2>Lampiran</h2>
-                            <p>Tambahkan gambar atau dokumen pendukung.</p>
+                            <h2>Unggah Dokumen & Media</h2>
+                            <p>Tarik dan lepas dokumen untuk menambahkan lampiran.</p>
                         </div>
-                        <div class="news-form-grid">
-                            <div class="news-input-control">
-                                <div class="news-card-heading" style="margin-top:0.25rem;">
-                                    <h4>Lampiran Gambar</h4>
-                                    <p>Unggah lebih dari satu gambar (opsional).</p>
-                                </div>
-                                <label class="upload-btn upload-btn--block" for="attachments_images">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                    <span>Pilih gambar</span>
-                                    <input id="attachments_images" type="file" name="attachments_images[]" accept="image/*" multiple>
-                                </label>
-                                <small class="news-input-control__hint">Format JPG/PNG, bisa pilih lebih dari satu.</small>
+                        
+                        <div class="file-drop-zone" id="dropZone">
+                            <div class="drop-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
                             </div>
-                            <div class="news-input-control">
-                                <div class="news-card-heading" style="margin-top:0.25rem;">
-                                    <h4>Lampiran File</h4>
-                                    <p>Tambahkan dokumen pendukung (PDF/DOC/ZIP).</p>
-                                </div>
-                                <label class="upload-btn upload-btn--block" for="attachments_files">
-                                    <i class="fas fa-file-arrow-up"></i>
-                                    <span>Pilih file</span>
-                                    <input id="attachments_files" type="file" name="attachments_files[]" multiple>
-                                </label>
-                                <small class="news-input-control__hint">Maks. 10MB per file. PDF/DOC/ZIP, dll.</small>
-                            </div>
+                            <h4>Pilih file atau tarik & lepas ke sini.</h4>
+                            <p>txt, docx, pdf, jpeg, png, xlsx - Maks. 10MB</p>
+                            <label class="btn-browse">
+                                Telusuri file
+                                <input id="unified_attachments" type="file" name="unified_attachments[]" multiple hidden>
+                            </label>
+                        </div>
+                        
+                        <div id="unifiedPreviewContainer">
+                            <div class="attachments-list-styled" id="filesPreviewUnified"></div>
+                            <div class="attachments-gallery-styled" id="imagesPreviewUnified"></div>
                         </div>
 
+                        <input type="hidden" name="attachment_order" id="attachmentOrderInput" value="[]">
+
                         @if($pageAttachments->count())
-                            <div class="news-card-heading" style="margin-top:1rem;">
-                                <h4>Lampiran Saat Ini</h4>
+                            <div class="news-card-heading" style="margin-top:2rem; margin-bottom:1rem;">
+                                <h4>Lampiran Saat Ini:</h4>
                             </div>
-                            <ul class="news-attachment-list">
-                                @foreach($pageAttachments as $attachment)
-                                    <li>
-                                        <span class="news-attachment-name">{{ $attachment->original_name ?? basename($attachment->path) }}</span>
-                                        <form action="{{ route('admin.pages.attachments.destroy', [$page, $attachment]) }}" method="POST" style="display:inline;">
+                            
+                            <div class="attachments-list-styled" id="sortableFileList">
+                                @foreach($pageAttachments->where('type', '!=', 'image') as $attachment)
+                                    <div class="attachment-file-card" data-attachment-id="{{ $attachment->id }}">
+                                        <div class="file-info">
+                                            <i class="fas fa-paperclip"></i>
+                                            <span class="file-name">{{ $attachment->original_name ?? basename($attachment->path) }}</span>
+                                        </div>
+                                        <div class="file-actions">
+                                            <span class="file-size">{{ round($attachment->size / 1024) }} KB</span>
+                                            <a href="{{ asset('storage/' . ltrim($attachment->path, '/')) }}" target="_blank" class="btn-download" title="Download"><i class="fas fa-download"></i></a>
+                                            <button type="button" class="btn-remove" onclick="if(confirm('Hapus lampiran ini?')) document.getElementById('delete-form-{{ $attachment->id }}').submit();"><i class="fas fa-times"></i></button>
+                                            <form id="delete-form-{{ $attachment->id }}" action="{{ route('admin.pages.attachments.destroy', [$page, $attachment]) }}" method="POST" hidden>
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <div class="attachments-gallery-styled" id="sortableImageList">
+                                @foreach($pageAttachments->where('type', 'image') as $attachment)
+                                    <div class="attachment-image-card" data-attachment-id="{{ $attachment->id }}">
+                                        <img src="{{ asset('storage/' . ltrim($attachment->path, '/')) }}" alt="{{ $attachment->original_name }}">
+                                        <span class="attachment-size">{{ round($attachment->size / 1024) }} KB</span>
+                                        <button type="button" class="btn-remove-img" onclick="if(confirm('Hapus gambar ini?')) document.getElementById('delete-form-{{ $attachment->id }}').submit();"><i class="fas fa-times"></i></button>
+                                        <form id="delete-form-{{ $attachment->id }}" action="{{ route('admin.pages.attachments.destroy', [$page, $attachment]) }}" method="POST" hidden>
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="news-table__action-item news-table__action-item--danger" onclick="return confirm('Hapus lampiran ini?')">
-                                                <i class="fas fa-trash"></i>
-                                                <span>Hapus</span>
-                                            </button>
                                         </form>
-                                    </li>
+                                    </div>
                                 @endforeach
-                            </ul>
+                            </div>
                         @endif
                     </div>
                 </div>
@@ -256,10 +529,11 @@
                                 <h3>General</h3>
                                 <p>Nama, status, dan jadwal publish.</p>
                             </div>
-                            <div class="news-input-control">
-                                <label for="published_at">Tanggal publish</label>
-                                <input id="published_at" type="datetime-local" name="published_at" value="{{ old('published_at', optional($page->published_at)->format('Y-m-d\\TH:i')) }}">
-                            </div>
+                             <div class="news-input-control">
+                                <label for="published_at">Tanggal publish (opsional)</label>
+                                <input id="published_at" type="datetime-local" name="published_at" 
+                                       value="{{ old('published_at', $page->published_at ? $page->published_at->format('Y-m-d\TH:i') : '') }}">
+                             </div>
                             <div class="news-input-control">
                                 <label for="status">Status</label>
                                 <select id="status" name="status">
@@ -273,29 +547,36 @@
                     <div class="news-side-card">
                         <div class="news-card-block">
                             <div class="news-card-heading">
-                                <h3>Media</h3>
+                                <h3>Cover</h3>
                                 <p>Unggah thumbnail yang representatif.</p>
                             </div>
                             <div class="news-upload-card">
                                 <div class="news-upload-card__preview @if($page->feature_image) is-visible @endif" id="featurePreview">
+                                    <button type="button" class="btn-remove-preview" id="btnRemoveFeature" title="Hapus gambar">
+                                        <i class="fas fa-times"></i>
+                                    </button>
                                     @if($page->feature_image)
                                         <img src="{{ asset('storage/' . ltrim($page->feature_image, '/')) }}" alt="Feature image" id="featurePreviewImg">
                                     @else
                                         <div class="news-upload-card__placeholder" id="featurePlaceholder">
-                                            <i class="fas fa-image fa-2x"></i>
-                                            <span>No image uploaded</span>
+                                            <i class="fas fa-cloud-upload-alt fa-2x" style="color: #94a3b8; opacity: 0.6;"></i>
+                                            <span style="font-size: 0.85rem; color: #64748b; margin-top: 8px;">Belum ada gambar</span>
                                         </div>
                                         <img src="" alt="" id="featurePreviewImg" style="opacity:0;max-width:100%;border-radius:12px;">
                                     @endif
                                 </div>
                                 <p class="news-upload-hint">Rekomendasi 1600×1200, maks. 10MB</p>
-                                <label class="upload-btn">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                    <span>Pilih gambar</span>
-                                    <input id="feature_image" type="file" name="feature_image" accept="image/*" hidden>
-                                </label>
+                                <div style="text-align: center;">
+                                    <label class="btn-browse">
+                                        Telusuri file
+                                        <input id="feature_image" type="file" name="feature_image" accept="image/*" hidden>
+                                    </label>
+                                </div>
+                                <input type="hidden" name="remove_feature_image" id="remove_feature_image" value="0">
                                 @if($page->feature_image)
-                                    <small>Gambar saat ini: {{ $page->feature_image }}</small>
+                                    <div id="currentImageText">
+                                        <small style="display: block; word-break: break-all; line-height: 1.4; margin-top: 10px;">Gambar saat ini: {{ $page->feature_image }}</small>
+                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -304,11 +585,53 @@
             </div>
         </form>
     </div>
+
+    <!-- Confirmation Modal for Cover Removal -->
+    <div id="confirmCoverModal" class="confirm-modal">
+        <div class="confirm-modal__overlay"></div>
+        <div class="confirm-modal__container">
+            <div class="confirm-modal__icon">
+                <i class="fas fa-trash-alt"></i>
+            </div>
+            <h3>Hapus Gambar Cover?</h3>
+            <p>Apakah Anda yakin ingin menghapus gambar cover ini? Perubahan akan disimpan secara permanen setelah Anda menekan tombol Simpan Halaman.</p>
+            <div class="confirm-modal__actions">
+                <button type="button" class="confirm-modal__btn confirm-modal__btn--cancel" id="btnCancelDelete">Batal</button>
+                <button type="button" class="confirm-modal__btn confirm-modal__btn--confirm" id="btnConfirmDelete">Ya, Hapus</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Move editor input modal outside of page-form to prevent nested form bugs -->
+    <div class="news-editor-input-modal" data-editor-input-modal aria-hidden="true">
+        <div class="news-editor-input-modal__overlay" data-editor-input-modal-close></div>
+        <div class="news-editor-input-modal__dialog">
+            <header class="news-editor-input-modal__header">
+                <div>
+                    <h4 data-editor-input-modal-title>Input</h4>
+                    <p data-editor-input-modal-description>Lengkapi form di bawah</p>
+                </div>
+                <button type="button" class="news-editor-input-modal__close" data-editor-input-modal-close aria-label="Tutup modal">
+                    <i class="fas fa-xmark"></i>
+                </button>
+            </header>
+            <form data-editor-input-modal-form>
+                <div class="news-editor-input-modal__fields" data-editor-input-modal-fields></div>
+                <div class="news-editor-input-modal__actions">
+                    <button type="button" class="news-btn news-btn--ghost" data-editor-input-modal-cancel>Batalkan</button>
+                    <button type="submit" class="news-btn news-btn--primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 
 @include('admin.news.partials.editor-script')
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const titleInput = document.querySelector('input[name="title"]');
@@ -317,38 +640,230 @@
         const previewImg = document.getElementById('featurePreviewImg');
         const placeholder = document.getElementById('featurePlaceholder');
 
-        if (!titleInput || !slugInput) return;
+        if (titleInput && slugInput) {
+            const slugify = (text) => text.toString().toLowerCase()
+                .trim()
+                .replace(/\s+/g, '-')
+                .replace(/[^a-z0-9\-]/g, '')
+                .replace(/\-+/g, '-');
 
-        const slugify = (text) => text.toString().toLowerCase()
-            .trim()
-            .replace(/\s+/g, '-')
-            .replace(/[^a-z0-9\-]/g, '')
-            .replace(/\-+/g, '-');
+            titleInput.addEventListener('input', () => {
+                if (slugInput.dataset.touched === 'true') return;
+                slugInput.value = slugify(titleInput.value);
+            });
 
-        titleInput.addEventListener('input', () => {
-            if (slugInput.dataset.touched === 'true') return;
-            slugInput.value = slugify(titleInput.value);
-        });
-
-        slugInput.addEventListener('input', () => {
-            slugInput.dataset.touched = 'true';
-        });
+            slugInput.addEventListener('input', () => {
+                slugInput.dataset.touched = 'true';
+            });
+        }
 
         if (featureInput) {
+            const btnRemoveFeature = document.getElementById('btnRemoveFeature');
+            const removeFeatureInput = document.getElementById('remove_feature_image');
+            const featurePreview = document.getElementById('featurePreview');
+            const currentImageText = document.getElementById('currentImageText');
+
             featureInput.addEventListener('change', (e) => {
                 const file = e.target.files && e.target.files[0];
                 if (!file) return;
+
                 const reader = new FileReader();
                 reader.onload = (ev) => {
                     if (previewImg) {
                         previewImg.src = ev.target?.result || '';
                         previewImg.style.opacity = 1;
+                        if (featurePreview) featurePreview.classList.add('is-visible');
                     }
                     if (placeholder) {
                         placeholder.style.display = 'none';
                     }
+                    if (removeFeatureInput) removeFeatureInput.value = '0';
                 };
                 reader.readAsDataURL(file);
+            });
+
+            if (btnRemoveFeature) {
+                const modal = document.getElementById('confirmCoverModal');
+                const btnCancel = document.getElementById('btnCancelDelete');
+                const btnConfirm = document.getElementById('btnConfirmDelete');
+
+                btnRemoveFeature.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (modal) modal.classList.add('is-visible');
+                });
+
+                if (btnCancel) {
+                    btnCancel.addEventListener('click', () => {
+                        if (modal) modal.classList.remove('is-visible');
+                    });
+                }
+
+                if (btnConfirm) {
+                    btnConfirm.addEventListener('click', () => {
+                        if (featureInput) featureInput.value = '';
+                        if (previewImg) {
+                            previewImg.src = '';
+                            previewImg.style.opacity = 0;
+                        }
+                        if (placeholder) {
+                            placeholder.style.display = 'flex';
+                        }
+                        if (featurePreview) {
+                            featurePreview.classList.remove('is-visible');
+                        }
+                        if (removeFeatureInput) {
+                            removeFeatureInput.value = '1';
+                        }
+                        if (currentImageText) {
+                            currentImageText.style.display = 'none';
+                        }
+                        if (modal) modal.classList.remove('is-visible');
+                    });
+                }
+            }
+        }
+
+
+        const unifiedInput = document.getElementById('unified_attachments');
+        const dropZone = document.getElementById('dropZone');
+        const filesPreviewUnified = document.getElementById('filesPreviewUnified');
+        const imagesPreviewUnified = document.getElementById('imagesPreviewUnified');
+
+        if (unifiedInput && dropZone) {
+            let dt = new DataTransfer();
+
+            function renderPreviews() {
+                filesPreviewUnified.innerHTML = '';
+                imagesPreviewUnified.innerHTML = '';
+                Array.from(dt.files).forEach((file, index) => {
+                    const sizeKB = Math.round(file.size / 1024);
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = (ev) => {
+                            const card = document.createElement('div');
+                            card.className = 'attachment-image-card new-upload';
+                            card.innerHTML = `
+                                <img src="${ev.target.result}" alt="${file.name}">
+                                <span class="attachment-size">${sizeKB} KB</span>
+                                <button type="button" class="btn-remove-img" data-index="${index}"><i class="fas fa-times"></i></button>
+                            `;
+                            imagesPreviewUnified.appendChild(card);
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        const card = document.createElement('div');
+                        card.className = 'attachment-file-card new-upload';
+                        card.innerHTML = `
+                            <div class="file-info">
+                                <i class="fas fa-paperclip"></i>
+                                <span class="file-name">${file.name}</span>
+                            </div>
+                            <div class="file-actions">
+                                <span class="file-size">${sizeKB} KB</span>
+                                <button type="button" class="btn-remove" data-index="${index}"><i class="fas fa-times"></i></button>
+                            </div>
+                        `;
+                        filesPreviewUnified.appendChild(card);
+                    }
+                });
+                
+                setTimeout(() => {
+                    document.querySelectorAll('.new-upload .btn-remove, .new-upload .btn-remove-img').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const idx = parseInt(btn.dataset.index);
+                            const newDt = new DataTransfer();
+                            Array.from(dt.files).forEach((f, i) => {
+                                if(i !== idx) newDt.items.add(f);
+                            });
+                            dt = newDt;
+                            unifiedInput.files = dt.files;
+                            renderPreviews();
+                        });
+                    });
+                }, 100);
+            }
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+            function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => dropZone.classList.add('drag-over'), false);
+            });
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => dropZone.classList.remove('drag-over'), false);
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                Array.from(e.dataTransfer.files).forEach(f => dt.items.add(f));
+                unifiedInput.files = dt.files;
+                renderPreviews();
+            });
+
+            unifiedInput.addEventListener('change', (e) => {
+                Array.from(e.target.files).forEach(f => dt.items.add(f));
+                unifiedInput.files = dt.files;
+                renderPreviews();
+            });
+        }
+
+        // Initialize SortableJS for existing attachments
+        const sortableFileList = document.getElementById('sortableFileList');
+        const sortableImageList = document.getElementById('sortableImageList');
+        const orderInput = document.getElementById('attachmentOrderInput');
+
+        function updateSortOrder() {
+            const order = [];
+            document.querySelectorAll('[data-attachment-id]').forEach(el => {
+                order.push(el.dataset.attachmentId);
+            });
+            if(orderInput) orderInput.value = JSON.stringify(order);
+        }
+
+        if (typeof Sortable !== 'undefined') {
+            if (sortableFileList) {
+                new Sortable(sortableFileList, {
+                    animation: 150,
+                    ghostClass: 'sortable-ghost',
+                    onEnd: updateSortOrder
+                });
+            }
+            if (sortableImageList) {
+                new Sortable(sortableImageList, {
+                    animation: 150,
+                    ghostClass: 'sortable-ghost',
+                    onEnd: updateSortOrder
+                });
+            }
+        }
+
+        // Prevent 404 errors caused by exceeding post_max_size
+        const pageForm = document.getElementById('page-form');
+        if (pageForm) {
+            pageForm.addEventListener('submit', (e) => {
+                const MAX_POST_SIZE = 5 * 1024 * 1024; // Lower to 5MB to be safe
+                let totalSize = 0;
+
+                const fInput = document.getElementById('feature_image');
+                const uInput = document.getElementById('unified_attachments');
+
+                if (fInput && fInput.files && fInput.files.length > 0) {
+                    totalSize += fInput.files[0].size;
+                }
+
+                if (uInput && uInput.files && uInput.files.length > 0) {
+                    for (let i = 0; i < uInput.files.length; i++) {
+                        totalSize += uInput.files[i].size;
+                    }
+                }
+
+                if (totalSize > MAX_POST_SIZE) {
+                    e.preventDefault();
+                    const sizeMB = (totalSize / 1024 / 1024).toFixed(2);
+                    alert(`Gagal menyimpan! Total ukuran file (${sizeMB} MB) terlalu besar (maks. 7 MB).`);
+                }
             });
         }
     });

@@ -12,7 +12,9 @@ if (!function_exists('image_url')) {
      */
     function image_url($path, $default = null)
     {
-        return ImageHelper::getImageUrl($path, $default);
+        return $default !== null 
+            ? ImageHelper::getImageUrl($path, $default) 
+            : ImageHelper::getImageUrl($path);
     }
 }
 
@@ -27,7 +29,11 @@ if (!function_exists('safe_store')) {
     function safe_store($file, $directory)
     {
         $directory = trim($directory, '/');
-        $filename = $file->hashName();
+        $extension = $file->getClientOriginalExtension();
+        if (empty($extension)) {
+            $extension = 'bin'; // fallback extension
+        }
+        $filename = \Illuminate\Support\Str::random(40) . '.' . $extension;
         $file->move(public_path('storage/' . $directory), $filename);
         return $directory . '/' . $filename;
     }

@@ -70,12 +70,22 @@
                         } elseif ($item->page_slug) {
                             $url = url($item->page_slug);
                         }
+
+                        $title = $item->title;
+                        $displayUrl = $url;
+                        $isAuth = auth()->check();
+
+                        if ($isAuth && (Str::lower($title) === 'login' || Str::lower($title) === 'masuk')) {
+                            $title = 'Dashboard';
+                            $displayUrl = route('admin.dashboard');
+                        }
+
                         $html .= '<li>';
-                        $html .= '<a href="' . e($url) . '"' . ($item->target_blank ? ' target="_blank"' : '') . '>';
+                        $html .= '<a href="' . e($displayUrl) . '"' . ($item->target_blank ? ' target="_blank"' : '') . '>';
                         if ($item->icon) {
                             $html .= '<i class="' . e($item->icon) . '"></i> ';
                         }
-                        $html .= e($item->title) . '</a>';
+                        $html .= e($title) . '</a>';
                         if ($children->count()) {
                             $html .= '<ul class="dropdown-menu">' . $renderMenu($children) . '</ul>';
                         }
@@ -217,46 +227,7 @@
 
 
     <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <ul>
-            @php
-                $navTree = ($navMenus ?? collect())->where('is_active', true)->whereNull('parent_id')->sortBy('position');
-                $resolveUrl = function ($item) {
-                    if ($item->type === 'custom' && $item->url)
-                        return $item->url;
-                    if ($item->page_slug)
-                        return url($item->page_slug);
-                    return '#';
-                };
-            @endphp
-            @foreach ($navTree as $item)
-                @php
-                    $children = $item->children->where('is_active', true)->sortBy('position');
-                    $menuId = 'nav-' . $loop->index;
-                @endphp
-                <li>
-                    <a href="{{ $resolveUrl($item) }}" @if($children->count())
-                    onclick="toggleMobileSubmenu(event, '{{ $menuId }}')" @endif @if($item->target_blank)
-                        target="_blank" rel="noopener" @endif>
-                        {{ $item->title }}
-                        @if($children->count()) <i class="fas fa-chevron-down"></i> @endif
-                    </a>
-                    @if($children->count())
-                        <ul class="mobile-submenu" id="{{ $menuId }}-submenu">
-                            @foreach ($children as $child)
-                                <li>
-                                    <a href="{{ $resolveUrl($child) }}" @if($child->target_blank) target="_blank" rel="noopener"
-                                    @endif>
-                                        {{ $child->title }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </li>
-            @endforeach
-        </ul>
-    </div>
+    @include('frontend.partials.mobile-menu', ['navMenus' => $navMenus])
 
     <!-- Hero Section -->
     <section class="hero">
@@ -1559,6 +1530,7 @@
             ->toArray();
     @endphp
     <script>
+        window.isUserAuthenticated = @json(auth()->check());
         window.__NEWS_DATA__ = @json($newsData);
         window.__ANNOUNCEMENT_DATA__ = @json($announcementData);
         window.__STAT_DATA__ = @json($statistikData ?? []);

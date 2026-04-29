@@ -18,20 +18,28 @@ body {
 }
 
 .form-section {
-    padding: 24px 28px;
-    border-radius: 22px;
-    border: 1px solid rgba(148, 163, 184, 0.28);
-    background: linear-gradient(180deg, rgba(248, 250, 255, 0.86), rgba(255, 255, 255, 0.94));
+    padding: 20px 24px;
+    border-radius: 20px;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    background: #ffffff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-section:hover {
+    border-color: #3b82f6;
+    box-shadow: none;
 }
 
 .form-section--accent {
-    background: linear-gradient(160deg, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.03));
+    background: #ffffff;
     border-color: rgba(59, 130, 246, 0.18);
 }
 
 .form-section__header {
-    display: grid;
-    gap: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 2px;
 }
 
 .dialog__header p {
@@ -63,8 +71,9 @@ body.dark-mode .resident-name-highlight {
 
 .form-section__header h2 {
     margin: 0;
-    font-size: 1.18rem;
+    font-size: 1.1rem;
     color: #0f172a;
+    line-height: 1.2;
 }
 
 .form-section__header p {
@@ -74,64 +83,49 @@ body.dark-mode .resident-name-highlight {
 }
 
 .form-section__body {
-    margin-top: 20px;
+    margin-top: 16px;
 }
 
 .form-section__title {
     display: flex;
     align-items: flex-start;
-    gap: 14px;
+    gap: 12px;
 }
 
 .form-section__icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 16px;
-    display: grid;
-    place-items: center;
-    font-size: 1.15rem;
-    background: rgba(59, 130, 246, 0.18);
-    color: #1d4ed8;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #0f172a;
+    min-width: 24px;
+    margin-top: 2px; /* Aligns icon with the first line of the H2 title */
 }
 
-.form-section__icon--emerald {
-    background: rgba(16, 185, 129, 0.18);
-    color: #047857;
-}
-
-.form-section__icon--amber {
-    background: rgba(245, 158, 11, 0.18);
-    color: #b45309;
-}
-
-.form-section__icon--slate {
-    background: rgba(71, 85, 105, 0.18);
-    color: #1f2937;
+.form-section__icon--emerald,
+.form-section__icon--amber,
+.form-section__icon--slate,
+.form-section__icon--primary {
+    color: #0f172a;
 }
 
 .form-section__badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.78rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    border-radius: 999px;
-    padding: 0.35rem 0.75rem;
-    background: rgba(59, 130, 246, 0.12);
-    border: 1px solid rgba(59, 130, 246, 0.28);
-    color: #1e3a8a;
+    gap: 5px;
+    font-size: 0.76rem;
+    color: #64748b;
+    font-weight: 500;
 }
 
 .form-section__badge--soft {
-    background: rgba(16, 185, 129, 0.12);
-    border-color: rgba(16, 185, 129, 0.25);
-    color: #065f46;
+    color: #059669;
 }
 
 .form-section__body .settings-form-grid {
     display: grid;
     gap: 18px;
+    align-items: start;
 }
 
 .form-section__body .settings-form-grid.two-columns {
@@ -140,6 +134,11 @@ body.dark-mode .resident-name-highlight {
 
 .form-section__body .settings-form-grid.three-columns {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.form-section__body .settings-form-grid.four-columns {
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 }
 
@@ -295,20 +294,23 @@ body.dark-mode .resident-name-highlight {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    color: #334155;
-    font-size: 0.9rem;
+    gap: 10px;
+    color: #475569;
+    font-size: 0.74rem;
     font-weight: 600;
+    margin-bottom: 2px;
 }
 
 .form-field__title {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 7px;
+    font-size: 0.74rem;
 }
 
 .form-field__title i {
     color: inherit;
+    font-size: 0.8rem;
 }
 
 .form-field__tag {
@@ -337,6 +339,157 @@ body.dark-mode .resident-name-highlight {
     margin: 0;
     font-size: 0.78rem;
     color: rgba(71, 85, 105, 0.75);
+}
+
+/* ─── Photo Upload Box ─────────────────────────────── */
+.photo-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.photo-box__frame {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1.5px solid rgba(148, 163, 184, 0.3);
+    background: #f8fafc;
+    min-height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s ease;
+}
+
+.photo-box__frame.is-marked {
+    border-color: rgba(239, 68, 68, 0.5);
+}
+
+.photo-box__preview {
+    width: 100%;
+    min-height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-box__preview img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+}
+
+.photo-box__placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: #94a3b8;
+    font-size: 0.82rem;
+    padding: 20px;
+}
+
+.photo-box__placeholder i {
+    font-size: 2rem;
+    color: #cbd5e1;
+}
+
+.photo-box__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(220, 38, 38, 0.82);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease;
+}
+
+.photo-box__overlay i {
+    font-size: 1.6rem;
+}
+
+.photo-box__overlay.is-active {
+    opacity: 1;
+}
+
+.photo-box__actions {
+    display: flex;
+    gap: 8px;
+}
+
+.photo-box__upload-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(99, 102, 241, 0.35);
+    background: rgba(99, 102, 241, 0.06);
+    color: #4f46e5;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+}
+
+.photo-box__upload-btn:hover {
+    background: rgba(99, 102, 241, 0.12);
+    border-color: rgba(99, 102, 241, 0.55);
+}
+
+.photo-box__delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(239, 68, 68, 0.35);
+    background: rgba(239, 68, 68, 0.06);
+    color: #dc2626;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+}
+
+.photo-box__delete-btn:hover {
+    background: rgba(239, 68, 68, 0.14);
+    border-color: rgba(239, 68, 68, 0.55);
+}
+
+.photo-box__undo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(245, 158, 11, 0.4);
+    background: rgba(245, 158, 11, 0.08);
+    color: #b45309;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+}
+
+.photo-box__undo-btn:hover {
+    background: rgba(245, 158, 11, 0.16);
+    border-color: rgba(245, 158, 11, 0.6);
 }
 
 .media-preview {
@@ -451,29 +604,35 @@ body.dark-mode .resident-name-highlight {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 14px;
-    margin-top: 12px;
+    gap: 12px;
+    margin-top: 4px;
 }
 
 .form-actions-bar .ghost-btn,
 .form-actions-bar .primary-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-}
-
-.form-actions-bar .primary-btn i {
-    font-size: 0.95rem;
+    justify-content: center;
+    height: 42px;
+    padding: 0 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
 }
 
 /* Modal form polish (RT modal, dll) */
 .dialog--form .settings-form-grid {
     display: grid;
     gap: 16px;
+    align-items: start;
 }
 
 .dialog--form .settings-form-grid.two-columns {
     grid-template-columns: repeat(2, 1fr);
+}
+
+.dialog--form .settings-form-grid.four-columns {
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .dialog--form .form-field {
@@ -679,6 +838,14 @@ body.dark-mode .resident-name-highlight {
     display: none;
 }
 
+@media (max-width: 1280px) {
+
+    .form-section__body .settings-form-grid.four-columns,
+    .dialog--form .settings-form-grid.four-columns {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .form-section {
         padding: 20px 20px;
@@ -692,6 +859,12 @@ body.dark-mode .resident-name-highlight {
 
     .form-section__body .settings-form-grid.three-columns {
         grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .form-section__body .settings-form-grid.four-columns,
+    .dialog--form .settings-form-grid.four-columns {
+        grid-template-columns: 1fr 1fr;
         gap: 16px;
     }
 
@@ -6987,7 +7160,7 @@ body.dark-mode .stats-matrix__cell {
 @media (max-width: 1024px) {
 
     /* Bottom sheet variant for export dropdown */
-    body > .export-dropdown__menu {
+    body>.export-dropdown__menu {
         position: fixed !important;
         top: auto !important;
         bottom: 0 !important;
@@ -7006,19 +7179,19 @@ body.dark-mode .stats-matrix__cell {
         box-shadow: 0 -12px 48px rgba(15, 23, 42, 0.18) !important;
     }
 
-    body > .export-dropdown__menu.is-visible {
+    body>.export-dropdown__menu.is-visible {
         transform: translateY(0) !important;
         opacity: 1 !important;
     }
 
-    body > .export-dropdown__menu .export-dropdown__grid {
+    body>.export-dropdown__menu .export-dropdown__grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 16px;
         margin-top: 16px;
     }
 
-    body > .export-dropdown__menu .export-dropdown__item {
+    body>.export-dropdown__menu .export-dropdown__item {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -7035,15 +7208,15 @@ body.dark-mode .stats-matrix__cell {
         /* For links */
     }
 
-    body > .export-dropdown__menu .export-dropdown__item:hover,
-    body > .export-dropdown__menu .export-dropdown__item:active {
+    body>.export-dropdown__menu .export-dropdown__item:hover,
+    body>.export-dropdown__menu .export-dropdown__item:active {
         background: #ffffff;
         border-color: rgba(59, 130, 246, 0.4);
         transform: translateY(-2px);
         box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12);
     }
 
-    body > .export-dropdown__menu .export-dropdown__icon {
+    body>.export-dropdown__menu .export-dropdown__icon {
         width: 52px;
         height: 52px;
         font-size: 1.6rem;
@@ -7054,20 +7227,20 @@ body.dark-mode .stats-matrix__cell {
         border-radius: 14px;
     }
 
-    body > .export-dropdown__menu .export-dropdown__meta {
+    body>.export-dropdown__menu .export-dropdown__meta {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
-    body > .export-dropdown__menu .export-dropdown__meta strong {
+    body>.export-dropdown__menu .export-dropdown__meta strong {
         font-size: 0.95rem;
         line-height: 1.3;
         margin-bottom: 0;
         color: #0f172a;
     }
 
-    body > .export-dropdown__menu .export-dropdown__meta small {
+    body>.export-dropdown__menu .export-dropdown__meta small {
         display: none;
         /* Hide descriptions to match 2x2 sketch style */
     }

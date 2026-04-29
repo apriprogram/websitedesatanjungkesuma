@@ -28,6 +28,10 @@
     border: 1px solid rgba(148, 163, 184, 0.35);
     box-shadow: 0 25px 45px rgba(15, 23, 42, 0.18);
     overflow: hidden;
+    max-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    margin: 40px auto;
     transform: translateY(14px) scale(0.96);
     opacity: 0;
     transition: transform 0.28s cubic-bezier(.22,.75,.35,1), opacity 0.24s ease;
@@ -44,7 +48,9 @@
 }
 
 .news-modal__body {
-    padding: 1rem 1.25rem 1.25rem;
+    padding: 1.25rem;
+    overflow-y: auto;
+    flex: 1;
 }
 
 .news-modal__header h3 {
@@ -71,28 +77,65 @@
 }
 
 .news-modal__footer {
+    padding: 1rem 1.25rem;
+    display: flex;
     justify-content: flex-end;
+    border-top: 1px solid rgba(148, 163, 184, 0.15);
+    background: #f8fafc;
+}
+
+.news-modal__footer .ghost-btn {
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 500;
+    color: #475569;
+    background: #e2e8f0;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.news-modal__footer .ghost-btn:hover {
+    background: #cbd5e1;
+    color: #0f172a;
 }
 
 .detail-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 0.75rem 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem 1.5rem;
 }
 
 .detail-list dt {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #6b7280;
-    margin: 0 0 0.2rem;
+    letter-spacing: 0.08em;
+    color: #64748b;
+    font-weight: 600;
+    margin: 0 0 0.35rem;
 }
 
 .detail-list dd {
     margin: 0;
-    color: #0f172a;
-    font-weight: 600;
+    color: #1e293b;
+    font-weight: 500;
+    font-size: 0.95rem;
     word-break: break-word;
+    line-height: 1.6;
+}
+
+.detail-list .full-width {
+    grid-column: 1 / -1;
+}
+
+.detail-image-row img {
+    width: 100%;
+    max-height: 380px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    margin-top: 0.5rem;
 }
 
 .detail-attachments {
@@ -118,8 +161,103 @@
     background: #e0e7ff;
 }
 
+.detail-attachment-img {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: #f8fafc;
+    flex-shrink: 0;
+}
+
+.detail-attachment-img:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.detail-attachment-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .news-modal.is-visible .news-modal__overlay {
     opacity: 1;
+}
+
+/* Delete Confirm Modal Specific Styles */
+.news-modal__dialog--confirm {
+    max-width: 420px;
+    margin: 0;
+    text-align: center;
+}
+
+.news-modal__dialog--confirm .news-modal__header {
+    flex-direction: column;
+    border-bottom: none;
+    padding: 1.75rem 1.5rem 0.5rem;
+}
+
+.confirm-header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.15rem;
+    width: 100%;
+}
+
+.confirm-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #fef2f2;
+    color: #ef4444;
+    display: grid;
+    place-items: center;
+    font-size: 1.75rem;
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0.05);
+}
+
+.news-modal__dialog--confirm .news-modal__header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.news-modal__dialog--confirm .news-modal__body {
+    padding: 0.5rem 1.5rem 1.5rem;
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.news-modal__dialog--confirm .news-modal__footer {
+    border-top: none;
+    background: transparent;
+    justify-content: center;
+    padding: 0 1.5rem 1.75rem;
+    gap: 0.75rem;
+}
+
+.news-modal__dialog--confirm .news-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.danger-btn {
+    background: #ef4444 !important;
+    color: #ffffff !important;
+    border: none;
+}
+.danger-btn:hover {
+    background: #dc2626 !important;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3) !important;
 }
 
 .news-modal.is-visible .news-modal__dialog {

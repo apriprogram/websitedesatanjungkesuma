@@ -456,6 +456,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('media/users/{user}', [MediaController::class, 'userAvatar'])->name('media.users.avatar');
         Route::get('media/pegawai/{pegawai}', [MediaController::class, 'pegawaiAvatar'])->name('media.pegawai.avatar');
+        Route::post('media/editor-upload', [MediaController::class, 'editorUpload'])->name('media.editor-upload');
 
         // Profile
         Route::get('/profile', [\App\Http\Controllers\Admin\ProfileController::class, 'edit'])->name('profile.edit');
@@ -541,6 +542,7 @@ Route::middleware('auth')->group(function () {
         Route::get('penduduks/export/excel', [PendudukController::class, 'exportExcel'])->name('penduduks.export.excel');
         Route::get('penduduks/export/pdf', [PendudukController::class, 'exportPdf'])->name('penduduks.export.pdf');
         Route::get('penduduks/export/word', [PendudukController::class, 'exportWord'])->name('penduduks.export.word');
+        Route::delete('penduduks/destroy-all', [PendudukController::class, 'destroyAll'])->name('penduduks.destroy-all');
         Route::resource('penduduks', PendudukController::class)->except('show');
         Route::get('penduduk-pindah/export/excel', [PendudukPindahController::class, 'exportExcel'])->name('penduduk-pindah.export.excel');
         Route::get('penduduk-pindah/export/pdf', [PendudukPindahController::class, 'exportPdf'])->name('penduduk-pindah.export.pdf');
