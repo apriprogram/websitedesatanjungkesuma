@@ -593,12 +593,12 @@ class PendudukController extends Controller
     {
         abort_unless($request->user()?->is_admin, 403);
 
+        set_time_limit(0);
+        ini_set('memory_limit', '1G');
+
         try {
-            // Hapus semua file foto penduduk sebelum truncate database
-            $allPenduduk = Penduduk::withTrashed()->get();
-            foreach ($allPenduduk as $penduduk) {
-                $this->deletePhotoFiles($penduduk);
-            }
+            // Hapus folder penduduk secara massal (jauh lebih cepat daripada loop satu per satu)
+            Storage::disk('public')->deleteDirectory('penduduk');
 
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             
@@ -1279,11 +1279,11 @@ class PendudukController extends Controller
         }
 
         try {
-            if (file_exists(public_path('storage/' . $path))) {
+            if (Storage::disk('public')->exists($path)) {
                 Storage::disk('public')->delete($path);
             }
-        } catch (\Exception $e) {
-            // Abaikan error
+        } catch (\Throwable $e) {
+            // Abaikan error agar proses bulk tetap jalan
         }
     }
 
