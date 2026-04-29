@@ -52,12 +52,15 @@ class DocumentController extends Controller
     {
         $data = $this->validateData($request);
 
-        if ($request->hasFile('file')) {
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
             $file = $request->file('file');
             $path = safe_store($file, 'documents');
             $data['file_path'] = $path;
             $data['file_type'] = strtolower($file->getClientOriginalExtension());
             $data['file_size'] = (int) round($file->getSize() / 1024); // KB
+        } elseif ($request->hasFile('file') && !$request->file('file')->isValid()) {
+            return back()->withInput()->with('status', 'File gagal diunggah. Pastikan ukuran file tidak melebihi 10 MB.')
+                         ->with('status_variant', 'error');
         }
 
         $data['uploaded_by'] = Auth::id();
@@ -101,7 +104,7 @@ class DocumentController extends Controller
     {
         $data = $this->validateData($request, $document->id);
 
-        if ($request->hasFile('file')) {
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
             if ($document->file_path) {
                 try {
                     if (file_exists(public_path('storage/' . $document->file_path))) {
@@ -116,6 +119,9 @@ class DocumentController extends Controller
             $data['file_path'] = $path;
             $data['file_type'] = strtolower($file->getClientOriginalExtension());
             $data['file_size'] = (int) round($file->getSize() / 1024); // KB
+        } elseif ($request->hasFile('file') && !$request->file('file')->isValid()) {
+            return back()->withInput()->with('status', 'File gagal diunggah. Pastikan ukuran file tidak melebihi 10 MB.')
+                         ->with('status_variant', 'error');
         }
 
         $document->update($data);
@@ -157,7 +163,7 @@ class DocumentController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'document_category_id' => ['required', 'exists:document_categories,id'],
             'description' => ['nullable', 'string'],
-            'file' => [$id ? 'nullable' : 'required', 'file', 'max:20480', 'mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png,zip'],
+            'file' => [$id ? 'nullable' : 'required', 'file', 'max:10240', 'mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png,zip'],
             'year' => ['nullable', 'integer', 'min:1900', 'max:' . (now()->year + 1)],
             'is_public' => ['boolean'],
         ]);
