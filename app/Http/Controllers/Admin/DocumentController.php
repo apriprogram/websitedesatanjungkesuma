@@ -50,17 +50,33 @@ class DocumentController extends Controller
 
     public function store(Request $request)
     {
-        $data = $this->validateData($request);
+        // Cek error upload PHP-level SEBELUM validasi (mencegah RuntimeException)
+        if ($request->hasFile('file') && !$request->file('file')->isValid()) {
+            return back()->withInput()
+                ->with('status', 'File gagal diunggah. Pastikan ukuran file tidak melebihi 10 MB dan coba lagi.')
+                ->with('status_variant', 'error');
+        }
+
+        try {
+            $data = $this->validateData($request);
+        } catch (\RuntimeException $e) {
+            return back()->withInput()
+                ->with('status', 'Terjadi kesalahan saat memproses file. Pastikan ukuran file tidak melebihi 10 MB.')
+                ->with('status_variant', 'error');
+        }
 
         if ($request->hasFile('file') && $request->file('file')->isValid()) {
-            $file = $request->file('file');
-            $path = safe_store($file, 'documents');
-            $data['file_path'] = $path;
-            $data['file_type'] = strtolower($file->getClientOriginalExtension());
-            $data['file_size'] = (int) round($file->getSize() / 1024); // KB
-        } elseif ($request->hasFile('file') && !$request->file('file')->isValid()) {
-            return back()->withInput()->with('status', 'File gagal diunggah. Pastikan ukuran file tidak melebihi 10 MB.')
-                         ->with('status_variant', 'error');
+            try {
+                $file = $request->file('file');
+                $path = safe_store($file, 'documents');
+                $data['file_path'] = $path;
+                $data['file_type'] = strtolower($file->getClientOriginalExtension());
+                $data['file_size'] = (int) round($file->getSize() / 1024); // KB
+            } catch (\RuntimeException $e) {
+                return back()->withInput()
+                    ->with('status', 'File tidak dapat diproses. Pastikan format dan ukuran file sesuai (maks 10 MB).')
+                    ->with('status_variant', 'error');
+            }
         }
 
         $data['uploaded_by'] = Auth::id();
@@ -102,7 +118,20 @@ class DocumentController extends Controller
 
     public function update(Request $request, VillageDocument $document)
     {
-        $data = $this->validateData($request, $document->id);
+        // Cek error upload PHP-level SEBELUM validasi (mencegah RuntimeException)
+        if ($request->hasFile('file') && !$request->file('file')->isValid()) {
+            return back()->withInput()
+                ->with('status', 'File gagal diunggah. Pastikan ukuran file tidak melebihi 10 MB dan coba lagi.')
+                ->with('status_variant', 'error');
+        }
+
+        try {
+            $data = $this->validateData($request, $document->id);
+        } catch (\RuntimeException $e) {
+            return back()->withInput()
+                ->with('status', 'Terjadi kesalahan saat memproses file. Pastikan ukuran file tidak melebihi 10 MB.')
+                ->with('status_variant', 'error');
+        }
 
         if ($request->hasFile('file') && $request->file('file')->isValid()) {
             if ($document->file_path) {
@@ -114,14 +143,17 @@ class DocumentController extends Controller
                     // Abaikan error
                 }
             }
-            $file = $request->file('file');
-            $path = safe_store($file, 'documents');
-            $data['file_path'] = $path;
-            $data['file_type'] = strtolower($file->getClientOriginalExtension());
-            $data['file_size'] = (int) round($file->getSize() / 1024); // KB
-        } elseif ($request->hasFile('file') && !$request->file('file')->isValid()) {
-            return back()->withInput()->with('status', 'File gagal diunggah. Pastikan ukuran file tidak melebihi 10 MB.')
-                         ->with('status_variant', 'error');
+            try {
+                $file = $request->file('file');
+                $path = safe_store($file, 'documents');
+                $data['file_path'] = $path;
+                $data['file_type'] = strtolower($file->getClientOriginalExtension());
+                $data['file_size'] = (int) round($file->getSize() / 1024); // KB
+            } catch (\RuntimeException $e) {
+                return back()->withInput()
+                    ->with('status', 'File tidak dapat diproses. Pastikan format dan ukuran file sesuai (maks 10 MB).')
+                    ->with('status_variant', 'error');
+            }
         }
 
         $document->update($data);
@@ -160,12 +192,14 @@ class DocumentController extends Controller
     protected function validateData(Request $request, $id = null): array
     {
         return $request->validate([
-            'title' => ['required', 'string', 'max:255'],
+            'title'                => ['required', 'string', 'max:255'],
             'document_category_id' => ['required', 'exists:document_categories,id'],
-            'description' => ['nullable', 'string'],
-            'file' => [$id ? 'nullable' : 'required', 'file', 'max:10240', 'mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png,zip'],
-            'year' => ['nullable', 'integer', 'min:1900', 'max:' . (now()->year + 1)],
-            'is_public' => ['boolean'],
+            'description'          => ['nullable', 'string'],
+            // Catatan: 'mimes' dihapus karena membutuhkan ekstensi 'finfo' yang tidak tersedia di server.
+            // Validasi ekstensi dilakukan secara manual via getClientOriginalExtension() di controller.
+            'file'                 => [$id ? 'nullable' : 'required', 'file', 'max:10240'],
+            'year'                 => ['nullable', 'integer', 'min:1900', 'max:' . (now()->year + 1)],
+            'is_public'            => ['boolean'],
         ]);
     }
 }
