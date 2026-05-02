@@ -1177,11 +1177,13 @@
 
                 const openModal = () => {
                     modal.classList.add('is-visible');
+                    document.body.classList.add('modal-open-blur');
                     requestAnimationFrame(() => modal.classList.add('is-active'));
                 };
 
                 const closeModal = () => {
                     modal.classList.remove('is-active');
+                    document.body.classList.remove('modal-open-blur');
                     setTimeout(() => modal.classList.remove('is-visible'), 200);
                 };
 
@@ -1302,10 +1304,12 @@
                 const openDetail = (btn) => {
                     fillDetail(btn);
                     detailModal.classList.add('is-visible');
+                    document.body.classList.add('modal-open-blur');
                 };
 
                 const closeDetail = () => {
                     detailModal.classList.add('is-closing');
+                    document.body.classList.remove('modal-open-blur');
                     setTimeout(() => {
                         detailModal.classList.remove('is-visible', 'is-closing');
                     }, 200);

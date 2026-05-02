@@ -2769,22 +2769,22 @@ body.dark-mode .news-btn--ghost {
 .news-editor-input-modal {
     position: fixed;
     inset: 0;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
-    background: rgba(15, 23, 42, 0.25);
-    backdrop-filter: blur(2px);
+    background: rgba(15, 23, 42, 0.6);
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.2s ease;
-    z-index: 90;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 99999999;
 }
 
 .news-editor-input-modal.is-visible {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
-    display: flex;
 }
 
 .news-editor-input-modal__dialog {
@@ -2799,6 +2799,18 @@ body.dark-mode .news-btn--ghost {
     gap: 1rem;
     padding: 1.25rem 1.5rem 1.25rem;
     position: relative;
+    transform: scale(0.9) translateY(30px);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dark-mode .news-editor-input-modal__dialog {
+    background: #1e293b;
+    border-color: rgba(148, 163, 184, 0.2);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.news-editor-input-modal.is-visible .news-editor-input-modal__dialog {
+    transform: scale(1) translateY(0);
 }
 
 .news-editor-input-modal__header {
@@ -2810,13 +2822,23 @@ body.dark-mode .news-btn--ghost {
 
 .news-editor-input-modal__header h4 {
     margin: 0;
-    font-size: 1rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.dark-mode .news-editor-input-modal__header h4 {
+    color: #f8fafc;
 }
 
 .news-editor-input-modal__header p {
     margin: 0.2rem 0 0;
     color: rgba(15, 23, 42, 0.6);
     font-size: 0.85rem;
+}
+
+.dark-mode .news-editor-input-modal__header p {
+    color: #94a3b8;
 }
 
 .news-editor-input-modal__close {
@@ -2829,6 +2851,19 @@ body.dark-mode .news-btn--ghost {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    transition: all 0.2s;
+}
+
+.dark-mode .news-editor-input-modal__close {
+    background: rgba(15, 23, 42, 0.3);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #f1f5f9;
+}
+
+.news-editor-input-modal__close:hover {
+    background: #fee2e2;
+    color: #ef4444;
+    border-color: #fecaca;
 }
 
 .news-editor-input-modal__fields {
@@ -2843,6 +2878,10 @@ body.dark-mode .news-btn--ghost {
     color: rgba(15, 23, 42, 0.7);
 }
 
+.dark-mode .news-editor-input-modal__label {
+    color: #cbd5e1;
+}
+
 .news-editor-input-modal__input,
 .news-editor-input-modal__field {
     border: 1px solid rgba(148, 163, 184, 0.6);
@@ -2851,7 +2890,14 @@ body.dark-mode .news-btn--ghost {
     font-size: 0.95rem;
     font-family: "Poppins", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background: #fff;
-    transition: border-color 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.dark-mode .news-editor-input-modal__input,
+.dark-mode .news-editor-input-modal__field {
+    background: #0f172a;
+    border-color: rgba(148, 163, 184, 0.3);
+    color: #f1f5f9;
 }
 
 .news-editor-input-modal__input:focus,
@@ -2886,6 +2932,118 @@ body.dark-mode .news-btn--ghost {
     position: absolute;
     inset: 0;
     background: transparent;
+}
+
+/* Internal components dark mode */
+.news-editor-modal-section {
+    background: #f8fafc;
+    padding: 1.25rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.dark-mode .news-editor-modal-section {
+    background: #0f172a;
+    border-color: rgba(148, 163, 184, 0.2);
+}
+
+.modal-section-title {
+    font-weight: 600;
+    color: #334155;
+}
+
+.dark-mode .modal-section-title {
+    color: #e2e8f0;
+}
+
+.modal-section-desc {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #64748b;
+    font-style: italic;
+}
+
+.dark-mode .modal-section-desc {
+    color: #94a3b8;
+}
+
+.dark-mode .file-drop-zone {
+    background: #0f172a !important;
+    border-color: rgba(148, 163, 184, 0.3) !important;
+}
+
+/* Table Editor Styles */
+.news-editor-table-wrapper {
+    margin: 1.5rem 0;
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #fff;
+    padding: 4px;
+}
+
+.dark-mode .news-editor-table-wrapper {
+    background: #1e293b;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.news-editor-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.news-editor-table td {
+    border: 1px solid #e2e8f0;
+    padding: 12px;
+    min-width: 80px;
+    color: #334155;
+    transition: background 0.2s;
+}
+
+.dark-mode .news-editor-table td {
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+}
+
+.news-editor-table td:focus {
+    outline: none;
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.dark-mode .news-editor-table td:focus {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.news-editor-table tr:first-child td {
+    background: #f8fafc;
+    font-weight: 600;
+}
+
+.dark-mode .news-editor-table tr:first-child td {
+    background: #0f172a;
+}
+
+.dark-mode .file-drop-zone h4 {
+    color: #f1f5f9 !important;
+}
+
+.dark-mode .news-btn--secondary {
+    background: #1e293b !important;
+    border-color: rgba(148, 163, 184, 0.3) !important;
+    color: #f1f5f9 !important;
+}
+
+.dark-mode #widthValueDisplay {
+    background: #0f172a !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+    color: #60a5fa !important;
+}
+
+.dark-mode input[type="range"] {
+    background: #334155 !important;
 }
 
 .news-editor-area {

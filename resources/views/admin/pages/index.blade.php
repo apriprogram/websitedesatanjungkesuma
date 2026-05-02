@@ -5,6 +5,17 @@
 @push('head')
     <link rel="stylesheet" href="{{ asset('assets/css/admin-news.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/admin-news-modal.css') }}">
+    <style>
+        .soft-action-btn--violet {
+            box-shadow: none !important;
+            transition: all 0.3s ease !important;
+        }
+        .soft-action-btn--violet:hover {
+            background: #4a1ccd !important;
+            box-shadow: none !important;
+            transform: translateY(0) !important;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -34,12 +45,11 @@
 
         <section class="page-title page-title--with-actions">
             <div>
-                <p class="page-eyebrow">Konten Statis</p>
                 <h1>Daftar Halaman</h1>
                 <p>Kelola halaman profil, layanan, dan informasi statis lainnya.</p>
             </div>
             <div class="title-actions">
-                <a href="{{ route('admin.pages.create') }}" class="soft-action-btn soft-action-btn--violet">
+                <a href="{{ route('admin.pages.create') }}" class="soft-action-btn soft-action-btn--violet soft-action-btn--large">
                     <i class="fas fa-plus"></i>
                     <span>Tambah Halaman</span>
                 </a>

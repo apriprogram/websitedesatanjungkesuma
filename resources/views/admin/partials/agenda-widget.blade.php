@@ -1,3 +1,214 @@
+<style>
+    @media (min-width: 769px) {
+        .fab-container {
+            left: 50% !important;
+            right: auto !important;
+            transform: translateX(-50%) !important;
+            align-items: center !important;
+        }
+        .fab-bottom-row {
+            justify-content: center !important;
+        }
+
+        /* Standardized Windows (Agenda & AI) */
+        .fab-card, .ai-chat-window {
+            position: absolute !important;
+            left: 50% !important;
+            right: auto !important;
+            top: auto !important;
+            bottom: calc(100% + 1.25rem) !important;
+            width: 850px !important;
+            max-width: 95vw !important;
+            transform: translateX(-50%) translateY(20px) scale(0.95) !important;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            transform-origin: bottom center !important;
+            z-index: 9999 !important;
+        }
+
+        .fab-card.active, .ai-chat-window.active {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateX(-50%) translateY(0) scale(1) !important;
+        }
+    }
+
+    /* Shrink the widgets */
+    .fab-button, .ai-fab {
+        width: 50px !important;
+        height: 50px !important;
+    }
+    .fab-button i {
+        font-size: 1.1rem !important;
+    }
+    .ai-fab-logo {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    .ai-badge {
+        font-size: 8px !important;
+        padding: 1px 4px !important;
+    }
+    .fab-clock {
+        padding: 0.4rem 0.8rem !important;
+        font-size: 0.85rem !important;
+    }
+    .fab-clock-time {
+        font-size: 0.85rem !important;
+    }
+    .fab-clock-date {
+        font-size: 0.7rem !important;
+    }
+    
+    /* Restore card sizes to be larger like before */
+    .fab-card {
+        width: 850px !important;
+    }
+    .fab-body {
+        max-height: 550px !important;
+    }
+    .ai-chat-window {
+        width: 850px !important;
+    }
+    .ai-chat-inner {
+        height: 700px !important;
+    }
+    .fab-header, .ai-chat-header {
+        padding: 1.5rem 1.75rem !important;
+    }
+    .fab-title, .ai-chat-title h4 {
+        font-size: 1.1rem !important;
+    }
+    /* Modal Detail Redesign (Clean & Stable) */
+    .fab-modal-backdrop {
+        position: fixed !important;
+        inset: 0 !important;
+        background: rgba(15, 23, 42, 0.5) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        z-index: 999999 !important;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .fab-modal-backdrop.active {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    .fab-modal {
+        background: white !important;
+        width: 650px !important;
+        max-width: 90vw !important;
+        border-radius: 24px !important;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4) !important;
+        overflow: hidden !important;
+        transform: scale(0.95) translateY(10px) !important;
+        transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    }
+    .fab-modal-backdrop.active .fab-modal {
+        transform: scale(1) translateY(0) !important;
+    }
+    .fab-modal-header {
+        padding: 1.5rem 2rem !important;
+        background: #f8fafc !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+    .fab-modal-title {
+        font-size: 1.25rem !important;
+        font-weight: 700 !important;
+        color: #1e293b !important;
+        margin: 0 !important;
+    }
+    .fab-modal-close {
+        background: #f1f5f9 !important;
+        border: none !important;
+        color: #64748b !important;
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 8px !important;
+        display: grid !important;
+        place-items: center !important;
+        cursor: pointer !important;
+        transition: all 0.2s !important;
+    }
+    .fab-modal-close:hover {
+        background: #fee2e2 !important;
+        color: #ef4444 !important;
+    }
+    .fab-modal-body {
+        padding: 2rem !important;
+    }
+    .fab-modal-section {
+        margin-bottom: 1.5rem !important;
+    }
+    .fab-detail-label {
+        font-size: 0.75rem !important;
+        font-weight: 700 !important;
+        color: var(--primary-color) !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+        margin-bottom: 0.5rem !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+    }
+    .fab-detail-value {
+        font-size: 1.15rem !important;
+        font-weight: 600 !important;
+        color: #1e293b !important;
+        line-height: 1.4 !important;
+    }
+    .fab-modal-desc-box {
+        background: #f8fafc !important;
+        padding: 1.25rem !important;
+        border-radius: 12px !important;
+        font-size: 0.95rem !important;
+        line-height: 1.6 !important;
+        color: #475569 !important;
+        border: 1px solid #e2e8f0 !important;
+        margin-top: 0.5rem !important;
+    }
+    .fab-modal-meta-row {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 1.5rem !important;
+        margin-top: 2rem !important;
+        padding-top: 1.5rem !important;
+        border-top: 1px dashed #e2e8f0 !important;
+    }
+    .fab-meta-item {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.25rem !important;
+    }
+    .fab-meta-label {
+        font-size: 0.7rem !important;
+        font-weight: 600 !important;
+        color: #94a3b8 !important;
+        text-transform: uppercase !important;
+    }
+    .fab-meta-value {
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        color: #334155 !important;
+    }
+
+    /* Dark Mode Support */
+    body.dark-mode .fab-modal { background: #1e293b !important; border-color: #334155 !important; }
+    body.dark-mode .fab-modal-header { background: #111827 !important; border-color: #334155 !important; }
+    body.dark-mode .fab-modal-title { color: #f8fafc !important; }
+    body.dark-mode .fab-modal-close { background: #334155 !important; color: #94a3b8 !important; }
+    body.dark-mode .fab-detail-value { color: #f1f5f9 !important; }
+    body.dark-mode .fab-modal-desc-box { background: #0f172a !important; border-color: #334155 !important; color: #cbd5e1 !important; }
+    body.dark-mode .fab-modal-meta-row { border-color: #334155 !important; }
+    body.dark-mode .fab-meta-value { color: #e2e8f0 !important; }
+</style>
 <div class="fab-container">
     <!-- Floating Card -->
     <div class="fab-card" id="fabAgendaCard">
@@ -73,47 +284,60 @@
         </div>
     </div>
 
-    <!-- Modal Detail Widget -->
-    <div class="fab-modal-backdrop" id="fabAgendaModalBackdrop" onclick="if(event.target === this) closeFabModal()">
-        <div class="fab-modal">
-            <div class="fab-modal-inner">
-            <header class="fab-modal-header">
-                <h4 class="fab-modal-title">Detail Agenda</h4>
-                <button type="button" class="fab-modal-close" onclick="closeFabModal()">
-                    <i class="fas fa-times"></i>
+    <!-- AI Widget Chat Window -->
+    <div class="ai-chat-window" id="aiChatWindow">
+        <div class="ai-chat-inner">
+            <header class="ai-chat-header">
+                <div class="ai-chat-header-info">
+                    <div class="ai-header-avatar">
+                        <img src="{{ asset('img/Logo/logo_apriprogram.jpg') }}" alt="ApriProgram" class="ai-header-logo">
+                    </div>
+                    <div class="ai-chat-title">
+                        <h4>Asisten AI Desa</h4>
+                        <span class="ai-status-dot">● Online &amp; Terintegrasi</span>
+                    </div>
+                </div>
+                <button class="ai-chat-close" id="closeAiChat" title="Tutup Chat">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M14 4L4 14M4 4l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
                 </button>
             </header>
-            <div class="fab-modal-body">
-                <div class="fab-modal-grid">
-                    <div class="fab-modal-main">
-                        <div class="fab-detail-label">
-                            <i class="fas fa-bookmark"></i> NAMA KEGIATAN
-                        </div>
-                        <div class="fab-detail-value" id="fabModalTitle"></div>
-
-                        <div class="fab-detail-label">
-                            <i class="fas fa-align-left"></i> DESKRIPSI LENGKAP
-                        </div>
-                        <div class="fab-modal-desc-box" id="fabModalDesc"></div>
+            <div class="ai-date-divider"><span>Hari Ini</span></div>
+            <div class="ai-chat-body" id="aiChatBody">
+                <div class="message-row message-row--ai">
+                    <div class="ai-msg-avatar">
+                        <img src="{{ asset('img/Logo/logo_apriprogram.jpg') }}" alt="Bot" class="ai-msg-logo">
                     </div>
-
-                    <div class="fab-modal-side">
-                        <div class="fab-meta-card">
-                            <div class="fab-detail-label"><i class="fas fa-calendar-day"></i> WAKTU</div>
-                            <div class="fab-detail-value" id="fabModalDue"></div>
-                        </div>
-
-                        <div class="fab-meta-card">
-                            <div class="fab-detail-label"><i class="fas fa-flag"></i> PRIORITAS</div>
-                            <div class="fab-detail-value" id="fabModalPriority" style="text-transform: capitalize;">
-                            </div>
-                        </div>
+                    <div class="message message--ai">
+                        Halo! Saya Asisten AI Desa Tanjung Kesuma. Ada yang bisa saya bantu hari ini? 😊
                     </div>
                 </div>
             </div>
+            <div class="ai-quick-replies" id="aiQuickReplies">
+                <button class="ai-chip" data-msg="Apa saja agenda desa minggu ini?">Agenda minggu ini</button>
+                <button class="ai-chip" data-msg="Bagaimana cara menambah data penduduk?">Tambah penduduk</button>
+                <button class="ai-chip" data-msg="Berapa jumlah penduduk saat ini?">Jumlah penduduk</button>
+                <button class="ai-chip" data-msg="Cara export data ke Excel?">Export data</button>
             </div>
+            <footer class="ai-chat-footer">
+                <form id="aiChatForm" class="ai-input-group">
+                    <button type="button" class="ai-attach-btn" title="Lampiran">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>
+                        </svg>
+                    </button>
+                    <input type="text" id="aiChatInput" placeholder="Tanya apa saja..." autocomplete="off">
+                    <button type="submit" class="ai-send-btn" id="sendAiMsg" title="Kirim Pesan">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <path d="M22 2L11 13" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </form>
+            </footer>
         </div>
     </div>
+
+
 
     <!-- Bottom Area: Clock + AI Button + Agenda Button -->
     <div class="fab-bottom-row">
@@ -126,58 +350,6 @@
 
         <!-- AI Widget FAB — inline dengan agenda button -->
         <div class="ai-fab-inline-wrap" id="aiWidgetInline">
-            <div class="ai-chat-window" id="aiChatWindow">
-                <div class="ai-chat-inner">
-                    <header class="ai-chat-header">
-                        <div class="ai-chat-header-info">
-                            <div class="ai-header-avatar">
-                                <img src="{{ asset('img/Logo/logo_apriprogram.jpg') }}" alt="ApriProgram" class="ai-header-logo">
-                            </div>
-                            <div class="ai-chat-title">
-                                <h4>Asisten AI Desa</h4>
-                                <span class="ai-status-dot">● Online &amp; Terintegrasi</span>
-                            </div>
-                        </div>
-                        <button class="ai-chat-close" id="closeAiChat" title="Tutup Chat">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M14 4L4 14M4 4l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                        </button>
-                    </header>
-                    <div class="ai-date-divider"><span>Hari Ini</span></div>
-                    <div class="ai-chat-body" id="aiChatBody">
-                        <div class="message-row message-row--ai">
-                            <div class="ai-msg-avatar">
-                                <img src="{{ asset('img/Logo/logo_apriprogram.jpg') }}" alt="Bot" class="ai-msg-logo">
-                            </div>
-                            <div class="message message--ai">
-                                Halo! Saya Asisten AI Desa Tanjung Kesuma. Ada yang bisa saya bantu hari ini? 😊
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ai-quick-replies" id="aiQuickReplies">
-                        <button class="ai-chip" data-msg="Apa saja agenda desa minggu ini?">Agenda minggu ini</button>
-                        <button class="ai-chip" data-msg="Bagaimana cara menambah data penduduk?">Tambah penduduk</button>
-                        <button class="ai-chip" data-msg="Berapa jumlah penduduk saat ini?">Jumlah penduduk</button>
-                        <button class="ai-chip" data-msg="Cara export data ke Excel?">Export data</button>
-                    </div>
-                    <footer class="ai-chat-footer">
-                        <form id="aiChatForm" class="ai-input-group">
-                            <button type="button" class="ai-attach-btn" title="Lampiran">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>
-                                </svg>
-                            </button>
-                            <input type="text" id="aiChatInput" placeholder="Tanya apa saja..." autocomplete="off">
-                            <button type="submit" class="ai-send-btn" id="sendAiMsg" title="Kirim Pesan">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                                    <path d="M22 2L11 13" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </button>
-                        </form>
-                    </footer>
-                </div>
-            </div>
-
             <!-- AI FAB Button -->
             <button class="ai-fab" id="toggleAiChat" title="Tanya Asisten AI">
                 <img src="{{ asset('img/Logo/logo_apriprogram.jpg') }}" alt="ApriProgram AI" class="ai-fab-logo">
@@ -189,6 +361,44 @@
         <button class="fab-button" onclick="toggleFab()" aria-label="Lihat Agenda">
             <i class="fas fa-calendar-alt"></i>
         </button>
+    </div>
+</div>
+
+<!-- Modal Detail Widget (Outside container for perfect centering) -->
+<div class="fab-modal-backdrop" id="fabAgendaModalBackdrop" onclick="if(event.target === this) closeFabModal()">
+    <div class="fab-modal">
+        <header class="fab-modal-header">
+            <h4 class="fab-modal-title">Detail Agenda</h4>
+            <button type="button" class="fab-modal-close" onclick="closeFabModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </header>
+        <div class="fab-modal-body">
+            <div class="fab-modal-section">
+                <div class="fab-detail-label">
+                    <i class="fas fa-bookmark"></i> NAMA KEGIATAN
+                </div>
+                <div class="fab-detail-value" id="fabModalTitle"></div>
+            </div>
+
+            <div class="fab-modal-section">
+                <div class="fab-detail-label">
+                    <i class="fas fa-align-left"></i> DESKRIPSI LENGKAP
+                </div>
+                <div class="fab-modal-desc-box" id="fabModalDesc"></div>
+            </div>
+
+            <div class="fab-modal-meta-row">
+                <div class="fab-meta-item">
+                    <div class="fab-meta-label">WAKTU PELAKSANAAN</div>
+                    <div class="fab-meta-value" id="fabModalDue"></div>
+                </div>
+                <div class="fab-meta-item">
+                    <div class="fab-meta-label">TINGKAT PRIORITAS</div>
+                    <div class="fab-meta-value" id="fabModalPriority" style="text-transform: capitalize;"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -223,7 +433,14 @@
         document.getElementById('fabModalPriority').innerText = priorityMap[priority.toLowerCase()] || priority;
 
         const backdrop = document.getElementById('fabAgendaModalBackdrop');
-        if (backdrop) backdrop.classList.add('active');
+        if (backdrop) {
+            backdrop.classList.add('active');
+            // Otomatis tutup menu agenda list
+            const agendaCard = document.getElementById('fabAgendaCard');
+            if (agendaCard && agendaCard.classList.contains('active')) {
+                agendaCard.classList.remove('active');
+            }
+        }
     }
 
     function closeFabModal() {
@@ -286,8 +503,13 @@
         // Close when clicking outside
         document.addEventListener('click', (e) => {
             const wrap = document.getElementById('aiWidgetInline');
-            if (wrap && !wrap.contains(e.target) && chatWindow.classList.contains('active')) {
-                chatWindow.classList.remove('active');
+            const windowEl = document.getElementById('aiChatWindow');
+            if (windowEl && windowEl.classList.contains('active')) {
+                const isInsideWrap = wrap && wrap.contains(e.target);
+                const isInsideWindow = windowEl.contains(e.target);
+                if (!isInsideWrap && !isInsideWindow) {
+                    windowEl.classList.remove('active');
+                }
             }
         });
 

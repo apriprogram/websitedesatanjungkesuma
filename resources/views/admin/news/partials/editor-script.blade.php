@@ -38,31 +38,33 @@
                 },
                 insertImage: {
                     title: 'Masukkan Gambar',
-                    description: 'Unggah file gambar dari komputer atau masukkan URL.',
+                    description: 'Unggah file gambar dari komputer Anda.',
                     render: () => `
-                        <div class="file-drop-zone" id="contentDropZone" style="padding: 2rem 1rem; margin-bottom: 1.5rem; border: 2px dashed #cbd5e1; border-radius: 12px; text-align: center; background: #f8fafc; transition: all 0.2s ease;">
-                            <div class="drop-icon" style="font-size: 2.5rem; color: #94a3b8; margin-bottom: 0.5rem;">
+                        <div class="file-drop-zone" id="contentDropZone" style="padding: 2.5rem 1rem; margin-bottom: 2rem; border: 2px dashed #cbd5e1; border-radius: 16px; text-align: center; background: #f8fafc; transition: all 0.2s ease;">
+                            <div class="drop-icon" style="font-size: 3rem; color: #94a3b8; margin-bottom: 0.75rem;">
                                 <i class="fas fa-cloud-upload-alt"></i>
                             </div>
-                            <h4 style="font-size: 1rem; color: #0f172a; margin-bottom: 0.25rem;">Pilih file atau tarik & lepas ke sini.</h4>
-                            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1rem;">jpeg, png, gif - Maks. 10MB</p>
-                            <label class="news-btn news-btn--secondary" style="cursor: pointer; background: #fff; border: 1px solid #cbd5e1; padding: 0.5rem 1rem; border-radius: 6px; display: inline-block;">
+                            <h4 style="font-size: 1.1rem; color: #0f172a; margin-bottom: 0.5rem; font-weight: 600;">Pilih file atau tarik & lepas ke sini.</h4>
+                            <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1.5rem;">jpeg, png, gif - Maks. 10MB</p>
+                            <label class="news-btn news-btn--secondary" style="cursor: pointer; background: #fff; border: 1px solid #cbd5e1; padding: 0.6rem 1.2rem; border-radius: 8px; display: inline-block; font-weight: 600; font-size: 0.9rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                                 Telusuri file
                                 <input id="contentImageFile" type="file" name="imageFile" accept="image/*" hidden>
                             </label>
-                            <div id="contentImagePreview" style="margin-top: 1rem; display: none; font-size: 0.9rem; font-weight: 500; color: #3b82f6;"></div>
+                            <div id="contentImagePreview" style="margin-top: 1.25rem; display: none; font-size: 0.95rem; font-weight: 600; color: #3b82f6; background: #eff6ff; padding: 8px 12px; border-radius: 8px; border: 1px solid #dbeafe;"></div>
                         </div>
-                        <div style="text-align:center; color:#64748b; font-size:0.8rem; margin-bottom: 1.5rem; font-weight:500; position:relative;">
-                            <hr style="position:absolute; width:100%; top:50%; left:0; border:none; border-top:1px solid #e2e8f0; z-index:1;">
-                            <span style="background:#fff; padding:0 10px; position:relative; z-index:2;">ATAU</span>
-                        </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <label class="news-editor-input-modal__label">URL gambar</label>
-                            <input class="news-editor-input-modal__input" type="url" name="imageUrl" placeholder="https://contoh.com/foto.jpg">
-                        </div>
-                        <div>
-                            <label class="news-editor-input-modal__label">Lebar Gambar (Persen)</label>
-                            <input class="news-editor-input-modal__input" type="number" name="imageWidth" min="10" max="100" value="100" placeholder="100">
+
+                        <div class="news-editor-modal-section">
+                            <label class="news-editor-input-modal__label" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <span class="modal-section-title">Lebar Tampilan Gambar</span>
+                                <span id="widthValueDisplay" style="font-weight: 700; color: #3b82f6; background: #fff; border: 1px solid #dbeafe; padding: 2px 10px; border-radius: 6px; font-size: 0.9rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">100%</span>
+                            </label>
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <i class="fas fa-image" style="font-size: 0.9rem; color: #94a3b8;"></i>
+                                <input type="range" name="imageWidth" min="10" max="100" value="100" step="5" id="imageWidthSlider"
+                                       style="flex: 1; height: 6px; border-radius: 3px; background: #cbd5e1; appearance: none; cursor: pointer; outline: none;">
+                                <i class="fas fa-image" style="font-size: 1.5rem; color: #475569;"></i>
+                            </div>
+                            <p class="modal-section-desc">Geser untuk mengatur persentase lebar gambar di dalam konten.</p>
                         </div>
                     `,
                 },
@@ -82,13 +84,25 @@
                     },
                 },
                 insertTable: {
-                    title: 'Masukkan tabel',
+                    title: 'Masukkan Tabel',
                     description: 'Atur jumlah baris dan kolom tabel yang akan dimasukkan.',
                     render: () => `
-                        <label class="news-editor-input-modal__label">Baris</label>
-                        <input class="news-editor-input-modal__input" type="number" name="rows" min="1" value="3" required>
-                        <label class="news-editor-input-modal__label">Kolom</label>
-                        <input class="news-editor-input-modal__input" type="number" name="cols" min="1" value="2" required>
+                        <div class="news-editor-modal-section">
+                            <label class="news-editor-input-modal__label" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <span class="modal-section-title">Pilih Ukuran Grid</span>
+                                <span id="gridValueDisplay" style="font-weight: 700; color: #3b82f6; background: #fff; border: 1px solid #dbeafe; padding: 2px 10px; border-radius: 6px; font-size: 0.9rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">1 x 1</span>
+                            </label>
+                            <div id="tableGridPicker" style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; margin-top: 8px; cursor: pointer; justify-content: center;">
+                                ${Array.from({length: 100}).map((_, i) => `
+                                    <div class="grid-square" data-row="${Math.floor(i/10)+1}" data-col="${(i%10)+1}" 
+                                         style="aspect-ratio: 1; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; transition: all 0.1s ease;">
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <p class="modal-section-desc">Geser kursor untuk memilih ukuran tabel, lalu klik untuk mengunci.</p>
+                            <input type="hidden" name="rows" value="1">
+                            <input type="hidden" name="cols" value="1">
+                        </div>
                     `,
                 },
             };
@@ -160,10 +174,54 @@
                             }
                         });
                     }
+
+                    const widthSlider = modalFields.querySelector('#imageWidthSlider');
+                    const widthDisplay = modalFields.querySelector('#widthValueDisplay');
+                    if (widthSlider && widthDisplay) {
+                        widthSlider.addEventListener('input', () => {
+                            widthDisplay.textContent = widthSlider.value + '%';
+                        });
+                    }
+                }
+                
+                if (command === 'insertTable') {
+                    const gridPicker = modalFields.querySelector('#tableGridPicker');
+                    const gridSquares = modalFields.querySelectorAll('.grid-square');
+                    const gridDisplay = modalFields.querySelector('#gridValueDisplay');
+                    const rowsInput = modalFields.querySelector('input[name="rows"]');
+                    const colsInput = modalFields.querySelector('input[name="cols"]');
+
+                    if (gridPicker) {
+                        gridSquares.forEach(sq => {
+                            sq.addEventListener('mouseenter', () => {
+                                const r = parseInt(sq.dataset.row);
+                                const c = parseInt(sq.dataset.col);
+                                gridDisplay.textContent = `${r} x ${c}`;
+                                gridSquares.forEach(s => {
+                                    const sr = parseInt(s.dataset.row);
+                                    const sc = parseInt(s.dataset.col);
+                                    if (sr <= r && sc <= c) {
+                                        s.style.background = '#3b82f6';
+                                        s.style.borderColor = '#2563eb';
+                                    } else {
+                                        s.style.background = '#fff';
+                                        s.style.borderColor = '#cbd5e1';
+                                    }
+                                });
+                            });
+                            sq.addEventListener('click', () => {
+                                rowsInput.value = sq.dataset.row;
+                                colsInput.value = sq.dataset.col;
+                                gridPicker.style.borderColor = '#10b981';
+                                setTimeout(() => {
+                                    modalForm.dispatchEvent(new Event('submit'));
+                                }, 100);
+                            });
+                        });
+                    }
                 }
             };
 
-            // Save cursor position BEFORE modal opens (called from toolbar click)
             let savedRange = null;
             const saveCursorPosition = () => {
                 const sel = window.getSelection();
@@ -172,12 +230,10 @@
                 }
             };
 
-            // Insert HTML at saved cursor position in editorArea
             const insertHtmlAtCursor = (html) => {
                 editorArea.focus();
                 const sel = window.getSelection();
                 
-                // CRITICAL FIX: Ensure range is actually inside editorArea
                 let range = null;
                 if (savedRange && editorArea.contains(savedRange.commonAncestorContainer)) {
                     range = savedRange;
@@ -208,7 +264,6 @@
                         sel.addRange(newRange);
                     }
                 } else {
-                    // Fallback: Append to end if no valid range found inside editor
                     editorArea.appendChild(fragment);
                 }
                 syncContent();
@@ -269,7 +324,7 @@
                             color: button.dataset.editorValue || '#dcdcfb',
                             text: button.dataset.editorValue || '',
                         };
-                        saveCursorPosition(); // Save position BEFORE modal steals focus
+                        saveCursorPosition();
                         openModal(command, options);
                         return;
                     }
@@ -296,11 +351,9 @@
                     }
                 } else if (pendingCommand === 'insertImage') {
                     const fileInput = modalForm.querySelector('input[name="imageFile"]');
-                    const urlInput = modalForm.querySelector('input[name="imageUrl"]');
                     const widthInput = modalForm.querySelector('input[name="imageWidth"]');
                     
                     const file = fileInput && fileInput.files[0];
-                    const url = urlInput ? urlInput.value.trim() : '';
                     const width = widthInput && widthInput.value ? widthInput.value + '%' : '100%';
 
                     const buildImgHtml = (src) => {
@@ -312,7 +365,7 @@
                         formDataUpload.append('image', file);
                         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || document.querySelector('input[name="_token"]')?.value;
 
-                        closeModal(); // close first, keep savedRange intact
+                        closeModal();
 
                         fetch('/admin/media/editor-upload', {
                             method: 'POST',
@@ -332,9 +385,9 @@
                             alert('Terjadi kesalahan saat mengunggah.');
                         });
                         return;
-                    } else if (url) {
-                        insertHtmlAtCursor(buildImgHtml(url));
-                        applied = true;
+                    } else {
+                        alert('Silakan pilih file gambar terlebih dahulu.');
+                        return;
                     }
                 } else if (pendingCommand === 'hiliteColor') {
                     const manual = (formData.get('value') || '').trim();
@@ -348,16 +401,22 @@
                     const rows = parseInt(formData.get('rows'), 10);
                     const cols = parseInt(formData.get('cols'), 10);
                     if (rows > 0 && cols > 0) {
-                        let tableHtml = '<table class="news-editor-table">';
+                        let tableHtml = `<div class="news-editor-table-wrapper" contenteditable="false">
+                            <table class="news-editor-table" style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+                                <tbody>`;
                         for (let r = 0; r < rows; r++) {
                             tableHtml += '<tr>';
                             for (let c = 0; c < cols; c++) {
-                                tableHtml += r === 0 ? '<th>&nbsp;</th>' : '<td>&nbsp;</td>';
+                                tableHtml += `<td contenteditable="true" style="border: 1px solid #cbd5e1; padding: 0; position: relative; min-width: 50px;">
+                                    <div class="table-cell-resizable" style="resize: both; overflow: auto; padding: 12px; min-width: 50px; min-height: 20px;">&nbsp;</div>
+                                </td>`;
                             }
                             tableHtml += '</tr>';
                         }
-                        tableHtml += '</table><p></p>';
-                        document.execCommand('insertHTML', false, tableHtml);
+                        tableHtml += `</tbody>
+                            </table>
+                        </div><p></p>`;
+                        insertHtmlAtCursor(tableHtml);
                         applied = true;
                     }
                 }
@@ -464,11 +523,7 @@
                 form.addEventListener('submit', syncContent);
             }
 
-            // ============================================================
-            // IMAGE RESIZE + ALIGNMENT SYSTEM
-            // ============================================================
             (function initImageResizer() {
-                // Create the resize overlay (injected once)
                 const overlay = document.createElement('div');
                 overlay.id = 'imgResizeOverlay';
                 overlay.style.cssText = `
@@ -502,7 +557,6 @@
                 `;
                 document.body.appendChild(overlay);
 
-                // Style handles
                 overlay.querySelectorAll('.rsz-handle').forEach(h => {
                     h.style.cssText += `
                         position:absolute; width:10px; height:10px; background:#3b82f6;
@@ -531,7 +585,6 @@
                     selectedImg = null;
                 };
 
-                // Click on image in editor – select it & make it draggable
                 editorArea.addEventListener('click', (e) => {
                     if (e.target.tagName === 'IMG') {
                         e.preventDefault();
@@ -544,7 +597,6 @@
                     }
                 });
 
-                // Alignment toolbar buttons
                 overlay.querySelectorAll('[data-align]').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         e.preventDefault();
@@ -570,7 +622,6 @@
                     });
                 });
 
-                // Delete button
                 const deleteBtn = overlay.querySelector('#imgDeleteBtn');
                 deleteBtn?.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -586,7 +637,6 @@
                     syncContent();
                 });
 
-                // Resize drag – mousedown on handle
                 overlay.querySelectorAll('.rsz-handle').forEach(handle => {
                     handle.addEventListener('mousedown', (e) => {
                         e.preventDefault();
@@ -610,7 +660,6 @@
                     const dy = e.clientY - startY;
                     let newW = startW;
 
-                    // Determine new width based on drag direction
                     if (dragDir.includes('e')) newW = Math.max(60, startW + dx);
                     else if (dragDir.includes('w')) newW = Math.max(60, startW - dx);
                     else if (dragDir === 'n' || dragDir === 's') {
@@ -618,12 +667,10 @@
                         newW = newH * aspectRatio;
                     }
 
-                    // For corner handles, keep aspect ratio
                     if (dragDir === 'nw' || dragDir === 'ne' || dragDir === 'sw' || dragDir === 'se') {
                         newW = Math.max(60, newW);
                     }
 
-                    // Apply as percentage of editor width
                     const editorWidth = editorArea.getBoundingClientRect().width;
                     const pct = Math.round((newW / editorWidth) * 100);
                     selectedImg.style.width = Math.max(5, Math.min(100, pct)) + '%';
@@ -642,12 +689,10 @@
                     }
                 });
 
-                // Reposition on scroll / resize
                 editorArea.addEventListener('scroll', positionOverlay, true);
                 window.addEventListener('scroll', positionOverlay, true);
                 window.addEventListener('resize', positionOverlay);
 
-                // === Visual drop indicator ===
                 const dropIndicator = document.createElement('div');
                 dropIndicator.id = 'imgDropIndicator';
                 dropIndicator.style.cssText = `
@@ -656,7 +701,6 @@
                     box-shadow: 0 0 0 2px rgba(59,130,246,0.25);
                     transition: top 0.05s, left 0.05s, height 0.05s;
                 `;
-                // Add pulsing dot at top of indicator
                 dropIndicator.innerHTML = `<div style="
                     width:10px; height:10px; border-radius:50%; background:#3b82f6;
                     position:absolute; top:-4px; left:-3.5px;
@@ -665,7 +709,6 @@
                 "></div>`;
                 document.body.appendChild(dropIndicator);
 
-                // Add pulse animation style
                 if (!document.getElementById('dropIndicatorStyle')) {
                     const styleEl = document.createElement('style');
                     styleEl.id = 'dropIndicatorStyle';
@@ -712,7 +755,6 @@
                     dropIndicator.style.height = `${lineH}px`;
                 };
 
-                // Native drag-and-drop image repositioning inside editor
                 let draggedImg = null;
                 editorArea.addEventListener('dragstart', (e) => {
                     if (e.target.tagName === 'IMG') {
@@ -720,7 +762,6 @@
                         hideOverlay();
                         e.dataTransfer.effectAllowed = 'move';
                         e.dataTransfer.setData('text/html', e.target.outerHTML);
-                        // Add a blue outline instead of opacity to mark the dragged image
                         draggedImg.style.outline = '2px dashed #3b82f6';
                     }
                 });
@@ -733,7 +774,6 @@
                     syncContent();
                 });
                 editorArea.addEventListener('dragover', (e) => {
-                    // Prevent default to allow drop
                     e.preventDefault();
                     if (e.dataTransfer.types.includes('Files') || draggedImg) {
                         e.dataTransfer.dropEffect = draggedImg ? 'move' : 'copy';
@@ -755,7 +795,6 @@
                         return null;
                     })();
 
-                    // Handle internal dragged image repositioning
                     if (draggedImg) {
                         if (range && editorArea.contains(range.commonAncestorContainer)) {
                             const imgClone = draggedImg.cloneNode(true);
@@ -769,7 +808,6 @@
                         return;
                     }
 
-                    // Handle external file drop
                     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
                         const file = e.dataTransfer.files[0];
                         if (!file.type.startsWith('image/')) return;
@@ -778,7 +816,6 @@
                         formDataUpload.append('image', file);
                         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || document.querySelector('input[name="_token"]')?.value;
 
-                        // Create placeholder text while uploading
                         let placeholderNode = null;
                         if (range && editorArea.contains(range.commonAncestorContainer)) {
                             placeholderNode = document.createTextNode(' [Mengunggah gambar...] ');
@@ -823,14 +860,183 @@
                     }
                 });
 
-                // Hide when clicking outside editor
                 document.addEventListener('mousedown', (e) => {
                     if (!editorArea.contains(e.target) && !overlay.contains(e.target)) {
                         hideOverlay();
                     }
                 });
             })();
-            // ============================================================
+
+
+            let tableToolbar = document.getElementById('newsEditorTableToolbar');
+            if (!tableToolbar) {
+                tableToolbar = document.createElement('div');
+                tableToolbar.id = 'newsEditorTableToolbar';
+                tableToolbar.className = 'news-editor-table-toolbar';
+                tableToolbar.innerHTML = `
+                    <div class="news-editor-table-toolbar-inner">
+                        <button type="button" data-action="addRowAbove" title="Tambah Baris Atas"><i class="fas fa-arrow-up"></i></button>
+                        <button type="button" data-action="addRowBelow" title="Tambah Baris Bawah"><i class="fas fa-arrow-down"></i></button>
+                        <hr style="height: 20px; border: none; border-left: 1px solid rgba(255,255,255,0.2); margin: 0 4px;">
+                        <button type="button" data-action="addColLeft" title="Tambah Kolom Kiri"><i class="fas fa-arrow-left"></i></button>
+                        <button type="button" data-action="addColRight" title="Tambah Kolom Kanan"><i class="fas fa-arrow-right"></i></button>
+                        <hr style="height: 20px; border: none; border-left: 1px solid rgba(255,255,255,0.2); margin: 0 4px;">
+                        <button type="button" data-action="deleteRow" title="Hapus Baris" class="danger"><i class="fas fa-minus-square"></i></button>
+                        <button type="button" data-action="deleteCol" title="Hapus Kolom" class="danger"><i class="fas fa-columns"></i></button>
+                        <button type="button" data-action="deleteTable" title="Hapus Tabel" class="danger"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+                editorArea.parentElement.insertBefore(tableToolbar, editorArea);
+            }
+
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .news-editor-table-toolbar {
+                    position: sticky;
+                    top: 20px;
+                    z-index: 10001;
+                    height: 0;
+                    width: 100%;
+                    display: none;
+                    justify-content: center;
+                    pointer-events: none;
+                    overflow: visible;
+                }
+                .news-editor-table-toolbar-inner {
+                    position: absolute;
+                    top: 0;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: #1e293b;
+                    border-radius: 14px;
+                    padding: 8px 16px;
+                    display: flex;
+                    gap: 8px;
+                    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+                    border: 1px solid rgba(255, 255, 255, 0.15);
+                    align-items: center;
+                    pointer-events: auto;
+                    width: fit-content;
+                }
+                .news-editor-table-toolbar-inner button {
+                    background: transparent;
+                    border: none;
+                    color: #f1f5f9;
+                    width: 32px;
+                    height: 32px;
+                    display: grid;
+                    place-items: center;
+                    cursor: pointer;
+                    border-radius: 8px;
+                    transition: all 0.2s;
+                    font-size: 0.9rem;
+                }
+                .news-editor-table-toolbar-inner button:hover {
+                    background: rgba(255, 255, 255, 0.1);
+                    color: #60a5fa;
+                }
+                .news-editor-table-toolbar-inner button.danger {
+                    color: #f87171;
+                }
+                .news-editor-table-toolbar-inner button.danger:hover {
+                    background: rgba(239, 68, 68, 0.15);
+                    color: #ffffff;
+                }
+                .news-editor-table-toolbar-inner hr {
+                    height: 20px;
+                    width: 1px;
+                    background: rgba(255, 255, 255, 0.15);
+                    border: none;
+                    margin: 0 4px;
+                }
+                .news-editor-table-wrapper {
+                    margin: 1.5rem 0;
+                    position: relative;
+                }
+            `;
+            document.head.appendChild(style);
+
+            let activeCell = null;
+            editorArea.addEventListener('contextmenu', (e) => {
+                const cell = e.target.closest('td, th');
+                if (cell) {
+                    e.preventDefault();
+                    activeCell = cell;
+                    tableToolbar.style.display = 'flex';
+                } else {
+                    tableToolbar.style.display = 'none';
+                }
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!tableToolbar.contains(e.target)) {
+                    tableToolbar.style.display = 'none';
+                }
+            });
+
+            tableToolbar.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                const action = e.target.closest('button')?.dataset.action;
+                if (!action || !activeCell) return;
+
+                const row = activeCell.parentElement;
+                const table = row.parentElement.closest('table');
+                const colIndex = activeCell.cellIndex;
+                const rowIndex = row.rowIndex;
+
+                switch (action) {
+                    case 'addRowAbove':
+                    case 'addRowBelow':
+                        const newRow = table.insertRow(action === 'addRowAbove' ? rowIndex : rowIndex + 1);
+                        for (let i = 0; i < row.cells.length; i++) {
+                            const newCell = newRow.insertCell(i);
+                            newCell.innerHTML = `<div class="table-cell-resizable" style="resize: both; overflow: auto; padding: 12px; min-width: 50px; min-height: 20px;">&nbsp;</div>`;
+                            newCell.style.padding = '0';
+                            newCell.contentEditable = true;
+                            newCell.style.cssText = activeCell.style.cssText;
+                        }
+                        break;
+                    case 'addColLeft':
+                    case 'addColRight':
+                        const index = action === 'addColLeft' ? colIndex : colIndex + 1;
+                        Array.from(table.rows).forEach(r => {
+                            const newCell = r.insertCell(index);
+                            newCell.innerHTML = `<div class="table-cell-resizable" style="resize: both; overflow: auto; padding: 12px; min-width: 50px; min-height: 20px;">&nbsp;</div>`;
+                            newCell.style.padding = '0';
+                            newCell.contentEditable = true;
+                            newCell.style.cssText = activeCell.style.cssText;
+                        });
+                        break;
+                    case 'deleteRow':
+                        if (table.rows.length > 1) table.deleteRow(rowIndex);
+                        break;
+                    case 'deleteCol':
+                        if (row.cells.length > 1) {
+                            Array.from(table.rows).forEach(r => r.deleteCell(colIndex));
+                        }
+                        break;
+                    case 'deleteTable':
+                        if (confirm('Hapus tabel ini?')) table.closest('.news-editor-table-wrapper').remove();
+                        break;
+                }
+                tableToolbar.style.display = 'none';
+                syncContent();
+            });
+
+            editorArea.addEventListener('keydown', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    if (e.key.toLowerCase() === 'z') {
+                        e.preventDefault();
+                        if (e.shiftKey) document.execCommand('redo', false, null);
+                        else document.execCommand('undo', false, null);
+                        syncContent();
+                    } else if (e.key.toLowerCase() === 'y') {
+                        e.preventDefault();
+                        document.execCommand('redo', false, null);
+                        syncContent();
+                    }
+                }
+            });
 
             syncContent();
         });

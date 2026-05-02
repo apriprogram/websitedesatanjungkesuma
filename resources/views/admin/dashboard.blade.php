@@ -967,14 +967,11 @@
                     <h1>Dashboard Overview</h1>
                     <p>Selamat datang kembali, {{ $user->nama }}!</p>
                 </div>
-                <form action="{{ route('admin.seed-village-data') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-primary" style="background: var(--primary-color); border: none; padding: 0.75rem 1.25rem; border-radius: 0.75rem; color: white; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;" onclick="return confirm('Apakah Anda yakin ingin memperbarui data informasi desa secara otomatis? Ini akan mengisi halaman Visi Misi, Sejarah, Wilayah, dll dengan data asli Desa Tanjung Kesuma.')">
-                        <i class="fas fa-magic"></i> 
-                        <span class="d-none d-md-inline">Update Info Desa Otomatis</span>
-                        <span class="d-md-none">Auto Update</span>
-                    </button>
-                </form>
+                <a href="{{ route('home') }}" target="_blank" class="btn btn-primary" style="background: var(--primary-color); border: none; padding: 0.75rem 1.25rem; border-radius: 0.75rem; color: white; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                    <i class="fas fa-globe"></i> 
+                    <span class="d-none d-md-inline">Lihat Website Utama</span>
+                    <span class="d-md-none">Website</span>
+                </a>
             </div>
 
         <!-- Kependudukan Stats -->
