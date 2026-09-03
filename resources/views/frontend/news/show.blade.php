@@ -52,8 +52,8 @@
     <!-- JSON-LD Schema for NewsArticle -->
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@type": "NewsArticle",
+      "@@context": "https://schema.org",
+      "@@type": "NewsArticle",
       "headline": "{{ $news->title }}",
       @if($imgSrc)
       "image": [
@@ -63,14 +63,14 @@
       "datePublished": "{{ $publishedAt->toIso8601String() }}",
       "dateModified": "{{ $news->updated_at->toIso8601String() }}",
       "author": [{
-          "@type": "Person",
+          "@@type": "Person",
           "name": "{{ $news->author?->name ?? 'Admin Desa' }}"
       }],
       "publisher": {
-        "@type": "GovernmentOrganization",
+        "@@type": "GovernmentOrganization",
         "name": "Pemerintah Desa Tanjung Kesuma",
         "logo": {
-          "@type": "ImageObject",
+          "@@type": "ImageObject",
           "url": "{{ asset('img/Logo/logo_lampung_timur.png') }}"
         }
       }

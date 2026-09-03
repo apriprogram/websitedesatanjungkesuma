@@ -55,20 +55,20 @@
     <!-- JSON-LD Schema -->
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@type": "GovernmentOrganization",
+      "@@context": "https://schema.org",
+      "@@type": "GovernmentOrganization",
       "name": "Pemerintah Desa Tanjung Kesuma",
       "alternateName": "Desa Tanjung Kesuma",
       "url": "{{ url('/') }}",
       "logo": "{{ asset('img/Logo/logo_lampung_timur.png') }}",
       "address": {
-        "@type": "PostalAddress",
+        "@@type": "PostalAddress",
         "addressLocality": "Tanjung Kesuma",
         "addressRegion": "Lampung Timur",
         "addressCountry": "ID"
       },
       "contactPoint": {
-        "@type": "ContactPoint",
+        "@@type": "ContactPoint",
         "contactType": "customer service"
       }
     }
