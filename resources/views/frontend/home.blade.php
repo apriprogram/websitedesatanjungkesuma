@@ -30,10 +30,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desa Tanjung Kesuma - Website Resmi</title>
-    <link rel="stylesheet" href="{{ asset('assets/vendor/fontawesome/all.min.css') }}">
+    <title>Desa Tanjung Kesuma - Website Resmi Pemerintah Desa</title>
     <meta name="description"
-        content="Website resmi Desa Tanjung Kesuma: informasi desa, layanan publik, berita, statistik, dan kontak.">
+        content="Website resmi Pemerintah Desa Tanjung Kesuma, Kecamatan Purbolinggo, Kabupaten Lampung Timur. Menyediakan layanan informasi publik, berita desa, transparansi anggaran, dan statistik kependudukan.">
+    <meta name="keywords" content="Desa Tanjung Kesuma, Tanjung Kesuma, Purbolinggo, Lampung Timur, Website Desa, Pemerintah Desa Tanjung Kesuma, Berita Desa Tanjung Kesuma">
+    <meta name="author" content="Pemerintah Desa Tanjung Kesuma">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url('/') }}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:title" content="Desa Tanjung Kesuma - Website Resmi Pemerintah Desa">
+    <meta property="og:description" content="Website resmi Pemerintah Desa Tanjung Kesuma. Informasi layanan, berita, transparansi, dan kontak desa.">
+    <meta property="og:image" content="{{ asset('img/Logo/logo_lampung_timur.png') }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url('/') }}">
+    <meta property="twitter:title" content="Desa Tanjung Kesuma - Website Resmi">
+    <meta property="twitter:description" content="Website resmi Pemerintah Desa Tanjung Kesuma. Informasi layanan, berita, transparansi, dan kontak desa.">
+    <meta property="twitter:image" content="{{ asset('img/Logo/logo_lampung_timur.png') }}">
+    
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "GovernmentOrganization",
+      "name": "Pemerintah Desa Tanjung Kesuma",
+      "alternateName": "Desa Tanjung Kesuma",
+      "url": "{{ url('/') }}",
+      "logo": "{{ asset('img/Logo/logo_lampung_timur.png') }}",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Tanjung Kesuma",
+        "addressRegion": "Lampung Timur",
+        "addressCountry": "ID"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service"
+      }
+    }
+    </script>
+
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fontawesome/all.min.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">

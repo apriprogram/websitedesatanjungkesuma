@@ -540,7 +540,7 @@
                                 @endphp
                                 <td>
                                     <span class="pill-badge"
-                                        style="background: {{ $color['bg'] }}; border: 2px solid {{ $color['border'] }}; color: {{ $color['text'] }};">
+                                        style="background: {{ $color['bg'] }}; border: 1px solid {{ $color['border'] }}; color: {{ $color['text'] }};">
                                         {{ $catName }}
                                     </span>
                                 </td>

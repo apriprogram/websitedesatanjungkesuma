@@ -24,7 +24,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $news->seo_title ?: $news->title }}</title>
+    <title>{{ $news->seo_title ?: $news->title }} - Desa Tanjung Kesuma</title>
+    <meta name="description" content="{{ $news->seo_description ?: Str::limit(strip_tags($news->content), 150) }}">
+    <meta name="keywords" content="{{ $news->seo_keywords ?: 'Berita Desa, Tanjung Kesuma, Lampung Timur' }}">
+    <meta name="author" content="{{ $news->author?->name ?? 'Pemerintah Desa Tanjung Kesuma' }}">
+    <link rel="canonical" href="{{ route('news.show', $news->slug) }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ route('news.show', $news->slug) }}">
+    <meta property="og:title" content="{{ $news->seo_title ?: $news->title }}">
+    <meta property="og:description" content="{{ $news->seo_description ?: Str::limit(strip_tags($news->content), 150) }}">
+    @if($imgSrc)
+    <meta property="og:image" content="{{ $imgSrc }}">
+    @endif
+    <meta property="article:published_time" content="{{ $publishedAt->toIso8601String() }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ route('news.show', $news->slug) }}">
+    <meta property="twitter:title" content="{{ $news->seo_title ?: $news->title }}">
+    <meta property="twitter:description" content="{{ $news->seo_description ?: Str::limit(strip_tags($news->content), 150) }}">
+    @if($imgSrc)
+    <meta property="twitter:image" content="{{ $imgSrc }}">
+    @endif
+
+    <!-- JSON-LD Schema for NewsArticle -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": "{{ $news->title }}",
+      @if($imgSrc)
+      "image": [
+        "{{ $imgSrc }}"
+      ],
+      @endif
+      "datePublished": "{{ $publishedAt->toIso8601String() }}",
+      "dateModified": "{{ $news->updated_at->toIso8601String() }}",
+      "author": [{
+          "@type": "Person",
+          "name": "{{ $news->author?->name ?? 'Admin Desa' }}"
+      }],
+      "publisher": {
+        "@type": "GovernmentOrganization",
+        "name": "Pemerintah Desa Tanjung Kesuma",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "{{ asset('img/Logo/logo_lampung_timur.png') }}"
+        }
+      }
+    }
+    </script>
     <link rel="icon" type="image/png" href="{{ asset('img/Logo/logo_lampung_timur.png') }}">
     <link rel="shortcut icon" href="{{ asset('img/Logo/logo_lampung_timur.png') }}" type="image/x-icon">
     <link rel="apple-touch-icon" href="{{ asset('img/Logo/logo_lampung_timur.png') }}">

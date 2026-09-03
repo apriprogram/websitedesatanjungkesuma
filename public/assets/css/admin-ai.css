@@ -526,87 +526,94 @@
         gap: 8px !important;
     }
 
-    /* ── AI FAB Button — smaller ── */
-    .ai-fab {
-        width: 44px !important;
-        height: 44px !important;
-    }
-
-    .ai-fab-logo {
-        width: 28px !important;
-        height: 28px !important;
-    }
-
-    .ai-badge {
-        font-size: 7px !important;
-        padding: 1px 4px !important;
-        top: -3px !important;
-        right: -3px !important;
-    }
-
-    /* ── AI Chat Window — compact ── */
+    /* ── AI Chat Window — full screen on mobile ── */
     .ai-chat-window {
-        position: fixed;
-        bottom: 70px;
-        right: 10px;
-        width: calc(100vw - 20px);
-        border-radius: 16px;
-        padding: 2px;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100dvh !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        transform: translateY(100%) scale(1) !important;
+        opacity: 1 !important;
+        visibility: hidden !important;
+        z-index: 9999 !important;
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s !important;
+    }
+
+    .ai-chat-window.active {
+        transform: translateY(0) scale(1) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
 
     .ai-chat-inner {
-        height: min(650px, calc(100vh - 80px));
-        border-radius: 14px;
+        height: 100dvh !important;
+        height: 100vh !important;
+        border-radius: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
 
     .ai-chat-header {
-        padding: 10px 12px !important;
+        padding: 12px 16px !important;
+        flex-shrink: 0 !important;
     }
 
     .ai-header-avatar {
-        width: 30px !important;
-        height: 30px !important;
+        width: 34px !important;
+        height: 34px !important;
     }
 
     .ai-chat-title h4 {
-        font-size: 0.78rem !important;
+        font-size: 0.9rem !important;
     }
 
     .ai-status-dot {
-        font-size: 0.6rem !important;
+        font-size: 0.65rem !important;
     }
 
     .ai-chat-body {
-        padding: 8px 10px 6px !important;
-        gap: 8px !important;
+        flex: 1 !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding: 12px 14px 8px !important;
+        gap: 10px !important;
     }
 
     .message {
-        font-size: 0.72rem !important;
-        padding: 9px 13px !important;
+        font-size: 0.82rem !important;
+        padding: 10px 14px !important;
     }
 
     .ai-quick-replies {
-        padding: 6px 10px !important;
-        gap: 5px !important;
+        flex-shrink: 0 !important;
+        padding: 6px 12px !important;
+        gap: 6px !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
     }
 
     .ai-chip {
-        font-size: 0.65rem !important;
-        padding: 4px 9px !important;
+        font-size: 0.72rem !important;
+        padding: 5px 10px !important;
     }
 
     .ai-chat-footer {
-        padding: 8px 10px !important;
+        flex-shrink: 0 !important;
+        padding: 10px 12px !important;
     }
 
     .ai-input-group input {
-        font-size: 0.75rem !important;
+        font-size: 0.85rem !important;
     }
 
     .ai-send-btn {
-        width: 28px !important;
-        height: 28px !important;
+        width: 32px !important;
+        height: 32px !important;
     }
 
     /* ── Clock Widget — compact ── */
@@ -628,6 +635,24 @@
         font-size: 0.58rem !important;
     }
 
+    /* ── AI FAB Button — smaller ── */
+    .ai-fab {
+        width: 44px !important;
+        height: 44px !important;
+    }
+
+    .ai-fab-logo {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    .ai-badge {
+        font-size: 7px !important;
+        padding: 1px 4px !important;
+        top: -3px !important;
+        right: -3px !important;
+    }
+
     /* ── Agenda FAB Button — smaller ── */
     .fab-button {
         width: 44px !important;
@@ -635,40 +660,81 @@
         font-size: 1rem !important;
     }
 
-    /* ── Agenda Card — more compact ── */
+    /* ── Agenda Card — full screen on mobile ── */
     .fab-card {
-        width: calc(100vw - 20px) !important;
-        bottom: 70px !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
         right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        height: 100dvh !important;
+        border-radius: 0 !important;
+        transform: translateY(100%) !important;
+        opacity: 1 !important;
+        visibility: hidden !important;
+        z-index: 9999 !important;
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s !important;
+    }
+
+    .fab-card.active {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .fab-inner-wrap {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important;
     }
 
     .fab-header {
-        padding: 12px 14px !important;
+        padding: 14px 16px !important;
+        flex-shrink: 0 !important;
     }
 
     .fab-title {
-        font-size: 0.85rem !important;
+        font-size: 0.9rem !important;
     }
 
     .fab-subtitle {
-        font-size: 0.68rem !important;
+        font-size: 0.72rem !important;
     }
 
     .fab-badge {
-        font-size: 0.6rem !important;
+        font-size: 0.62rem !important;
         padding: 2px 8px !important;
     }
 
+    .fab-body {
+        flex: 1 !important;
+        overflow-y: auto !important;
+        max-height: none !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
     .fab-list-item {
-        padding: 8px 10px !important;
+        padding: 10px 12px !important;
         gap: 10px !important;
     }
 
     .fab-title-click {
-        font-size: 0.78rem !important;
+        font-size: 0.82rem !important;
     }
 
     .fab-subtitle-wrap {
-        font-size: 0.65rem !important;
+        font-size: 0.68rem !important;
+    }
+
+    /* ── FAB Container ── */
+    .fab-container {
+        bottom: 12px !important;
+        right: 12px !important;
+    }
+
+    .fab-bottom-row {
+        gap: 8px !important;
     }
 }

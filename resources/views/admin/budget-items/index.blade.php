@@ -601,14 +601,16 @@
                     $to = $items->lastItem() ?? 0;
                     $total = $items->total() ?? 0;
                 @endphp
-                <div>Menampilkan {{ $from }} - {{ $to }} dari {{ $total }} data</div>
+                <div class="entries-info">Menampilkan {{ $from }} - {{ $to }} dari {{ $total }} data</div>
                 <div class="table-pagination news-pagination">
                     {{ $items->withQueryString()->onEachSide(1)->links('admin.partials.pagination') }}
                 </div>
             </div>
         </section>
     </div>
+@endsection
 
+@section('drawers')
     {{-- Modal Tambah/Edit --}}
     <div class="modal" id="budgetModal" aria-hidden="true">
         <div class="modal-overlay" id="closeModal"></div>
@@ -688,8 +690,8 @@
                             </label>
                         </div>
                         <label class="checkbox toggle">
-                            <input type="checkbox" id="fieldPublished" name="is_published" value="1" checked
-                                data-on="Tampilkan di situs" data-off="Tidak tampil">
+                            <input type="checkbox" id="fieldPublished" name="is_published" value="1"
+                                data-on="Tampilkan di situs" data-off="Tidak ditampilkan">
                             <span class="toggle-track"><span class="toggle-thumb"></span></span>
                             <span class="toggle-text" id="fieldPublishedLabel">Tampilkan di situs</span>
                         </label>
@@ -768,6 +770,7 @@
     <form id="logout-form" action="{{ route('logout') }}" method="POST" hidden>
         @csrf
     </form>
+@endsection
 
     @push('scripts')
         <script>
@@ -1344,4 +1347,3 @@
             });
         </script>
     @endpush
-@endsection

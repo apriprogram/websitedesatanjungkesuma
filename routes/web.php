@@ -54,6 +54,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
+use App\Http\Controllers\SitemapController;
+
+Route::get('/sitemap.xml', [SitemapController::class, 'index']);
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/transparansi-anggaran', function (Request $request) {

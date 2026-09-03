@@ -31,7 +31,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita Desa</title>
+    <title>Berita Desa Tanjung Kesuma - Informasi Terkini</title>
+    <meta name="description" content="Kumpulan berita, pengumuman, dan artikel terbaru dari Pemerintah Desa Tanjung Kesuma, Kecamatan Purbolinggo, Kabupaten Lampung Timur.">
+    <meta name="keywords" content="Berita Desa Tanjung Kesuma, Pengumuman Desa, Artikel Desa, Lampung Timur">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ route('news.index') }}">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ route('news.index') }}">
+    <meta property="og:title" content="Berita Desa Tanjung Kesuma - Informasi Terkini">
+    <meta property="og:description" content="Kumpulan berita dan informasi terbaru dari Pemerintah Desa Tanjung Kesuma.">
+    <meta property="og:image" content="{{ asset('img/Logo/logo_lampung_timur.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('img/Logo/logo_lampung_timur.png') }}">
     <link rel="shortcut icon" href="{{ asset('img/Logo/logo_lampung_timur.png') }}" type="image/x-icon">
     <link rel="apple-touch-icon" href="{{ asset('img/Logo/logo_lampung_timur.png') }}">

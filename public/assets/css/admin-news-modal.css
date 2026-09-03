@@ -277,14 +277,8 @@
     }
 }
 
-/* Background Focus Management - Fully obscure background elements */
-body.modal-open-blur .admin-sidebar,
-body.modal-open-blur .main-header,
-body.modal-open-blur .page-title,
-body.modal-open-blur .summary-grid,
-body.modal-open-blur .news-panel,
-body.modal-open-blur .admin-main,
-body.modal-open-blur #agenda-widget-container {
-    pointer-events: none !important;
-    user-select: none !important;
+
+/* Modal open: prevent scrolling on body */
+body.modal-open-blur {
+    overflow: hidden;
 }

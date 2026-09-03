@@ -208,6 +208,124 @@
     body.dark-mode .fab-modal-desc-box { background: #0f172a !important; border-color: #334155 !important; color: #cbd5e1 !important; }
     body.dark-mode .fab-modal-meta-row { border-color: #334155 !important; }
     body.dark-mode .fab-meta-value { color: #e2e8f0 !important; }
+
+    /* ===== MOBILE RESPONSIVE ===== */
+    @media (max-width: 768px) {
+        /* AI Chat Window full-screen on mobile */
+        .ai-chat-window {
+            position: fixed !important;
+            inset: 0 !important;
+            width: 100vw !important;
+            height: 100dvh !important;
+            max-width: 100vw !important;
+            bottom: 0 !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            transform: translateY(100%) !important;
+            border-radius: 0 !important;
+            z-index: 9999 !important;
+            opacity: 1 !important;
+            visibility: hidden !important;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s !important;
+        }
+
+        .ai-chat-window.active {
+            transform: translateY(0) !important;
+            visibility: visible !important;
+        }
+
+        .ai-chat-inner {
+            height: 100dvh !important;
+            height: 100vh !important;
+            border-radius: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        .ai-chat-header {
+            padding: 1rem 1.25rem !important;
+            flex-shrink: 0 !important;
+        }
+
+        .ai-chat-title h4 {
+            font-size: 1rem !important;
+        }
+
+        .ai-chat-body {
+            flex: 1 !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+            padding: 1rem !important;
+            font-size: 0.9rem !important;
+        }
+
+        .ai-quick-replies {
+            flex-shrink: 0 !important;
+            padding: 0.5rem 1rem !important;
+            overflow-x: auto !important;
+            white-space: nowrap !important;
+        }
+
+        .ai-input-row {
+            flex-shrink: 0 !important;
+            padding: 0.75rem 1rem !important;
+            gap: 0.5rem !important;
+        }
+
+        .ai-input-row input,
+        .ai-input-row textarea {
+            font-size: 0.95rem !important;
+        }
+
+        /* Agenda Card full-screen on mobile */
+        .fab-card {
+            position: fixed !important;
+            inset: 0 !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+            height: 100dvh !important;
+            bottom: 0 !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            transform: translateY(100%) !important;
+            border-radius: 0 !important;
+            z-index: 9999 !important;
+            opacity: 1 !important;
+            visibility: hidden !important;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s !important;
+        }
+
+        .fab-card.active {
+            transform: translateY(0) !important;
+            visibility: visible !important;
+        }
+
+        .fab-inner-wrap {
+            display: flex !important;
+            flex-direction: column !important;
+            height: 100% !important;
+        }
+
+        .fab-body {
+            flex: 1 !important;
+            overflow-y: auto !important;
+            max-height: none !important;
+            -webkit-overflow-scrolling: touch !important;
+        }
+
+        /* Smaller FAB bottom bar on mobile */
+        .fab-container {
+            bottom: 0.75rem !important;
+            gap: 0.5rem !important;
+        }
+
+        .fab-clock {
+            font-size: 0.75rem !important;
+            padding: 0.3rem 0.6rem !important;
+        }
+    }
 </style>
 <div class="fab-container">
     <!-- Floating Card -->

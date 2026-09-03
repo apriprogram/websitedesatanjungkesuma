@@ -310,7 +310,7 @@ class BudgetItemController extends Controller
         $data = validator($input, $rules)->validate();
 
         $data['order_no'] = $data['order_no'] ?? 0;
-        $data['is_published'] = $request->boolean('is_published', $current?->is_published ?? false);
+        $data['is_published'] = $request->has('is_published') ? (bool) $request->input('is_published') : false;
         $data['is_active_year'] = $request->boolean('is_active_year', $current?->is_active_year ?? false);
 
         // Jika kolom belum ada (migrasi belum dijalankan), jangan kirim field-nya
