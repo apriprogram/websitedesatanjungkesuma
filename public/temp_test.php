@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 
-@php
+<?php
     use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Str;
     use Illuminate\Support\Facades\Route;
@@ -25,7 +25,7 @@
 
         return $default;
     };
-@endphp
+?>
 
 <head>
     <meta charset="UTF-8">
@@ -36,55 +36,58 @@
     <meta name="keywords" content="Desa Tanjung Kesuma, Tanjung Kesuma, Purbolinggo, Lampung Timur, Website Desa, Pemerintah Desa Tanjung Kesuma, Berita Desa Tanjung Kesuma">
     <meta name="author" content="Pemerintah Desa Tanjung Kesuma">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="{{ url('/') }}">
+    <link rel="canonical" href="<?php echo e(url('/')); ?>">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:url" content="<?php echo e(url('/')); ?>">
     <meta property="og:title" content="Desa Tanjung Kesuma - Website Resmi Pemerintah Desa">
     <meta property="og:description" content="Website resmi Pemerintah Desa Tanjung Kesuma. Informasi layanan, berita, transparansi, dan kontak desa.">
-    <meta property="og:image" content="{{ asset('img/Logo/logo_lampung_timur.png') }}">
+    <meta property="og:image" content="<?php echo e(asset('img/Logo/logo_lampung_timur.png')); ?>">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="{{ url('/') }}">
+    <meta property="twitter:url" content="<?php echo e(url('/')); ?>">
     <meta property="twitter:title" content="Desa Tanjung Kesuma - Website Resmi">
     <meta property="twitter:description" content="Website resmi Pemerintah Desa Tanjung Kesuma. Informasi layanan, berita, transparansi, dan kontak desa.">
-    <meta property="twitter:image" content="{{ asset('img/Logo/logo_lampung_timur.png') }}">
+    <meta property="twitter:image" content="<?php echo e(asset('img/Logo/logo_lampung_timur.png')); ?>">
     
     <!-- JSON-LD Schema -->
     <script type="application/ld+json">
     {
-      "@@context": "https://schema.org",
-      "@@type": "GovernmentOrganization",
+      "<?php $__contextArgs = [];
+if (context()->has($__contextArgs[0])) :
+if (isset($value)) { $__contextPrevious[] = $value; }
+$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+      "@type": "GovernmentOrganization",
       "name": "Pemerintah Desa Tanjung Kesuma",
       "alternateName": "Desa Tanjung Kesuma",
-      "url": "{{ url('/') }}",
-      "logo": "{{ asset('img/Logo/logo_lampung_timur.png') }}",
+      "url": "<?php echo e(url('/')); ?>",
+      "logo": "<?php echo e(asset('img/Logo/logo_lampung_timur.png')); ?>",
       "address": {
-        "@@type": "PostalAddress",
+        "@type": "PostalAddress",
         "addressLocality": "Tanjung Kesuma",
         "addressRegion": "Lampung Timur",
         "addressCountry": "ID"
       },
       "contactPoint": {
-        "@@type": "ContactPoint",
+        "@type": "ContactPoint",
         "contactType": "customer service"
       }
     }
     </script>
 
-    <link rel="stylesheet" href="{{ asset('assets/vendor/fontawesome/all.min.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/vendor/fontawesome/all.min.css')); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/announcement.css') }}?v={{ time() }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/transparency.css') }}?v={{ time() }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/search-fix.css') }}?v={{ time() }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/widget-animations.css') }}?v={{ time() }}">
-    <link rel="icon" type="image/png" href="{{ asset('img/Logo/logo_lampung_timur.png') }}">
-    <link rel="shortcut icon" href="{{ asset('img/Logo/logo_lampung_timur.png') }}" type="image/x-icon">
-    <link rel="apple-touch-icon" href="{{ asset('img/Logo/logo_lampung_timur.png') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/main.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/announcement.css')); ?>?v=<?php echo e(time()); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/transparency.css')); ?>?v=<?php echo e(time()); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/search-fix.css')); ?>?v=<?php echo e(time()); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/widget-animations.css')); ?>?v=<?php echo e(time()); ?>">
+    <link rel="icon" type="image/png" href="<?php echo e(asset('img/Logo/logo_lampung_timur.png')); ?>">
+    <link rel="shortcut icon" href="<?php echo e(asset('img/Logo/logo_lampung_timur.png')); ?>" type="image/x-icon">
+    <link rel="apple-touch-icon" href="<?php echo e(asset('img/Logo/logo_lampung_timur.png')); ?>">
     <!-- Library JS dimuat di akhir body untuk performa -->
 </head>
 
@@ -97,7 +100,7 @@
                 <span class="logo-text">Desa Tanjung Kesuma</span>
             </a>
 
-            @php
+            <?php
                 $navTree = ($navMenus ?? collect())->where('is_active', true)->whereNull('parent_id')->sortBy('position');
                 $renderMenu = function ($items) use (&$renderMenu) {
                     if ($items->isEmpty())
@@ -134,15 +137,16 @@
                     }
                     return $html;
                 };
-            @endphp
+            ?>
 
-            @if($navTree->count())
+            <?php if($navTree->count()): ?>
                 <nav>
                     <ul class="nav-menu">
-                        {!! $renderMenu($navTree) !!}
+                        <?php echo $renderMenu($navTree); ?>
+
                     </ul>
                 </nav>
-            @endif
+            <?php endif; ?>
 
             <div class="search-container header-right">
                 <button id="darkModeBtn" class="darkmode-icon" aria-label="Mode Gelap/Terang">
@@ -201,19 +205,20 @@
                     <p class="admin-form-sub">Masuk untuk memperbarui konten, memantau layanan publik, dan menyajikan
                         informasi terbaru bagi warga.</p>
                 </div>
-                <form id="adminLoginForm" class="admin-form-fields" method="POST" action="{{ route('login.store') }}">
-                    @csrf
-                    @if ($errors->has('email') || $errors->has('password'))
+                <form id="adminLoginForm" class="admin-form-fields" method="POST" action="<?php echo e(route('login.store')); ?>">
+                    <?php echo csrf_field(); ?>
+                    <?php if($errors->has('email') || $errors->has('password')): ?>
                         <div class="admin-form-alert" role="alert">
-                            {{ $errors->first('email') ?? $errors->first('password') }}
+                            <?php echo e($errors->first('email') ?? $errors->first('password')); ?>
+
                         </div>
-                    @endif
+                    <?php endif; ?>
                     <div class="admin-input-block">
                         <label class="admin-label" for="adminUsername">Email</label>
                         <div class="admin-input-group">
                             <span class="admin-input-icon" aria-hidden="true"><i class="fas fa-user"></i></span>
                             <input class="admin-input" type="email" id="adminUsername" name="email"
-                                value="{{ old('email') }}" placeholder="Masukkan email" autocomplete="email" required>
+                                value="<?php echo e(old('email')); ?>" placeholder="Masukkan email" autocomplete="email" required>
                         </div>
                     </div>
                     <div class="admin-input-block">
@@ -239,12 +244,12 @@
                     </div>
                     <div class="admin-actions">
                         <label class="admin-check"><input type="checkbox" id="adminRemember" name="remember" value="1"
-                                {{ old('remember') ? 'checked' : '' }}> <span>Ingat saya</span></label>
-                        @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" class="admin-link">Lupa password?</a>
-                        @else
+                                <?php echo e(old('remember') ? 'checked' : ''); ?>> <span>Ingat saya</span></label>
+                        <?php if(Route::has('password.request')): ?>
+                            <a href="<?php echo e(route('password.request')); ?>" class="admin-link">Lupa password?</a>
+                        <?php else: ?>
                             <span class="admin-link admin-link--disabled" aria-disabled="true">Lupa password?</span>
-                        @endif
+                        <?php endif; ?>
                     </div>
                     <button type="submit" class="admin-submit">Login</button>
                 </form>
@@ -268,43 +273,43 @@
 
 
     <!-- Mobile Menu -->
-    @include('frontend.partials.mobile-menu', ['navMenus' => $navMenus])
+    <?php echo $__env->make('frontend.partials.mobile-menu', ['navMenus' => $navMenus], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-slider">
-            @php $slides = $heroSlides ?? collect(); @endphp
-            @forelse($slides as $slide)
-                @php
+            <?php $slides = $heroSlides ?? collect(); ?>
+            <?php $__empty_1 = true; $__currentLoopData = $slides; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $slide): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php
                     $bg = $mediaUrl(data_get($slide, 'image_url') ?? data_get($slide, 'background_url'), asset('img/Banner/gambar_desa_1.png'));
                     $title = data_get($slide, 'title') ?: 'Selamat Datang di Website Resmi Desa Tanjung Kesuma';
                     $subtitle = data_get($slide, 'subtitle') ?: data_get($slide, 'description');
                     $buttonLabel = data_get($slide, 'button_label') ?: 'Layanan Publik';
                     $buttonUrl = data_get($slide, 'button_url') ?: '#layanan';
-                @endphp
-                <div class="hero-slide {{ $loop->first ? 'active' : '' }}"
-                    style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('{{ $bg }}');">
+                ?>
+                <div class="hero-slide <?php echo e($loop->first ? 'active' : ''); ?>"
+                    style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<?php echo e($bg); ?>');">
                     <div class="hero-content">
-                        <h1>{{ $title }}</h1>
-                        @if(!empty($subtitle))
-                            <p>{{ $subtitle }}</p>
-                        @endif
-                        <a href="{{ $buttonUrl }}" class="cta-button">{{ $buttonLabel }}</a>
+                        <h1><?php echo e($title); ?></h1>
+                        <?php if(!empty($subtitle)): ?>
+                            <p><?php echo e($subtitle); ?></p>
+                        <?php endif; ?>
+                        <a href="<?php echo e($buttonUrl); ?>" class="cta-button"><?php echo e($buttonLabel); ?></a>
                     </div>
                 </div>
-            @empty
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <div class="hero-slide active"
-                    style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('{{ asset('img/Banner/gambar_desa_1.png') }}');">
+                    style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<?php echo e(asset('img/Banner/gambar_desa_1.png')); ?>');">
                     <div class="hero-content">
                         <h1>Selamat Datang di Website Resmi <br>Desa Tanjung Kesuma</h1>
                         <p>Media informasi dan layanan digital untuk masyarakat Desa Tanjung Kesuma</p>
                         <a href="#layanan" class="cta-button">Layanan Publik</a>
                     </div>
                 </div>
-            @endforelse
+            <?php endif; ?>
         </div>
 
-        @if(($heroSlides ?? collect())->count() > 1)
+        <?php if(($heroSlides ?? collect())->count() > 1): ?>
             <button class="hero-nav prev" onclick="changeSlide(-1)">
                 <i class="fas fa-chevron-left"></i>
             </button>
@@ -312,12 +317,12 @@
                 <i class="fas fa-chevron-right"></i>
             </button>
             <div class="hero-dots">
-                @foreach($heroSlides as $slide)
-                    <span class="hero-dot {{ $loop->first ? 'active' : '' }}"
-                        onclick="currentSlide({{ $loop->iteration }})"></span>
-                @endforeach
+                <?php $__currentLoopData = $heroSlides; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $slide): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <span class="hero-dot <?php echo e($loop->first ? 'active' : ''); ?>"
+                        onclick="currentSlide(<?php echo e($loop->iteration); ?>)"></span>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
-        @endif
+        <?php endif; ?>
     </section>
 
     <!-- Modal untuk Infografis -->
@@ -350,12 +355,12 @@
 
     <!-- Statistics Section -->
     <section class="stats-section">
-        @php
+        <?php
             $pop = $populationStats ?? [];
             $popTotal = (int) data_get($pop, 'total', 0);
             $popMale = (int) data_get($pop, 'male', 0);
             $popFemale = (int) data_get($pop, 'female', 0);
-        @endphp
+        ?>
         <div class="stats-card">
             <div class="stat-item">
                 <i class="fas fa-clipboard-list stat-icon"></i>
@@ -367,7 +372,8 @@
             <div class="stat-item">
                 <i class="fas fa-users stat-icon"></i>
                 <div class="stat-info">
-                    <div class="stat-number" data-target="{{ $popTotal }}">{{ number_format($popTotal, 0, ',', '.') }}
+                    <div class="stat-number" data-target="<?php echo e($popTotal); ?>"><?php echo e(number_format($popTotal, 0, ',', '.')); ?>
+
                     </div>
                     <div class="stat-label">Jumlah Penduduk</div>
                 </div>
@@ -375,17 +381,19 @@
             <div class="stat-item">
                 <i class="fas fa-male stat-icon"></i>
                 <div class="stat-info">
-                    <div class="stat-number" data-target="{{ $popMale }}">{{ number_format($popMale, 0, ',', '.') }}
+                    <div class="stat-number" data-target="<?php echo e($popMale); ?>"><?php echo e(number_format($popMale, 0, ',', '.')); ?>
+
                     </div>
-                    <div class="stat-label">Laki-Laki @if($popTotal > 0)<span style="font-size: 0.75em; opacity: 0.8;">({{ round(($popMale / $popTotal) * 100) }}%)</span>@endif</div>
+                    <div class="stat-label">Laki-Laki <?php if($popTotal > 0): ?><span style="font-size: 0.75em; opacity: 0.8;">(<?php echo e(round(($popMale / $popTotal) * 100)); ?>%)</span><?php endif; ?></div>
                 </div>
             </div>
             <div class="stat-item">
                 <i class="fas fa-female stat-icon"></i>
                 <div class="stat-info">
-                    <div class="stat-number" data-target="{{ $popFemale }}">{{ number_format($popFemale, 0, ',', '.') }}
+                    <div class="stat-number" data-target="<?php echo e($popFemale); ?>"><?php echo e(number_format($popFemale, 0, ',', '.')); ?>
+
                     </div>
-                    <div class="stat-label">Perempuan @if($popTotal > 0)<span style="font-size: 0.75em; opacity: 0.8;">({{ round(($popFemale / $popTotal) * 100) }}%)</span>@endif</div>
+                    <div class="stat-label">Perempuan <?php if($popTotal > 0): ?><span style="font-size: 0.75em; opacity: 0.8;">(<?php echo e(round(($popFemale / $popTotal) * 100)); ?>%)</span><?php endif; ?></div>
                 </div>
             </div>
         </div>
@@ -396,24 +404,24 @@
         <div class="info-tag">Sekilas Info</div>
         <div class="running-text">
             <div class="running-text-content">
-                @if(($sekilasInfos ?? collect())->isNotEmpty())
-                    @foreach($sekilasInfos as $info)
-                        @php
+                <?php if(($sekilasInfos ?? collect())->isNotEmpty()): ?>
+                    <?php $__currentLoopData = $sekilasInfos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $info): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php
                             $title = $info->title ?: 'Sekilas Info';
                             $body = $info->content ? Str::limit(strip_tags($info->content), 140) : '';
-                        @endphp
+                        ?>
                         <span class="sekilas-item">
-                            <strong>{{ $title }}</strong>@if($body) &mdash; {{ $body }}@endif
+                            <strong><?php echo e($title); ?></strong><?php if($body): ?> &mdash; <?php echo e($body); ?><?php endif; ?>
                         </span>
-                        @unless($loop->last)
+                        <?php if (! ($loop->last)): ?>
                             <span class="separator">&bull;</span>
-                        @endunless
-                    @endforeach
-                @else
+                        <?php endif; ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php else: ?>
                     Desa Tanjung Kesuma merupakan salah satu desa di Kecamatan Purbolinggo, Kabupaten Lampung Timur yang
                     memiliki potensi besar dalam bidang pertanian, perkebunan, dan pariwisata alam yang menjanjikan untuk
                     pengembangan ekonomi masyarakat.
-                @endif
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -422,20 +430,20 @@
     <section class="statistics-dashboard">
         <div class="dashboard-header">
             <h2 class="dashboard-title">Statistik Desa</h2>
-            <a href="{{ route('statistics.population.page') }}" class="dashboard-link">Lihat Lebih Detail ></a>
+            <a href="<?php echo e(route('statistics.population.page')); ?>" class="dashboard-link">Lihat Lebih Detail ></a>
         </div>
 
         <div class="dashboard-container">
             <div class="dashboard-scroll">
                 <!-- Statistik Penduduk -->
-                @php
+                <?php
                     $pop = $populationStats ?? [];
                     $popTotal = (int) data_get($pop, 'total', 0);
                     $popMale = (int) data_get($pop, 'male', 0);
                     $popFemale = (int) data_get($pop, 'female', 0);
                     $popMalePct = (int) data_get($pop, 'male_percent', 0);
                     $popFemalePct = (int) data_get($pop, 'female_percent', 0);
-                @endphp
+                ?>
                 <div class="stat-card" id="cardPenduduk">
                     <div class="stat-card-header">
                         <h3 class="stat-card-title">Penduduk</h3>
@@ -451,11 +459,11 @@
                     </div>
                     <div class="stat-card-content">
                         <div class="chart-container">
-                            <div class="donut-css" id="donutPenduduk" data-p1="{{ $popMalePct }}"
-                                data-p2="{{ $popFemalePct }}">
+                            <div class="donut-css" id="donutPenduduk" data-p1="<?php echo e($popMalePct); ?>"
+                                data-p2="<?php echo e($popFemalePct); ?>">
                                 <div class="donut-center">
                                     <i class="fas fa-user"></i>
-                                    <div class="total-number">{{ number_format($popTotal, 0, ',', '.') }}</div>
+                                    <div class="total-number"><?php echo e(number_format($popTotal, 0, ',', '.')); ?></div>
                                     <div class="total-label">Total Penduduk</div>
                                 </div>
                             </div>
@@ -464,19 +472,19 @@
                             <div class="stat-detail-item" data-seg="primary">
                                 <i class="fas fa-male"></i>
                                 <span>Laki-Laki</span>
-                                <strong>{{ number_format($popMale, 0, ',', '.') }} ({{ $popMalePct }}%)</strong>
+                                <strong><?php echo e(number_format($popMale, 0, ',', '.')); ?> (<?php echo e($popMalePct); ?>%)</strong>
                             </div>
                             <div class="stat-detail-item" data-seg="secondary">
                                 <i class="fas fa-female"></i>
                                 <span>Perempuan</span>
-                                <strong>{{ number_format($popFemale, 0, ',', '.') }} ({{ $popFemalePct }}%)</strong>
+                                <strong><?php echo e(number_format($popFemale, 0, ',', '.')); ?> (<?php echo e($popFemalePct); ?>%)</strong>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Data Wilayah -->
-                @php
+                <?php
                     $mapEmbed = $publicInfoSetting->map_embed_url ?? null;
                     $mapSrc = null;
                     if (!empty($mapEmbed) && preg_match('/src="([^"]+)"/', $mapEmbed, $match)) {
@@ -484,7 +492,7 @@
                     }
                     $defaultMapSrc = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15899.602539798221!2d105.51701121149443!3d-4.956181492759378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e409c7586b5d587%3A0xfa2e376879bfa2dd!2sTanjung%20Kesuma%2C%20Purbolinggo%2C%20East%20Lampung%20Regency%2C%20Lampung!5e0!3m2!1sen!2sid!4v1755350967514!5m2!1sen!2sid';
                     $openMapUrl = $mapSrc ?: 'https://www.google.com/maps/place/Tanjung+Kesuma,+Purbolinggo,+East+Lampung+Regency,+Lampung';
-                @endphp
+                ?>
                 <style>
                     .map-embed iframe {
                         width: 100% !important;
@@ -594,7 +602,7 @@
                     }
                 </style>
                 <!-- Statistik Data Wilayah -->
-                @if($publicInfoSetting->is_published)
+                <?php if($publicInfoSetting->is_published): ?>
                     <div class="stat-card" id="cardDataWilayah">
                         <!-- Force Hide Menu for this card specifically -->
                         <style>
@@ -608,14 +616,14 @@
                         <div class="stat-card-content">
                             <div class="map-container">
                                 <!-- Google Maps Embed -->
-                                @if(!empty($mapEmbed))
-                                    <div class="map-embed">{!! $mapEmbed !!}</div>
-                                @else
-                                    <iframe src="{{ $defaultMapSrc }}" width="100%" height="250"
+                                <?php if(!empty($mapEmbed)): ?>
+                                    <div class="map-embed"><?php echo $mapEmbed; ?></div>
+                                <?php else: ?>
+                                    <iframe src="<?php echo e($defaultMapSrc); ?>" width="100%" height="250"
                                         style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"
                                         referrerpolicy="no-referrer-when-downgrade">
                                     </iframe>
-                                @endif
+                                <?php endif; ?>
 
                                 <!-- Tombol Aksi: Hanya Buka Peta -->
                                 <div class="map-buttons">
@@ -627,7 +635,7 @@
                             </div>
                         </div>
                     </div>
-                @endif
+                <?php endif; ?>
                 <!-- End Data Wilayah -->
 
                 <!-- Inline Style to Force Menu Visibility (Bypasses Cache) -->
@@ -858,7 +866,7 @@
                 <h2 class="news-title">Berita Desa</h2>
                 <p class="news-subtitle">Berita dan pengumuman terkini dari pemerintah desa</p>
             </div>
-            <a href="{{ route('news.index') }}" class="news-link">Lihat Lebih Detail ></a>
+            <a href="<?php echo e(route('news.index')); ?>" class="news-link">Lihat Lebih Detail ></a>
         </div>
 
         <div class="news-container">
@@ -879,9 +887,10 @@
     <section class="info-publik-section" id="informasi-publik">
         <div class="news-header">
             <div>
-                <h2 class="news-title">{{ $publicInfoSetting->section_title ?? 'Informasi Publik' }}</h2>
+                <h2 class="news-title"><?php echo e($publicInfoSetting->section_title ?? 'Informasi Publik'); ?></h2>
                 <p class="news-subtitle">
-                    {{ $publicInfoSetting->section_subtitle ?? 'Akses informasi, jam layanan, pengumuman banner, dan lokasi kantor desa' }}
+                    <?php echo e($publicInfoSetting->section_subtitle ?? 'Akses informasi, jam layanan, pengumuman banner, dan lokasi kantor desa'); ?>
+
                 </p>
             </div>
         </div>
@@ -890,59 +899,62 @@
             <!-- Card 1: Permohonan Informasi Publik -->
             <article class="info-card info-card--tall">
                 <div class="info-card-body">
-                    <h3 class="info-title">{{ $publicInfoSetting->request_title ?? 'Permohonan Informasi Publik' }}</h3>
+                    <h3 class="info-title"><?php echo e($publicInfoSetting->request_title ?? 'Permohonan Informasi Publik'); ?></h3>
                     <p class="info-desc">
-                        {{ $publicInfoSetting->request_description ?? 'Ajukan permohonan informasi publik desa secara mudah dan transparan. Ikuti prosedur resmi sesuai peraturan yang berlaku.' }}
+                        <?php echo e($publicInfoSetting->request_description ?? 'Ajukan permohonan informasi publik desa secara mudah dan transparan. Ikuti prosedur resmi sesuai peraturan yang berlaku.'); ?>
+
                     </p>
                 </div>
                 <div class="info-media info-media--with-btn">
-                    @php
+                    <?php
                         $reqImg = $publicInfoSetting->request_image;
                         $reqImgUrl = $reqImg
                             ? (Str::startsWith($reqImg, ['http://', 'https://']) ? $reqImg : asset('storage/' . ltrim($reqImg, '/')))
                             : asset('img/Pelayanan/Pelayanan1.jpg');
-                    @endphp
-                    <img src="{{ $reqImgUrl }}" alt="Permohonan Informasi Publik" loading="lazy">
-                    @if(!empty($publicInfoSetting->request_button_url))
-                        <a class="info-media-btn" href="{{ $publicInfoSetting->request_button_url }}" target="_blank"
-                            rel="noopener">{{ $publicInfoSetting->request_button_label ?? 'Ajukan Permohonan' }}</a>
-                    @else
+                    ?>
+                    <img src="<?php echo e($reqImgUrl); ?>" alt="Permohonan Informasi Publik" loading="lazy">
+                    <?php if(!empty($publicInfoSetting->request_button_url)): ?>
+                        <a class="info-media-btn" href="<?php echo e($publicInfoSetting->request_button_url); ?>" target="_blank"
+                            rel="noopener"><?php echo e($publicInfoSetting->request_button_label ?? 'Ajukan Permohonan'); ?></a>
+                    <?php else: ?>
                         <a class="info-media-btn" href="#"
-                            aria-disabled="true">{{ $publicInfoSetting->request_button_label ?? 'Ajukan Permohonan' }}</a>
-                    @endif
+                            aria-disabled="true"><?php echo e($publicInfoSetting->request_button_label ?? 'Ajukan Permohonan'); ?></a>
+                    <?php endif; ?>
                 </div>
             </article>
 
             <!-- Card 2: Jam Kerja -->
             <article class="info-card info-card--short">
                 <div class="info-card-body">
-                    <h3 class="info-title">{{ $publicInfoSetting->hours_title ?? 'Jam Kerja' }}</h3>
+                    <h3 class="info-title"><?php echo e($publicInfoSetting->hours_title ?? 'Jam Kerja'); ?></h3>
                     <p class="info-desc">
-                        {{ $publicInfoSetting->hours_description ?? 'Jam pelayanan kantor Desa Tanjung Kesuma.' }}
+                        <?php echo e($publicInfoSetting->hours_description ?? 'Jam pelayanan kantor Desa Tanjung Kesuma.'); ?>
+
                     </p>
                 </div>
                 <div class="info-media">
                     <div class="jam-kerja jam-kerja--inline">
                         <ul class="jam-list" aria-label="Jadwal Layanan Kantor Desa">
-                            @forelse($publicInfoHours as $hour)
-                                @php
+                            <?php $__empty_1 = true; $__currentLoopData = $publicInfoHours; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $hour): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <?php
                                     $isOff = $hour->is_closed;
                                     $isToday = $hour->day_of_week === now()->dayOfWeekIso - 1;
                                     $timeLabel = $isOff ? 'Libur' : trim(($hour->open_time ?: '-') . ' - ' . ($hour->close_time ?: '-'));
-                                @endphp
-                                <li class="jam-item {{ $isToday ? 'is-today' : '' }} {{ $isOff ? 'is-off' : '' }}">
-                                    <span class="day">{{ $hour->day_label ?? $hour->day_of_week }}</span>
-                                    <span class="time">{{ $timeLabel }}</span>
+                                ?>
+                                <li class="jam-item <?php echo e($isToday ? 'is-today' : ''); ?> <?php echo e($isOff ? 'is-off' : ''); ?>">
+                                    <span class="day"><?php echo e($hour->day_label ?? $hour->day_of_week); ?></span>
+                                    <span class="time"><?php echo e($timeLabel); ?></span>
                                 </li>
-                            @empty
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <li class="jam-item is-off"><span class="day">Data</span><span class="time">Belum
                                         diisi</span></li>
-                            @endforelse
+                            <?php endif; ?>
                         </ul>
-                        @if($publicInfoSetting->hours_note)
-                            <div class="jam-note"><span class="legend live"></span>{{ $publicInfoSetting->hours_note }}
+                        <?php if($publicInfoSetting->hours_note): ?>
+                            <div class="jam-note"><span class="legend live"></span><?php echo e($publicInfoSetting->hours_note); ?>
+
                             </div>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
             </article>
@@ -950,20 +962,22 @@
             <!-- Card 3: Maps Lokasi Kantor Desa -->
             <article class="info-card info-card--tall">
                 <div class="info-card-body">
-                    <h3 class="info-title">{{ $publicInfoSetting->map_title ?? 'Maps Lokasi Kantor Desa' }}</h3>
+                    <h3 class="info-title"><?php echo e($publicInfoSetting->map_title ?? 'Maps Lokasi Kantor Desa'); ?></h3>
                     <p class="info-desc">
-                        {{ $publicInfoSetting->map_description ?? 'Temukan lokasi kantor desa pada peta berikut.' }}
+                        <?php echo e($publicInfoSetting->map_description ?? 'Temukan lokasi kantor desa pada peta berikut.'); ?>
+
                     </p>
                 </div>
                 <div class="info-media info-media--map">
-                    @if(!empty($publicInfoSetting->map_embed_url))
-                        {!! $publicInfoSetting->map_embed_url !!}
-                    @else
+                    <?php if(!empty($publicInfoSetting->map_embed_url)): ?>
+                        <?php echo $publicInfoSetting->map_embed_url; ?>
+
+                    <?php else: ?>
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7314.608734059403!2d105.5164522364145!3d-4.958129316991919!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e409bf56c965ac7%3A0xb421528668ad55ea!2sBalai%20Desa%20Tanjung%20Kesuma!5e0!3m2!1sid!2sid!4v1757531013080!5m2!1sid!2sid"
                             width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </article>
 
@@ -974,20 +988,20 @@
                         <button class="ip-arrow prev" aria-label="Sebelumnya" onclick="changeIpSlide(-1)"><i
                                 class="fas fa-chevron-left" aria-hidden="true"></i></button>
                         <div class="ip-track" id="ipSlides">
-                            @php $infoBanners = $infoBanners ?? collect(); @endphp
-                            @forelse($infoBanners as $banner)
-                                @php $img = $mediaUrl($banner->image_url ?? null, asset('img/Banner/gambar_desa_1.png')); @endphp
+                            <?php $infoBanners = $infoBanners ?? collect(); ?>
+                            <?php $__empty_1 = true; $__currentLoopData = $infoBanners; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $banner): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <?php $img = $mediaUrl($banner->image_url ?? null, asset('img/Banner/gambar_desa_1.png')); ?>
                                 <div class="ip-item">
-                                    <img loading="lazy" src="{{ $img }}" alt="{{ $banner->title ?? 'Banner Desa' }}">
+                                    <img loading="lazy" src="<?php echo e($img); ?>" alt="<?php echo e($banner->title ?? 'Banner Desa'); ?>">
                                 </div>
-                            @empty
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <div class="ip-item"><img loading="lazy" src="img/Banner/gambar_desa_1.png" alt="Banner 1">
                                 </div>
                                 <div class="ip-item"><img loading="lazy" src="img/Banner/gambar_desa_4.jpg" alt="Banner 2">
                                 </div>
                                 <div class="ip-item"><img loading="lazy" src="img/Banner/gambar_desa_3.jpg" alt="Banner 3">
                                 </div>
-                            @endforelse
+                            <?php endif; ?>
                         </div>
                         <button class="ip-arrow next" aria-label="Berikutnya" onclick="changeIpSlide(1)"><i
                                 class="fas fa-chevron-right" aria-hidden="true"></i></button>
@@ -1012,7 +1026,7 @@
                             <p class="announcement-page-desc">Daftar pengumuman terbaru.</p>
                         </div>
                     </div>
-                    <a href="{{ route('announcements.index') }}" class="announcement-page-back"
+                    <a href="<?php echo e(route('announcements.index')); ?>" class="announcement-page-back"
                         style="flex-direction: row-reverse;">
                         Lihat Lebih Detail <i class="fas fa-arrow-right" style="margin-right:0; margin-left:8px;"></i>
                     </a>
@@ -1060,20 +1074,19 @@
     </section>
 
     <!-- Transparansi Anggaran Desa -->
-    @if($publicInfoSetting->show_budget_section ?? true)
     <section class="transparansi-section">
         <div class="transparansi-header">
             <div class="transparansi-title">
                 <h2>Transparansi Anggaran Desa</h2>
                 <p class="transparansi-desc">Informasi ringkas realisasi dan anggaran desa secara transparan.</p>
             </div>
-            <a href="{{ route('budget.transparency.page') }}" class="transparansi-link">Lihat Lebih Detail &gt;</a>
+            <a href="<?php echo e(route('budget.transparency.page')); ?>" class="transparansi-link">Lihat Lebih Detail &gt;</a>
         </div>
-        @php
+        <?php
             $pelaksanaan = $budgetItems['pelaksanaan'] ?? collect();
             $pendapatan = $budgetItems['pendapatan'] ?? collect();
             $pembelanjaan = $budgetItems['pembelanjaan'] ?? collect();
-        @endphp
+        ?>
         <div class="transparansi-grid">
             <div class="transparansi-row">
                 <!-- Pelaksanaan -->
@@ -1083,27 +1096,28 @@
                         <span class="card-title">Pelaksanaan</span>
                     </div>
                     <div class="card-content-3col">
-                        @php $pelCols = $pelaksanaan; @endphp
-                        @forelse($pelCols as $item)
-                            @php
+                        <?php $pelCols = $pelaksanaan; ?>
+                        <?php $__empty_1 = true; $__currentLoopData = $pelCols; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php
                                 $title = $item->subcategory ?: $item->description;
                                 $percent = $item->progress_percent;
-                            @endphp
+                            ?>
                             <div class="card-col">
-                                <div class="card-subtitle">{{ $title }}</div>
+                                <div class="card-subtitle"><?php echo e($title); ?></div>
                                 <div class="card-label">Realisasi</div>
                                 <div class="card-value highlight">Rp.
-                                    {{ number_format((float) $item->realisasi, 0, ',', '.') }}
+                                    <?php echo e(number_format((float) $item->realisasi, 0, ',', '.')); ?>
+
                                 </div>
                                 <div class="card-label">Anggaran</div>
-                                <div class="card-value">Rp. {{ number_format((float) $item->anggaran, 0, ',', '.') }}</div>
-                                <div class="card-bar"><span style="width:{{ $percent }}%"></span></div>
-                                <div class="card-percent">{{ $percent }}%</div>
+                                <div class="card-value">Rp. <?php echo e(number_format((float) $item->anggaran, 0, ',', '.')); ?></div>
+                                <div class="card-bar"><span style="width:<?php echo e($percent); ?>%"></span></div>
+                                <div class="card-percent"><?php echo e($percent); ?>%</div>
                             </div>
-                            @if(!$loop->last)
+                            <?php if(!$loop->last): ?>
                                 <div class="card-divider"></div>
-                            @endif
-                        @empty
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <div class="card-col">
                                 <div class="card-subtitle">Data pelaksanaan belum tersedia</div>
                                 <div class="card-label">Realisasi</div>
@@ -1113,7 +1127,7 @@
                                 <div class="card-bar"><span style="width:0%"></span></div>
                                 <div class="card-percent">0%</div>
                             </div>
-                        @endforelse
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -1125,24 +1139,25 @@
                         <span class="card-title">Pendapatan</span>
                     </div>
                     <div class="card-content-3col pendapatan-grid">
-                        @php $pendList = $pendapatan; @endphp
-                        @forelse($pendList as $item)
-                            @php
+                        <?php $pendList = $pendapatan; ?>
+                        <?php $__empty_1 = true; $__currentLoopData = $pendList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php
                                 $title = $item->subcategory ?: $item->description;
                                 $percent = $item->progress_percent;
-                            @endphp
+                            ?>
                             <div class="card-col">
-                                <div class="card-subtitle">{{ $title }}</div>
+                                <div class="card-subtitle"><?php echo e($title); ?></div>
                                 <div class="card-label">Realisasi</div>
                                 <div class="card-value highlight">Rp.
-                                    {{ number_format((float) $item->realisasi, 0, ',', '.') }}
+                                    <?php echo e(number_format((float) $item->realisasi, 0, ',', '.')); ?>
+
                                 </div>
                                 <div class="card-label">Anggaran</div>
-                                <div class="card-value">Rp. {{ number_format((float) $item->anggaran, 0, ',', '.') }}</div>
-                                <div class="card-bar"><span style="width:{{ $percent }}%"></span></div>
-                                <div class="card-percent">{{ $percent }}%</div>
+                                <div class="card-value">Rp. <?php echo e(number_format((float) $item->anggaran, 0, ',', '.')); ?></div>
+                                <div class="card-bar"><span style="width:<?php echo e($percent); ?>%"></span></div>
+                                <div class="card-percent"><?php echo e($percent); ?>%</div>
                             </div>
-                        @empty
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <div class="card-col">
                                 <div class="card-subtitle">Data pendapatan belum tersedia</div>
                                 <div class="card-label">Realisasi</div>
@@ -1152,7 +1167,7 @@
                                 <div class="card-bar"><span style="width:0%"></span></div>
                                 <div class="card-percent">0%</div>
                             </div>
-                        @endforelse
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -1164,25 +1179,26 @@
                         <span class="card-title">Pembelanjaan</span>
                     </div>
                     <div class="card-content-3col">
-                        @php $pemCols = $pembelanjaan; @endphp
-                        @forelse($pemCols as $item)
-                            @php
+                        <?php $pemCols = $pembelanjaan; ?>
+                        <?php $__empty_1 = true; $__currentLoopData = $pemCols; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php
                                 $title = $item->subcategory ?: $item->description;
                                 $percent = $item->progress_percent;
-                            @endphp
+                            ?>
                             <div class="card-col">
-                                <div class="card-subtitle">{{ $title }}</div>
+                                <div class="card-subtitle"><?php echo e($title); ?></div>
                                 <div class="card-label">Realisasi</div>
                                 <div class="card-value highlight">Rp.
-                                    {{ number_format((float) $item->realisasi, 0, ',', '.') }}
+                                    <?php echo e(number_format((float) $item->realisasi, 0, ',', '.')); ?>
+
                                 </div>
                                 <div class="card-label">Anggaran</div>
-                                <div class="card-value">Rp. {{ number_format((float) $item->anggaran, 0, ',', '.') }}</div>
-                                <div class="card-bar"><span style="width:{{ $percent }}%"></span></div>
-                                <div class="card-percent">{{ $percent }}%</div>
+                                <div class="card-value">Rp. <?php echo e(number_format((float) $item->anggaran, 0, ',', '.')); ?></div>
+                                <div class="card-bar"><span style="width:<?php echo e($percent); ?>%"></span></div>
+                                <div class="card-percent"><?php echo e($percent); ?>%</div>
                             </div>
 
-                        @empty
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <div class="card-col">
                                 <div class="card-subtitle">Data pembelanjaan belum tersedia</div>
                                 <div class="card-label">Realisasi</div>
@@ -1192,29 +1208,28 @@
                                 <div class="card-bar"><span style="width:0%"></span></div>
                                 <div class="card-percent">0%</div>
                             </div>
-                        @endforelse
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    @endif
 
     <!-- Pegawai Desa -->
     <section class="pegawai-section">
         <div class="pegawai-header">
             <h2>Pegawai Desa</h2>
-            <a href="{{ route('pegawai.page') }}" class="pegawai-link">Lihat Lebih Detail &gt;</a>
+            <a href="<?php echo e(route('pegawai.page')); ?>" class="pegawai-link">Lihat Lebih Detail &gt;</a>
         </div>
         <p class="pegawai-desc">Daftar perangkat desa dan staf. Geser untuk melihat lainnya.</p>
         <div class="pegawai-slider-wrapper">
-            @php
+            <?php
                 $pegawaiList = $pegawaiList ?? collect();
                 $kepalaDesa = $pegawaiList->first(fn($p) => Str::lower($p->jabatan ?? '') === 'kepala desa');
                 $pegawaiSticky = $kepalaDesa ?: $pegawaiList->first();
-            @endphp
-            @if($kepalaDesa)
-                @php
+            ?>
+            <?php if($kepalaDesa): ?>
+                <?php
                     $stickyImg = $mediaUrl($kepalaDesa->image_url ?? $kepalaDesa->gambar ?? null, asset('img/Users/user1.png'));
                     $statusSticky = $kepalaDesa->status_kepegawaian ?? $kepalaDesa->status ?? 'Tidak diketahui';
                     $statusClassMap = [
@@ -1228,19 +1243,19 @@
                     $statusStickyClass = $statusClassMap[Str::lower($statusSticky)] ?? '';
                     $pegawaiStickyName = $kepalaDesa->nama;
                     $pegawaiStickyRole = $kepalaDesa->jabatan ?? 'Kepala Desa';
-                @endphp
-                <div class="pegawai-card pegawai-card-sticky" data-status="{{ Str::lower($statusSticky) }}">
-                    <img src="{{ $stickyImg }}" alt="{{ $pegawaiSticky->nama }}">
+                ?>
+                <div class="pegawai-card pegawai-card-sticky" data-status="<?php echo e(Str::lower($statusSticky)); ?>">
+                    <img src="<?php echo e($stickyImg); ?>" alt="<?php echo e($pegawaiSticky->nama); ?>">
                     <div class="pegawai-info">
-                        <div class="pegawai-name">{{ $pegawaiStickyName }}</div>
+                        <div class="pegawai-name"><?php echo e($pegawaiStickyName); ?></div>
                         <div class="pegawai-meta-row">
-                            <div class="pegawai-role">{{ $pegawaiStickyRole }}</div>
-                            <div class="pegawai-status {{ $statusStickyClass }}">{{ $statusSticky }}</div>
+                            <div class="pegawai-role"><?php echo e($pegawaiStickyRole); ?></div>
+                            <div class="pegawai-status <?php echo e($statusStickyClass); ?>"><?php echo e($statusSticky); ?></div>
                         </div>
                     </div>
                 </div>
-            @elseif($pegawaiList->isNotEmpty())
-                @php
+            <?php elseif($pegawaiList->isNotEmpty()): ?>
+                <?php
                     $pegawaiSticky = $pegawaiList->first();
                     $stickyImg = $mediaUrl($pegawaiSticky->image_url ?? $pegawaiSticky->gambar ?? null, asset('img/Users/user1.png'));
                     $statusSticky = $pegawaiSticky->status_kepegawaian ?? $pegawaiSticky->status ?? 'Tidak diketahui';
@@ -1253,20 +1268,20 @@
                         'pensiun' => 'status-pensiun',
                     ];
                     $statusStickyClass = $statusClassMap[Str::lower($statusSticky)] ?? '';
-                @endphp
-                <div class="pegawai-card pegawai-card-sticky" data-status="{{ Str::lower($statusSticky) }}">
-                    <img src="{{ $stickyImg }}" alt="{{ $pegawaiSticky->nama }}">
+                ?>
+                <div class="pegawai-card pegawai-card-sticky" data-status="<?php echo e(Str::lower($statusSticky)); ?>">
+                    <img src="<?php echo e($stickyImg); ?>" alt="<?php echo e($pegawaiSticky->nama); ?>">
                     <div class="pegawai-info">
-                        <div class="pegawai-name">{{ $pegawaiSticky->nama }}</div>
+                        <div class="pegawai-name"><?php echo e($pegawaiSticky->nama); ?></div>
                         <div class="pegawai-meta-row">
-                            <div class="pegawai-role">{{ $pegawaiSticky->jabatan ?? 'Perangkat Desa' }}</div>
-                            <div class="pegawai-status {{ $statusStickyClass }}">{{ $statusSticky }}</div>
+                            <div class="pegawai-role"><?php echo e($pegawaiSticky->jabatan ?? 'Perangkat Desa'); ?></div>
+                            <div class="pegawai-status <?php echo e($statusStickyClass); ?>"><?php echo e($statusSticky); ?></div>
                         </div>
                     </div>
                 </div>
-            @else
+            <?php else: ?>
                 <div class="pegawai-card pegawai-card-sticky" data-status="kosong">
-                    <img src="{{ asset('img/Users/user1.png') }}" alt="Kepala Desa">
+                    <img src="<?php echo e(asset('img/Users/user1.png')); ?>" alt="Kepala Desa">
                     <div class="pegawai-info">
                         <div class="pegawai-name">Belum ada Kepala Desa</div>
                         <div class="pegawai-meta-row">
@@ -1275,17 +1290,17 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
             <div class="pegawai-runner" aria-label="Daftar Pegawai">
                 <div class="pegawai-track">
-                    @php
+                    <?php
                         $listToRender = $kepalaDesa ? $pegawaiList->filter(fn($p) => $p->id !== $kepalaDesa->id) : $pegawaiList->skip(1);
-                    @endphp
-                    @if($listToRender->isNotEmpty())
-                        {{-- Duplicate loop to create seamless marquee --}}
-                        @for($i = 0; $i < 2; $i++)
-                            @foreach($listToRender as $pegawai)
-                                @php
+                    ?>
+                    <?php if($listToRender->isNotEmpty()): ?>
+                        
+                        <?php for($i = 0; $i < 2; $i++): ?>
+                            <?php $__currentLoopData = $listToRender; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pegawai): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php
                                     $img = $mediaUrl($pegawai->image_url ?? $pegawai->gambar ?? null, asset('img/Users/user2.png'));
                                     $status = $pegawai->status_kepegawaian ?? $pegawai->status ?? 'Tidak diketahui';
                                     $statusKey = Str::lower($status);
@@ -1298,20 +1313,20 @@
                                         'pensiun' => 'status-pensiun',
                                     ];
                                     $statusClass = $statusClassMap[$statusKey] ?? '';
-                                @endphp
-                                <div class="pegawai-card" data-status="{{ $statusKey }}">
-                                    <img src="{{ $img }}" alt="{{ $pegawai->nama }}">
+                                ?>
+                                <div class="pegawai-card" data-status="<?php echo e($statusKey); ?>">
+                                    <img src="<?php echo e($img); ?>" alt="<?php echo e($pegawai->nama); ?>">
                                     <div class="pegawai-info">
-                                        <div class="pegawai-name">{{ $pegawai->nama }}</div>
+                                        <div class="pegawai-name"><?php echo e($pegawai->nama); ?></div>
                                         <div class="pegawai-meta-row">
-                                            <div class="pegawai-role">{{ $pegawai->jabatan ?? 'Perangkat Desa' }}</div>
-                                            <div class="pegawai-status {{ $statusClass }}">{{ $status }}</div>
+                                            <div class="pegawai-role"><?php echo e($pegawai->jabatan ?? 'Perangkat Desa'); ?></div>
+                                            <div class="pegawai-status <?php echo e($statusClass); ?>"><?php echo e($status); ?></div>
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
-                        @endfor
-                    @else
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endfor; ?>
+                    <?php else: ?>
                         <div class="pegawai-card" data-status="-">
                             <img src="img/Users/user2.png" alt="Pegawai Desa">
                             <div class="pegawai-info">
@@ -1322,7 +1337,7 @@
                                 </div>
                             </div>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -1334,37 +1349,37 @@
             <div class="galeri-video">
                 <div class="galeri-header">
                     <h3>Galeri Video</h3>
-                    <a href="{{ route('videos.index') }}" class="galeri-link">Lihat Lebih Detail &gt;</a>
+                    <a href="<?php echo e(route('videos.index')); ?>" class="galeri-link">Lihat Lebih Detail &gt;</a>
                 </div>
-                @php $videos = $youtubeVideos ?? collect(); @endphp
+                <?php $videos = $youtubeVideos ?? collect(); ?>
                 <div class="galeri-list" id="galeriList">
-                    @forelse($videos as $video)
-                        @php
+                    <?php $__empty_1 = true; $__currentLoopData = $videos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $video): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <?php
                             $embedUrl = $video->embed_url ? $video->embed_url . '?controls=1&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1' : '';
                             $watchUrl = $video->youtube_url ?: ($video->embed_url ?: '#');
                             $dateLabel = optional($video->published_at ?? $video->created_at)->format('d M Y') ?: 'Video';
-                        @endphp
+                        ?>
                         <div class="galeri-card">
                             <div class="video-wrapper">
-                                @if($embedUrl)
-                                    <iframe src="{{ $embedUrl }}" title="{{ $video->title }}" loading="lazy"
+                                <?php if($embedUrl): ?>
+                                    <iframe src="<?php echo e($embedUrl); ?>" title="<?php echo e($video->title); ?>" loading="lazy"
                                         allowfullscreen></iframe>
-                                @else
+                                <?php else: ?>
                                     <div class="news-list-thumb--placeholder"
                                         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
                                         <i class="fas fa-video"></i>
                                     </div>
-                                @endif
+                                <?php endif; ?>
                             </div>
                             <div class="galeri-meta">
-                                <h4 class="meta-title">{{ $video->title }}</h4>
+                                <h4 class="meta-title"><?php echo e($video->title); ?></h4>
                                 <div class="meta-row">
-                                    <span class="meta-pill">{{ $dateLabel }}</span>
-                                    <a href="{{ $watchUrl }}" class="meta-link" target="_blank" rel="noopener">Tonton</a>
+                                    <span class="meta-pill"><?php echo e($dateLabel); ?></span>
+                                    <a href="<?php echo e($watchUrl); ?>" class="meta-link" target="_blank" rel="noopener">Tonton</a>
                                 </div>
                             </div>
                         </div>
-                    @empty
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         <div class="galeri-card" style="align-items:center; text-align:center; padding:22px 16px;">
                             <div style="font-size:46px; color:#cbd5e1; margin-bottom:10px;">
                                 <i class="fas fa-photo-video" aria-hidden="true"></i>
@@ -1376,7 +1391,7 @@
                                 </div>
                             </div>
                         </div>
-                    @endforelse
+                    <?php endif; ?>
                 </div>
                 <!-- Pagination for Galeri Video -->
                 <div class="news-pagination galeri-pagination" id="galeriPagination"></div>
@@ -1387,13 +1402,13 @@
                     <h3>Infografis</h3>
                 </div>
                 <div class="infografis-slider" id="infografisSlider">
-                    @php $infographics = $infographicBanners ?? collect(); @endphp
-                    @forelse($infographics as $banner)
-                        @php $img = $mediaUrl($banner->image_url ?? null, asset('img/Pelayanan/usia.jpg')); @endphp
-                        <div class="infografis-slide {{ $loop->first ? 'active' : '' }}">
-                            <img src="{{ $img }}" alt="{{ $banner->title ?? 'Infografis Desa' }}" loading="lazy">
+                    <?php $infographics = $infographicBanners ?? collect(); ?>
+                    <?php $__empty_1 = true; $__currentLoopData = $infographics; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $banner): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <?php $img = $mediaUrl($banner->image_url ?? null, asset('img/Pelayanan/usia.jpg')); ?>
+                        <div class="infografis-slide <?php echo e($loop->first ? 'active' : ''); ?>">
+                            <img src="<?php echo e($img); ?>" alt="<?php echo e($banner->title ?? 'Infografis Desa'); ?>" loading="lazy">
                         </div>
-                    @empty
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         <div class="infografis-slide active">
                             <img src="img/Pelayanan/usia.jpg" alt="Infografis Usia" loading="lazy">
                         </div>
@@ -1406,7 +1421,7 @@
                         <div class="infografis-slide">
                             <img src="img/Pelayanan/pernikahan.jpg" alt="Pernikahan" loading="lazy">
                         </div>
-                    @endforelse
+                    <?php endif; ?>
                 </div>
                 <div class="infografis-dots" id="infografisDots"></div>
             </div>
@@ -1424,7 +1439,7 @@
             <div class="map-modal__header">
                 <div>
                     <h2 class="map-modal__title">Data Wilayah & Peta Desa</h2>
-                    <p class="map-modal__subtitle">{{ $publicInfoSetting->map_title ?? 'Peta Wilayah Desa' }}</p>
+                    <p class="map-modal__subtitle"><?php echo e($publicInfoSetting->map_title ?? 'Peta Wilayah Desa'); ?></p>
                 </div>
             </div>
             <div class="map-modal__body">
@@ -1440,7 +1455,8 @@
                         <div class="map-description-container">
                             <h4 class="map-desc-title">Deskripsi Peta</h4>
                             <div class="map-desc-text">
-                                {!! nl2br(e($publicInfoSetting->map_description ?? '-')) !!}
+                                <?php echo nl2br(e($publicInfoSetting->map_description ?? '-')); ?>
+
                             </div>
                         </div>
 
@@ -1476,7 +1492,8 @@
                                 Alamat & Kontak
                             </h4>
                             <div class="text-sm text-gray-600 leading-relaxed address-box">
-                                {!! nl2br(e($publicInfoSetting->footer_address ?? '-')) !!}
+                                <?php echo nl2br(e($publicInfoSetting->footer_address ?? '-')); ?>
+
                             </div>
                         </div>
 
@@ -1488,139 +1505,11 @@
                                 Data Wilayah
                             </h4>
                             <div class="wilayah-list">
-                                @forelse($wilayahData ?? [] as $data)
+                                <?php $__empty_1 = true; $__currentLoopData = $wilayahData ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                     <div class="wilayah-item">
-                                        <span class="wilayah-name">{{ $data->label }}</span>
-                                        <span class="wilayah-count">{{ $data->total }} Jiwa</span>
+                                        <span class="wilayah-name"><?php echo e($data->label); ?></span>
+                                        <span class="wilayah-count"><?php echo e($data->total); ?> Jiwa</span>
                                     </div>
-                                @empty
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                     <div class="text-center text-gray-500 text-sm py-2">Data wilayah belum tersedia</div>
-                                @endforelse
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    @include('frontend.partials.footer', ['socialLinks' => $socialLinks ?? collect(), 'publicInfoSetting' => $publicInfoSetting ?? null])
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    @php
-        $announcementsByCategory = $announcementsByCategory ?? [];
-        $newsData = ($news ?? collect())->map(function ($item) use ($mediaUrl) {
-            $img = $item->thumbnail ? $mediaUrl($item->thumbnail, null) : null;
-            $publishedAt = $item->published_at ?? $item->created_at;
-
-            return [
-                'title' => $item->title,
-                'date' => optional($publishedAt)->locale('id')->translatedFormat('l, d M Y'),
-                'desc' => $item->summary ?: Str::limit(strip_tags($item->content), 140),
-                'url' => route('news.show', $item->slug),
-                'image' => $img,
-                'category' => optional($item->category)->name,
-                'icon' => 'fas fa-newspaper',
-                'views' => (int) ($item->views ?? 0),
-                'author' => optional($item->author)->name ?: ($item->created_by ?? 'Admin Desa'),
-            ];
-        })->values();
-
-        // Helper to normalize keys and fallback to labels
-        $categories = \App\Models\Announcement::categories();
-        // Normalize groups to lowercase keys for easier lookup
-        $normalizedGroups = collect($announcementsByCategory)->mapWithKeys(function ($item, $key) {
-            return [Str::lower($key) => $item];
-        });
-
-        $announcementData = collect($categories)
-            ->keys()
-            ->mapWithKeys(function ($slug) use ($normalizedGroups, $mediaUrl, $categories) {
-                $slugKey = Str::lower($slug);
-                $labelKey = Str::lower($categories[$slug] ?? '');
-
-                // Lookup by slug or label
-                $group = $normalizedGroups[$slugKey] ?? $normalizedGroups[$labelKey] ?? collect();
-
-                return [
-                    $slug => $group->map(function ($item) use ($mediaUrl) {
-                        $thumb = $item->thumbnail ?? null;
-                        $img = $thumb ? $mediaUrl($thumb, null) : null;
-                        // Try eager loaded first, then lazy load
-                        if (!$img) {
-                            $img = $item->imageAttachments->first()->url ?? null;
-                        }
-                        $img = $mediaUrl($img, asset('img/Logo/speaker.png'));
-
-                        $dateObj = optional($item->published_at ?? $item->created_at);
-                        $dateStr = $dateObj->locale('id')->translatedFormat('l, d M Y');
-
-                        return [
-                            'title' => $item->title,
-                            'date' => $dateStr,
-                            'raw_date' => $dateObj->toIso8601String(),
-                            'desc' => $item->excerpt,
-                            'url' => route('announcements.show', $item->slug),
-                            'image' => $img,
-                        ];
-                    })->values()->toArray(),
-                ];
-            })
-            ->toArray();
-    @endphp
-    <script>
-        window.isUserAuthenticated = @json(auth()->check());
-        window.__NEWS_DATA__ = @json($newsData);
-        window.__ANNOUNCEMENT_DATA__ = @json($announcementData);
-        window.__STAT_DATA__ = @json($statistikData ?? []);
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const detailBtn = document.getElementById('mapDetailBtn');
-            const modal = document.getElementById('mapDetailModal');
-            const closeEls = modal?.querySelectorAll('[data-map-modal-close]');
-
-            const openModal = () => {
-                if (modal) {
-                    modal.style.display = 'flex';
-                    // Force reflow to enable transition
-                    void modal.offsetWidth;
-                    modal.classList.add('is-open');
-                }
-            };
-            const closeModal = () => {
-                if (modal) {
-                    modal.classList.remove('is-open');
-                    setTimeout(() => {
-                        modal.style.display = 'none';
-                    }, 300);
-                }
-            };
-
-            detailBtn?.addEventListener('click', (e) => {
-                e.preventDefault();
-                openModal();
-            });
-            closeEls?.forEach((el) => el.addEventListener('click', closeModal));
-            modal?.addEventListener('click', (e) => {
-                if (e.target === modal) closeModal();
-            });
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') closeModal();
-            });
-        });
-    </script>
-
-
-
-
-    <!-- File JS kamu -->
-    <script src="{{ asset('assets/js/main.js') }}?v={{ time() }}"></script>
-    <script src="{{ asset('assets/js/accessibility.js') }}"></script>
-</body>
-
-</html>
+                                <?php endif; ?>

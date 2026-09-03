@@ -29,10 +29,12 @@ class PublicInfoSetting extends Model
         'footer_socials',
         'whatsapp_number',
         'is_published',
+        'show_budget_section',
     ];
 
     protected $casts = [
         'is_published' => 'boolean',
+        'show_budget_section' => 'boolean',
         'footer_links' => 'array',
         'footer_socials' => 'array',
     ];

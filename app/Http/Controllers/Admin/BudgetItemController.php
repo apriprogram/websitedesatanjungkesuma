@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\BudgetItem;
+use App\Models\PublicInfoSetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -87,6 +88,10 @@ class BudgetItemController extends Controller
             ? BudgetItem::where('is_active_year', true)->value('year')
             : null;
 
+        $showBudgetSection = Schema::hasColumn('public_info_settings', 'show_budget_section')
+            ? (PublicInfoSetting::value('show_budget_section') ?? true)
+            : true;
+
         return view('admin.budget-items.index', [
             'items' => $items,
             'years' => $years,
@@ -97,6 +102,7 @@ class BudgetItemController extends Controller
             'search' => $search,
             'perPage' => $perPage,
             'stats' => $stats,
+            'showBudgetSection' => $showBudgetSection,
         ]);
     }
 
@@ -130,6 +136,22 @@ class BudgetItemController extends Controller
         $budgetItem->update(['is_published' => !$budgetItem->is_published]);
 
         return back()->with('status', 'Status publikasi diubah.');
+    }
+
+    public function toggleSection(): RedirectResponse
+    {
+        $setting = PublicInfoSetting::first();
+        if (!$setting) {
+            return back()->with('error', 'Pengaturan tidak ditemukan.');
+        }
+        $setting->show_budget_section = !$setting->show_budget_section;
+        $setting->save();
+
+        $status = $setting->show_budget_section
+            ? 'Seksi Transparansi Anggaran ditampilkan di website.'
+            : 'Seksi Transparansi Anggaran disembunyikan dari website.';
+
+        return back()->with('status', $status);
     }
 
     public function exportExcel(Request $request)

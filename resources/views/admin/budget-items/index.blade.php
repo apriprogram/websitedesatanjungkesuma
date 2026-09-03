@@ -7,6 +7,105 @@
     <link rel="stylesheet" href="{{ asset('assets/css/admin-news-modal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/admin-budget.css') }}">
     <style>
+        /* ===== Section Toggle Button ===== */
+        .section-toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.5rem 1rem 0.5rem 0.65rem;
+            border-radius: 999px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: all 0.22s cubic-bezier(.4,0,.2,1);
+            white-space: nowrap;
+        }
+
+        .section-toggle-btn--on {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-color: #6ee7b7;
+            color: #065f46;
+            box-shadow: 0 2px 12px rgba(16,185,129,.18);
+        }
+
+        .section-toggle-btn--on:hover {
+            background: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%);
+            border-color: #34d399;
+            box-shadow: 0 4px 18px rgba(16,185,129,.28);
+            transform: translateY(-1px);
+        }
+
+        .section-toggle-btn--off {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-color: #fca5a5;
+            color: #7f1d1d;
+            box-shadow: 0 2px 12px rgba(239,68,68,.13);
+        }
+
+        .section-toggle-btn--off:hover {
+            background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
+            border-color: #f87171;
+            box-shadow: 0 4px 18px rgba(239,68,68,.22);
+            transform: translateY(-1px);
+        }
+
+        /* Toggle track (pill) */
+        .section-toggle-btn__track {
+            position: relative;
+            display: inline-block;
+            width: 38px;
+            height: 22px;
+            border-radius: 999px;
+            flex-shrink: 0;
+            transition: background 0.22s;
+        }
+
+        .section-toggle-btn--on .section-toggle-btn__track {
+            background: #10b981;
+        }
+
+        .section-toggle-btn--off .section-toggle-btn__track {
+            background: #ef4444;
+        }
+
+        .section-toggle-btn__thumb {
+            position: absolute;
+            top: 3px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,.25);
+            transition: left 0.22s cubic-bezier(.4,0,.2,1);
+        }
+
+        .section-toggle-btn--on .section-toggle-btn__thumb {
+            left: 19px;
+        }
+
+        .section-toggle-btn--off .section-toggle-btn__thumb {
+            left: 3px;
+        }
+
+        .section-toggle-btn__label {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        body.dark-mode .section-toggle-btn--on {
+            background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+            border-color: #059669;
+            color: #a7f3d0;
+        }
+
+        body.dark-mode .section-toggle-btn--off {
+            background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%);
+            border-color: #b91c1c;
+            color: #fecaca;
+        }
+
         /* Icon picker */
         .icon-picker {
             position: relative;
@@ -309,6 +408,22 @@
                 <p>Kelola data anggaran dan realisasi untuk ditampilkan ke warga.</p>
             </div>
             <div class="title-actions">
+                {{-- Toggle Section Visibility --}}
+                <form method="POST" action="{{ route('admin.budget-items.toggle-section') }}" id="toggleSectionForm">
+                    @csrf
+                    <button type="submit" class="section-toggle-btn {{ $showBudgetSection ? 'section-toggle-btn--on' : 'section-toggle-btn--off' }}"
+                        title="{{ $showBudgetSection ? 'Klik untuk menyembunyikan seksi dari website' : 'Klik untuk menampilkan seksi di website' }}"
+                        onclick="return confirm('{{ $showBudgetSection ? 'Sembunyikan seksi Transparansi Anggaran dari website?' : 'Tampilkan seksi Transparansi Anggaran di website?' }}')">
+                        <span class="section-toggle-btn__track">
+                            <span class="section-toggle-btn__thumb"></span>
+                        </span>
+                        <span class="section-toggle-btn__label">
+                            <i class="fas {{ $showBudgetSection ? 'fa-eye' : 'fa-eye-slash' }}"></i>
+                            Tampil di Website:
+                            <strong>{{ $showBudgetSection ? 'ON' : 'OFF' }}</strong>
+                        </span>
+                    </button>
+                </form>
                 <div class="export-dropdown">
                     <button type="button" class="soft-action-btn soft-action-btn--outline export-dropdown__toggle"
                         id="exportDropdownToggleBudget" aria-haspopup="true" aria-expanded="false"

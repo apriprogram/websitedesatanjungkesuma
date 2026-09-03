@@ -9,7 +9,7 @@ class SitemapController extends Controller
 {
     public function index()
     {
-        $news = News::where('status', 'Published')->orderBy('published_at', 'desc')->get();
+        $news = News::where('status', 'published')->orderBy('published_at', 'desc')->get();
 
         return response()->view('sitemap', [
             'news' => $news

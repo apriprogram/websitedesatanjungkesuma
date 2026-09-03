@@ -503,6 +503,7 @@ Route::middleware('auth')->group(function () {
         Route::get('budget-items/export/pdf', [BudgetItemController::class, 'exportPdf'])->name('budget-items.export.pdf');
         Route::get('budget-items/export/word', [BudgetItemController::class, 'exportWord'])->name('budget-items.export.word');
         Route::patch('budget-items/{budget_item}/toggle', [BudgetItemController::class, 'toggle'])->name('budget-items.toggle');
+        Route::post('budget-items/toggle-section', [BudgetItemController::class, 'toggleSection'])->name('budget-items.toggle-section');
         Route::resource('budget-items', BudgetItemController::class)->except('show');
 
         // Berita
