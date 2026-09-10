@@ -41,7 +41,22 @@
                     <button type="button" data-editor-command="insertTable" aria-label="Insert table"><i class="fas fa-table"></i></button>
                     <button type="button" data-editor-command="createLink" aria-label="Insert link"><i class="fas fa-link"></i></button>
                     <button type="button" data-editor-command="insertImage" aria-label="Insert image"><i class="fas fa-image"></i></button>
-                    <button type="button" data-editor-command="hiliteColor" aria-label="Highlight" data-editor-value="rgba(79, 70, 229, 0.15)"><i class="fas fa-fill-drip"></i></button>
+                    {{-- ─── Highlight Color (Warna Latar) ─── --}}
+                    <div class="news-editor-color-picker" id="highlightPicker" data-color-picker="hiliteColor" style="position:relative; display:inline-block;">
+                        <button type="button" class="news-editor-color-trigger" id="highlightTrigger" title="Warna Latar Teks" aria-label="Warna Latar" aria-haspopup="true" aria-expanded="false" style="display:inline-flex;align-items:center;gap:4px;">
+                            <i class="fas fa-fill-drip"></i>
+                            <span class="color-bar" id="highlightBar" style="display:block;width:14px;height:3px;border-radius:2px;background:#6366f1;margin-top:2px;"></span>
+                        </button>
+                        <div class="news-editor-color-panel" id="highlightPanel" style="display:none;"></div>
+                    </div>
+                    {{-- ─── Text Color (Warna Teks) ─── --}}
+                    <div class="news-editor-color-picker" id="textColorPicker" data-color-picker="foreColor" style="position:relative; display:inline-block;">
+                        <button type="button" class="news-editor-color-trigger" id="textColorTrigger" title="Warna Teks" aria-label="Warna Teks" aria-haspopup="true" aria-expanded="false" style="display:inline-flex;align-items:center;gap:4px;">
+                            <i class="fas fa-font"></i>
+                            <span class="color-bar" id="textColorBar" style="display:block;width:14px;height:3px;border-radius:2px;background:#ef4444;margin-top:2px;"></span>
+                        </button>
+                        <div class="news-editor-color-panel" id="textColorPanel" style="display:none;"></div>
+                    </div>
                 </div>
                 <div class="news-editor-toolbar-row">
                     <div class="news-editor-toolbar-group">

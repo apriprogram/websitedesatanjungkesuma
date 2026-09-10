@@ -69,21 +69,6 @@
                         </div>
                     `,
                 },
-                hiliteColor: {
-                    title: 'Warna shading',
-                    description: 'Pilih warna latar untuk teks yang disorot.',
-                    render: options => {
-                        const colorValue = options?.color || '#dcdcfb';
-                        const textValue = options?.text || colorValue;
-                        return `
-                            <label class="news-editor-input-modal__label">Warna</label>
-                            <div class="news-editor-input-modal__color-row">
-                                <input class="news-editor-input-modal__input" type="text" name="value" value="${textValue}" placeholder="rgba(99, 102, 241, 0.15)" required>
-                                <input type="color" name="valueColor" value="${colorValue}">
-                            </div>
-                        `;
-                    },
-                },
                 insertTable: {
                     title: 'Masukkan Tabel',
                     description: 'Atur jumlah baris dan kolom tabel yang akan dimasukkan.',
@@ -363,6 +348,428 @@
 
             const closeDropdown = dropdown => dropdown && dropdown.classList.remove('is-open');
 
+            // ─────────────────────────────────────────────────────────────
+            // Inline Color Picker (Highlight + Text Color)
+            // ─────────────────────────────────────────────────────────────
+            const HIGHLIGHT_PRESETS = [
+                { label: 'Ungu Soft',   value: 'rgba(99, 102, 241, 0.18)' },
+                { label: 'Biru Soft',   value: 'rgba(59, 130, 246, 0.18)' },
+                { label: 'Hijau Soft',  value: 'rgba(16, 185, 129, 0.18)' },
+                { label: 'Kuning Soft', value: 'rgba(251, 191, 36, 0.30)' },
+                { label: 'Oranye Soft', value: 'rgba(249, 115, 22, 0.18)' },
+                { label: 'Merah Soft',  value: 'rgba(239, 68, 68, 0.18)'  },
+                { label: 'Pink Soft',   value: 'rgba(236, 72, 153, 0.18)' },
+                { label: 'Teal Soft',   value: 'rgba(20, 184, 166, 0.18)' },
+                { label: 'Ungu',        value: '#e0e7ff' },
+                { label: 'Biru',        value: '#dbeafe' },
+                { label: 'Hijau',       value: '#d1fae5' },
+                { label: 'Kuning',      value: '#fef3c7' },
+                { label: 'Oranye',      value: '#ffedd5' },
+                { label: 'Merah',       value: '#fee2e2' },
+                { label: 'Pink',        value: '#fce7f3' },
+                { label: 'Teal',        value: '#ccfbf1' },
+                { label: 'Abu-abu',     value: '#f1f5f9' },
+                { label: 'Dark Blue',   value: '#c7d2fe' },
+                { label: 'Lime',        value: '#ecfccb' },
+                { label: 'Amber',       value: '#fef08a' },
+                { label: 'Rose',        value: '#ffe4e6' },
+                { label: 'Violet',      value: '#ede9fe' },
+                { label: 'Cyan',        value: '#cffafe' },
+                { label: 'Slate',       value: '#e2e8f0' },
+            ];
+
+            const TEXT_COLOR_PRESETS = [
+                { label: 'Hitam',      value: '#0f172a' },
+                { label: 'Abu Gelap',  value: '#334155' },
+                { label: 'Abu',        value: '#64748b' },
+                { label: 'Abu Terang', value: '#94a3b8' },
+                { label: 'Ungu',       value: '#6366f1' },
+                { label: 'Biru',       value: '#3b82f6' },
+                { label: 'Biru Tua',   value: '#1d4ed8' },
+                { label: 'Hijau',      value: '#10b981' },
+                { label: 'Hijau Tua',  value: '#047857' },
+                { label: 'Kuning',     value: '#f59e0b' },
+                { label: 'Oranye',     value: '#f97316' },
+                { label: 'Merah',      value: '#ef4444' },
+                { label: 'Merah Tua',  value: '#b91c1c' },
+                { label: 'Pink',       value: '#ec4899' },
+                { label: 'Teal',       value: '#14b8a6' },
+                { label: 'Cyan',       value: '#06b6d4' },
+                { label: 'Violet',     value: '#8b5cf6' },
+                { label: 'Rose',       value: '#f43f5e' },
+                { label: 'Amber',      value: '#d97706' },
+                { label: 'Lime',       value: '#65a30d' },
+                { label: 'Indigo',     value: '#4f46e5' },
+                { label: 'Sky',        value: '#0ea5e9' },
+                { label: 'Emerald',    value: '#059669' },
+                { label: 'Putih',      value: '#ffffff' },
+            ];
+
+            /**
+             * Build and inject the color panel HTML into a container element.
+             */
+            const buildColorPanel = (container, presets, command, barEl) => {
+                const isHighlight = command === 'hiliteColor';
+                const panelId = container.id;
+
+                // Build swatch grid
+                const swatchesHtml = presets.map(p => {
+                    const isSolid = !p.value.startsWith('rgba');
+                    const border  = isSolid ? `border: 1px solid rgba(0,0,0,0.08);` : `border: 1px solid rgba(0,0,0,0.05);`;
+                    return `<button type="button" class="cp-swatch" title="${p.label}"
+                        data-cp-value="${p.value}" data-cp-command="${command}"
+                        style="background:${p.value};${border}"></button>`;
+                }).join('');
+
+                container.innerHTML = `
+                    <div class="cp-panel-inner">
+                        <div class="cp-panel-header">
+                            <span>${isHighlight ? 'Warna Latar' : 'Warna Teks'}</span>
+                            <button type="button" class="cp-panel-close" data-cp-close="${panelId}" title="Tutup">
+                                <i class="fas fa-xmark"></i>
+                            </button>
+                        </div>
+                        <div class="cp-swatches">${swatchesHtml}</div>
+                        <div class="cp-divider"></div>
+                        <div class="cp-custom-row">
+                            <label class="cp-custom-label">${isHighlight ? 'Warna Custom' : 'Warna Custom'}:</label>
+                            <div class="cp-custom-input-wrap">
+                                <input type="color" class="cp-custom-color" id="cp-custom-${panelId}"
+                                    value="${isHighlight ? '#e0e7ff' : '#0f172a'}"
+                                    title="Pilih warna custom">
+                                <input type="text" class="cp-custom-text" id="cp-text-${panelId}"
+                                    placeholder="${isHighlight ? 'rgba(99,102,241,0.2)' : '#1d4ed8'}"
+                                    value="${isHighlight ? '' : ''}">
+                                <button type="button" class="cp-apply-custom" data-cp-command="${command}" title="Terapkan warna custom">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </div>
+                        </div>
+                        ${isHighlight ? `
+                        <div class="cp-remove-row">
+                            <button type="button" class="cp-remove-btn" data-cp-command="${command}" title="Hapus warna latar">
+                                <i class="fas fa-times-circle"></i> Hapus Warna Latar
+                            </button>
+                        </div>` : `
+                        <div class="cp-remove-row">
+                            <button type="button" class="cp-remove-btn" data-cp-command="${command}" title="Kembalikan ke warna default">
+                                <i class="fas fa-times-circle"></i> Hapus Warna Teks
+                            </button>
+                        </div>`}
+                    </div>
+                `;
+            };
+
+            /**
+             * Apply a color command to selected text, handling hiliteColor special cases.
+             */
+            const applyColorCommand = (command, color, barEl) => {
+                saveCursorPosition();
+                if (savedRange && editorArea.contains(savedRange.commonAncestorContainer)) {
+                    const sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(savedRange);
+                }
+                editorArea.focus();
+                document.execCommand(command, false, color);
+                syncContent();
+                if (barEl) barEl.style.background = color;
+            };
+
+            /**
+             * Toggle a color panel open/close.
+             */
+            const openColorPanels = new Set();
+            const toggleColorPanel = (pickerEl, panelEl) => {
+                const isOpen = panelEl.style.display === 'block';
+                // Close all open panels
+                document.querySelectorAll('.news-editor-color-panel').forEach(p => {
+                    p.style.display = 'none';
+                });
+                openColorPanels.clear();
+                if (!isOpen) {
+                    panelEl.style.display = 'block';
+                    openColorPanels.add(panelEl);
+                    // Adjust position if near right edge
+                    requestAnimationFrame(() => {
+                        const rect = panelEl.getBoundingClientRect();
+                        const vw = window.innerWidth;
+                        if (rect.right > vw - 10) {
+                            panelEl.style.right = '0';
+                            panelEl.style.left = 'auto';
+                        } else {
+                            panelEl.style.left = '0';
+                            panelEl.style.right = 'auto';
+                        }
+                    });
+                }
+            };
+
+            // Initialize both color pickers
+            [
+                { pickerId: 'highlightPicker', panelId: 'highlightPanel', barId: 'highlightBar', triggerId: 'highlightTrigger', command: 'hiliteColor', presets: HIGHLIGHT_PRESETS },
+                { pickerId: 'textColorPicker',  panelId: 'textColorPanel',  barId: 'textColorBar',  triggerId: 'textColorTrigger',  command: 'foreColor',   presets: TEXT_COLOR_PRESETS },
+            ].forEach(cfg => {
+                const pickerEl  = document.getElementById(cfg.pickerId);
+                const panelEl   = document.getElementById(cfg.panelId);
+                const barEl     = document.getElementById(cfg.barId);
+                const triggerEl = document.getElementById(cfg.triggerId);
+                if (!pickerEl || !panelEl || !triggerEl) return;
+
+                // Build panel content
+                buildColorPanel(panelEl, cfg.presets, cfg.command, barEl);
+
+                // Trigger button — save cursor BEFORE opening
+                triggerEl.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    saveCursorPosition();
+                    toggleColorPanel(pickerEl, panelEl);
+                });
+
+                // Swatch clicks — apply color immediately
+                panelEl.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const swatch = e.target.closest('.cp-swatch');
+                    if (swatch) {
+                        const color = swatch.dataset.cpValue;
+                        applyColorCommand(cfg.command, color, barEl);
+                        panelEl.style.display = 'none';
+                        return;
+                    }
+                    // Close button
+                    const closeBtn = e.target.closest('[data-cp-close]');
+                    if (closeBtn) {
+                        panelEl.style.display = 'none';
+                        return;
+                    }
+                    // Remove color button
+                    const removeBtn = e.target.closest('.cp-remove-btn');
+                    if (removeBtn) {
+                        if (cfg.command === 'hiliteColor') {
+                            applyColorCommand('hiliteColor', 'transparent', barEl);
+                        } else {
+                            applyColorCommand('removeFormat', null, barEl);
+                            if (barEl) barEl.style.background = '#0f172a';
+                        }
+                        panelEl.style.display = 'none';
+                        return;
+                    }
+                    // Apply custom color button
+                    const applyBtn = e.target.closest('.cp-apply-custom');
+                    if (applyBtn) {
+                        const textInput = panelEl.querySelector('.cp-custom-text');
+                        const colorInput = panelEl.querySelector('.cp-custom-color');
+                        const color = (textInput?.value || '').trim() || colorInput?.value || '#000000';
+                        applyColorCommand(cfg.command, color, barEl);
+                        panelEl.style.display = 'none';
+                        return;
+                    }
+                    // Color input change — sync text input
+                    const colorPicker = e.target.closest('.cp-custom-color');
+                    if (colorPicker) {
+                        const textInput = panelEl.querySelector('.cp-custom-text');
+                        if (textInput) textInput.value = colorPicker.value;
+                    }
+                });
+
+                // Sync color input → text input on change
+                panelEl.querySelector('.cp-custom-color')?.addEventListener('input', (e) => {
+                    const textInput = panelEl.querySelector('.cp-custom-text');
+                    if (textInput) textInput.value = e.target.value;
+                });
+            });
+
+            // Close color panels when clicking outside
+            document.addEventListener('mousedown', (e) => {
+                const clickedInsidePicker = e.target.closest('.news-editor-color-picker');
+                if (!clickedInsidePicker) {
+                    document.querySelectorAll('.news-editor-color-panel').forEach(p => {
+                        p.style.display = 'none';
+                    });
+                }
+            });
+
+            // Inject color picker styles
+            if (!document.getElementById('colorPickerStyles')) {
+                const cpStyle = document.createElement('style');
+                cpStyle.id = 'colorPickerStyles';
+                cpStyle.textContent = `
+                    .news-editor-color-picker {
+                        position: relative;
+                        display: inline-flex;
+                        align-items: center;
+                    }
+                    .news-editor-color-trigger {
+                        background: transparent;
+                        border: none;
+                        cursor: pointer;
+                        padding: 6px 8px;
+                        border-radius: 8px;
+                        display: inline-flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 2px;
+                        color: inherit;
+                        font-size: 1rem;
+                        transition: background 0.15s ease;
+                        line-height: 1;
+                    }
+                    .news-editor-color-trigger:hover {
+                        background: rgba(99, 102, 241, 0.10);
+                        color: #6366f1;
+                    }
+                    .news-editor-color-trigger .color-bar {
+                        transition: background 0.2s ease;
+                    }
+                    .news-editor-color-panel {
+                        position: absolute;
+                        top: calc(100% + 6px);
+                        left: 0;
+                        z-index: 99999;
+                        min-width: 270px;
+                        background: #ffffff;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 14px;
+                        box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.08);
+                        overflow: hidden;
+                        animation: cpFadeIn 0.15s ease;
+                    }
+                    @keyframes cpFadeIn {
+                        from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+                        to   { opacity: 1; transform: translateY(0) scale(1); }
+                    }
+                    .cp-panel-inner {
+                        padding: 12px;
+                    }
+                    .cp-panel-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 10px;
+                        font-size: 0.82rem;
+                        font-weight: 700;
+                        color: #475569;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                    }
+                    .cp-panel-close {
+                        background: none;
+                        border: none;
+                        cursor: pointer;
+                        color: #94a3b8;
+                        padding: 2px 6px;
+                        border-radius: 6px;
+                        font-size: 0.85rem;
+                        transition: color 0.15s, background 0.15s;
+                    }
+                    .cp-panel-close:hover { color: #ef4444; background: #fef2f2; }
+                    .cp-swatches {
+                        display: grid;
+                        grid-template-columns: repeat(8, 1fr);
+                        gap: 5px;
+                        margin-bottom: 2px;
+                    }
+                    .cp-swatch {
+                        width: 26px;
+                        height: 26px;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        transition: transform 0.12s ease, box-shadow 0.12s ease;
+                        flex-shrink: 0;
+                    }
+                    .cp-swatch:hover {
+                        transform: scale(1.25);
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                        z-index: 2;
+                        position: relative;
+                    }
+                    .cp-divider {
+                        height: 1px;
+                        background: #f1f5f9;
+                        margin: 10px 0;
+                    }
+                    .cp-custom-label {
+                        font-size: 0.78rem;
+                        font-weight: 600;
+                        color: #64748b;
+                        display: block;
+                        margin-bottom: 6px;
+                    }
+                    .cp-custom-input-wrap {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                    }
+                    .cp-custom-color {
+                        width: 34px;
+                        height: 34px;
+                        border-radius: 8px;
+                        border: 1px solid #e2e8f0;
+                        cursor: pointer;
+                        padding: 2px;
+                        flex-shrink: 0;
+                        background: none;
+                    }
+                    .cp-custom-text {
+                        flex: 1;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 8px;
+                        padding: 6px 10px;
+                        font-size: 0.82rem;
+                        color: #334155;
+                        outline: none;
+                        transition: border-color 0.15s;
+                        font-family: monospace;
+                    }
+                    .cp-custom-text:focus {
+                        border-color: #6366f1;
+                        box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+                    }
+                    .cp-apply-custom {
+                        background: #6366f1;
+                        border: none;
+                        border-radius: 8px;
+                        color: white;
+                        width: 32px;
+                        height: 32px;
+                        display: grid;
+                        place-items: center;
+                        cursor: pointer;
+                        font-size: 0.85rem;
+                        flex-shrink: 0;
+                        transition: background 0.15s;
+                    }
+                    .cp-apply-custom:hover { background: #4f46e5; }
+                    .cp-remove-row {
+                        margin-top: 8px;
+                    }
+                    .cp-remove-btn {
+                        background: none;
+                        border: 1px solid #fca5a5;
+                        border-radius: 8px;
+                        color: #ef4444;
+                        font-size: 0.8rem;
+                        padding: 5px 12px;
+                        cursor: pointer;
+                        width: 100%;
+                        text-align: left;
+                        transition: background 0.15s;
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                    }
+                    .cp-remove-btn:hover {
+                        background: #fef2f2;
+                    }
+                `;
+                document.head.appendChild(cpStyle);
+            }
+            // ─────────────────────────────────────────────────────────────
+            // End Inline Color Picker
+            // ─────────────────────────────────────────────────────────────
+
             toolbarButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const command = button.dataset.editorCommand;
@@ -451,14 +858,6 @@
                     } else {
                         alert('Silakan pilih file gambar terlebih dahulu.');
                         return;
-                    }
-                } else if (pendingCommand === 'hiliteColor') {
-                    const manual = (fields['value'] || '').trim();
-                    const picker = (fields['valueColor'] || '').trim();
-                    const color = manual || picker;
-                    if (color) {
-                        document.execCommand('hiliteColor', false, color);
-                        applied = true;
                     }
                 } else if (pendingCommand === 'insertTable') {
                     const rows = parseInt(fields['rows'] || '0', 10);
