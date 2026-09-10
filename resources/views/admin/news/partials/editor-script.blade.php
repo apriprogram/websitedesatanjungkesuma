@@ -816,6 +816,12 @@
                 if (pendingCommand === 'createLink') {
                     const url = (fields['value'] || '').trim();
                     if (url) {
+                        if (savedRange && editorArea.contains(savedRange.commonAncestorContainer)) {
+                            const sel = window.getSelection();
+                            sel.removeAllRanges();
+                            sel.addRange(savedRange);
+                        }
+                        editorArea.focus();
                         document.execCommand(pendingCommand, false, url);
                         applied = true;
                     }
