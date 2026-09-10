@@ -57,66 +57,63 @@
                         </button>
                         <div class="news-editor-color-panel" id="textColorPanel" style="display:none;"></div>
                     </div>
-                </div>
-                <div class="news-editor-toolbar-row">
-                    <div class="news-editor-toolbar-group">
-                        <div class="news-editor-dropdown" data-editor-dropdown>
-                            <button type="button" data-dropdown-toggle>
-                                <span data-dropdown-label>Paragraph</span>
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            <div class="news-editor-dropdown__menu" data-dropdown-open>
-                                <button type="button" data-editor-command="formatBlock" data-editor-value="<p>">Paragraph</button>
-                                <button type="button" data-editor-command="formatBlock" data-editor-value="<h1>">Heading 1</button>
-                                <button type="button" data-editor-command="formatBlock" data-editor-value="<h2>">Heading 2</button>
-                                <button type="button" data-editor-command="formatBlock" data-editor-value="<h3>">Heading 3</button>
-                            </div>
+                    <div class="news-editor-toolbar-divider" style="width: 1px; height: 24px; background: #e2e8f0; margin: 0 8px;"></div>
+                    <div class="news-editor-dropdown" data-editor-dropdown>
+                        <button type="button" data-dropdown-toggle style="font-family: 'Poppins', sans-serif;">
+                            <span data-dropdown-label>Paragraph</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="news-editor-dropdown__menu" data-dropdown-open style="font-family: 'Poppins', sans-serif;">
+                            <button type="button" data-editor-command="formatBlock" data-editor-value="<p>">Paragraph</button>
+                            <button type="button" data-editor-command="formatBlock" data-editor-value="<h1>">Heading 1</button>
+                            <button type="button" data-editor-command="formatBlock" data-editor-value="<h2>">Heading 2</button>
+                            <button type="button" data-editor-command="formatBlock" data-editor-value="<h3>">Heading 3</button>
                         </div>
-                        <div class="news-editor-dropdown" data-editor-dropdown>
-                            <button type="button" data-dropdown-toggle>
-                                <span data-dropdown-label>Ukuran</span>
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            <div class="news-editor-dropdown__menu" data-dropdown-open>
-                                <button type="button" data-editor-command="fontSize" data-editor-value="1">Extra Small</button>
-                                <button type="button" data-editor-command="fontSize" data-editor-value="2">Small</button>
-                                <button type="button" data-editor-command="fontSize" data-editor-value="3">Normal</button>
-                                <button type="button" data-editor-command="fontSize" data-editor-value="4">Large</button>
-                                <button type="button" data-editor-command="fontSize" data-editor-value="5">Extra Large</button>
-                            </div>
+                    </div>
+                    <div class="news-editor-dropdown" data-editor-dropdown>
+                        <button type="button" data-dropdown-toggle style="font-family: 'Poppins', sans-serif;">
+                            <span data-dropdown-label>Ukuran</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="news-editor-dropdown__menu" data-dropdown-open style="font-family: 'Poppins', sans-serif;">
+                            <button type="button" data-editor-command="fontSize" data-editor-value="1">Extra Small</button>
+                            <button type="button" data-editor-command="fontSize" data-editor-value="2">Small</button>
+                            <button type="button" data-editor-command="fontSize" data-editor-value="3">Normal</button>
+                            <button type="button" data-editor-command="fontSize" data-editor-value="4">Large</button>
+                            <button type="button" data-editor-command="fontSize" data-editor-value="5">Extra Large</button>
                         </div>
-                        <div class="news-editor-dropdown" data-editor-dropdown data-case-dropdown>
-                            <button type="button" data-dropdown-toggle>
-                                <span data-dropdown-label>Change case</span>
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            <div class="news-editor-dropdown__menu" data-dropdown-open>
-                                <button type="button" data-change-case="uppercase">UPPERCASE</button>
-                                <button type="button" data-change-case="lowercase">lowercase</button>
-                                <button type="button" data-change-case="capitalize">Title Case</button>
-                            </div>
+                    </div>
+                    <div class="news-editor-dropdown" data-editor-dropdown data-case-dropdown>
+                        <button type="button" data-dropdown-toggle style="font-family: 'Poppins', sans-serif;">
+                            <span data-dropdown-label>Change case</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="news-editor-dropdown__menu" data-dropdown-open style="font-family: 'Poppins', sans-serif;">
+                            <button type="button" data-change-case="uppercase">UPPERCASE</button>
+                            <button type="button" data-change-case="lowercase">lowercase</button>
+                            <button type="button" data-change-case="capitalize">Title Case</button>
                         </div>
-                        <div class="news-editor-dropdown" data-editor-dropdown data-line-spacing-dropdown>
-                            <button type="button" data-dropdown-toggle>
-                                <span data-dropdown-label>Line spacing</span>
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            <div class="news-editor-dropdown__menu" data-dropdown-open>
-                                <button type="button" data-line-spacing="compact" data-line-height="1.25">Tight</button>
-                                <button type="button" data-line-spacing="normal" data-line-height="1.6">Standard</button>
-                                <button type="button" data-line-spacing="relaxed" data-line-height="2">Relaxed</button>
-                            </div>
+                    </div>
+                    <div class="news-editor-dropdown" data-editor-dropdown data-line-spacing-dropdown>
+                        <button type="button" data-dropdown-toggle style="font-family: 'Poppins', sans-serif;">
+                            <span data-dropdown-label>Line spacing</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="news-editor-dropdown__menu" data-dropdown-open style="font-family: 'Poppins', sans-serif;">
+                            <button type="button" data-line-spacing="compact" data-line-height="1.25">Tight</button>
+                            <button type="button" data-line-spacing="normal" data-line-height="1.6">Standard</button>
+                            <button type="button" data-line-spacing="relaxed" data-line-height="2">Relaxed</button>
                         </div>
-                        <div class="news-editor-dropdown" data-editor-dropdown data-paragraph-spacing-dropdown>
-                            <button type="button" data-dropdown-toggle>
-                                <span data-dropdown-label>Paragraph spacing</span>
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            <div class="news-editor-dropdown__menu" data-dropdown-open>
-                                <button type="button" data-paragraph-spacing="compact">Compact</button>
-                                <button type="button" data-paragraph-spacing="standard">Standard</button>
-                                <button type="button" data-paragraph-spacing="relaxed">Relaxed</button>
-                            </div>
+                    </div>
+                    <div class="news-editor-dropdown" data-editor-dropdown data-paragraph-spacing-dropdown>
+                        <button type="button" data-dropdown-toggle style="font-family: 'Poppins', sans-serif;">
+                            <span data-dropdown-label>Paragraph spacing</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="news-editor-dropdown__menu" data-dropdown-open style="font-family: 'Poppins', sans-serif;">
+                            <button type="button" data-paragraph-spacing="compact">Compact</button>
+                            <button type="button" data-paragraph-spacing="standard">Standard</button>
+                            <button type="button" data-paragraph-spacing="relaxed">Relaxed</button>
                         </div>
                     </div>
                 </div>

@@ -2892,27 +2892,28 @@ body.dark-mode .ann-btn--cancel:hover {
 .news-input-control--editor .news-editor-toolbar {
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
+    gap: 0;
     margin-bottom: 0.75rem;
     background: #f8fafc;
     border: 1px solid rgba(148, 163, 184, 0.35);
     border-radius: 14px;
-    padding: 0.85rem;
+    padding: 0.65rem 0.85rem;
 }
 
 .news-editor-toolbar-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.35rem;
+    gap: 0.25rem;
     align-items: center;
+    row-gap: 0.35rem;
+    padding: 0.2rem 0;
 }
 
 .news-editor-toolbar-group {
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    flex-wrap: wrap;
-    width: 100%;
+    flex-wrap: nowrap;
 }
 
 .news-editor-toolbar button {
@@ -2942,18 +2943,24 @@ body.dark-mode .ann-btn--cancel:hover {
     position: relative;
 }
 
-.news-editor-dropdown button {
+.news-editor-dropdown > button[data-dropdown-toggle] {
     border: 1px solid rgba(15, 23, 42, 0.15);
     border-radius: 10px;
     background: #fff;
-    padding: 0.25rem 0.8rem;
-    min-width: 120px;
+    padding: 0.2rem 0.65rem;
+    min-width: unset;
+    height: 32px;
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.4rem;
+    gap: 0.35rem;
     cursor: pointer;
     transition: all 0.15s ease;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #334155;
+    white-space: nowrap;
 }
 
 .news-editor-dropdown__menu {
@@ -2981,7 +2988,8 @@ body.dark-mode .ann-btn--cancel:hover {
     padding: 0.5rem 1rem;
     text-align: left;
     width: 100%;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
+    font-family: 'Poppins', sans-serif;
     cursor: pointer;
     color: rgba(15, 23, 42, 0.8);
 }
@@ -2992,14 +3000,15 @@ body.dark-mode .ann-btn--cancel:hover {
 }
 
 .news-editor-toolbar button:hover,
-.news-editor-dropdown button:hover,
+.news-editor-dropdown > button[data-dropdown-toggle]:hover,
 .news-editor-toolbar select:hover {
     border-color: rgba(79, 70, 229, 0.4);
     box-shadow: 0 6px 14px rgba(15, 23, 42, 0.06);
+    color: #4f46e5;
 }
 
 .news-editor-toolbar button:focus-visible,
-.news-editor-dropdown button:focus-visible,
+.news-editor-dropdown > button[data-dropdown-toggle]:focus-visible,
 .news-editor-toolbar select:focus-visible {
     outline: 2px solid rgba(79, 70, 229, 0.35);
     outline-offset: 2px;
