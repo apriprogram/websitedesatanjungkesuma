@@ -26,44 +26,52 @@
             <label>Isi lengkap</label>
             <span class="news-input-control__hint">Gunakan toolbar untuk memformat teks dan menyisipkan media.</span>
             <div class="news-editor-toolbar">
-                <div class="news-editor-toolbar-row">
+                {{-- ═══ Baris 1: Icon Buttons ═══ --}}
+                <div class="news-editor-toolbar-row news-editor-toolbar-row--icons">
                     <button type="button" data-editor-command="bold" aria-label="Bold"><i class="fas fa-bold"></i></button>
                     <button type="button" data-editor-command="italic" aria-label="Italic"><i class="fas fa-italic"></i></button>
                     <button type="button" data-editor-command="underline" aria-label="Underline"><i class="fas fa-underline"></i></button>
+                    <span class="news-editor-toolbar-sep"></span>
                     <button type="button" data-editor-command="justifyLeft" aria-label="Align left"><i class="fas fa-align-left"></i></button>
                     <button type="button" data-editor-command="justifyCenter" aria-label="Align center"><i class="fas fa-align-center"></i></button>
                     <button type="button" data-editor-command="justifyRight" aria-label="Align right"><i class="fas fa-align-right"></i></button>
                     <button type="button" data-editor-command="justifyFull" aria-label="Justify"><i class="fas fa-align-justify"></i></button>
+                    <span class="news-editor-toolbar-sep"></span>
                     <button type="button" data-editor-command="outdent" aria-label="Outdent"><i class="fas fa-outdent"></i></button>
                     <button type="button" data-editor-command="indent" aria-label="Indent"><i class="fas fa-indent"></i></button>
                     <button type="button" data-editor-command="insertUnorderedList" aria-label="Bullet list"><i class="fas fa-list-ul"></i></button>
                     <button type="button" data-editor-command="insertOrderedList" aria-label="Number list"><i class="fas fa-list-ol"></i></button>
+                    <span class="news-editor-toolbar-sep"></span>
                     <button type="button" data-editor-command="insertTable" aria-label="Insert table"><i class="fas fa-table"></i></button>
                     <button type="button" data-editor-command="createLink" aria-label="Insert link"><i class="fas fa-link"></i></button>
                     <button type="button" data-editor-command="insertImage" aria-label="Insert image"><i class="fas fa-image"></i></button>
-                    {{-- ─── Highlight Color (Warna Latar) ─── --}}
-                    <div class="news-editor-color-picker" id="highlightPicker" data-color-picker="hiliteColor" style="position:relative; display:inline-block;">
-                        <button type="button" class="news-editor-color-trigger" id="highlightTrigger" title="Warna Latar Teks" aria-label="Warna Latar" aria-haspopup="true" aria-expanded="false" style="display:inline-flex;align-items:center;gap:4px;">
+                    <span class="news-editor-toolbar-sep"></span>
+                    {{-- Highlight Color --}}
+                    <div class="news-editor-color-picker" id="highlightPicker" data-color-picker="hiliteColor">
+                        <button type="button" class="news-editor-color-trigger" id="highlightTrigger" title="Warna Latar Teks" aria-label="Warna Latar" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-fill-drip"></i>
-                            <span class="color-bar" id="highlightBar" style="display:block;width:14px;height:3px;border-radius:2px;background:#6366f1;margin-top:2px;"></span>
+                            <span class="color-bar" id="highlightBar" style="background:#6366f1;"></span>
                         </button>
                         <div class="news-editor-color-panel" id="highlightPanel" style="display:none;"></div>
                     </div>
-                    {{-- ─── Text Color (Warna Teks) ─── --}}
-                    <div class="news-editor-color-picker" id="textColorPicker" data-color-picker="foreColor" style="position:relative; display:inline-block;">
-                        <button type="button" class="news-editor-color-trigger" id="textColorTrigger" title="Warna Teks" aria-label="Warna Teks" aria-haspopup="true" aria-expanded="false" style="display:inline-flex;align-items:center;gap:4px;">
+                    {{-- Text Color --}}
+                    <div class="news-editor-color-picker" id="textColorPicker" data-color-picker="foreColor">
+                        <button type="button" class="news-editor-color-trigger" id="textColorTrigger" title="Warna Teks" aria-label="Warna Teks" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-font"></i>
-                            <span class="color-bar" id="textColorBar" style="display:block;width:14px;height:3px;border-radius:2px;background:#ef4444;margin-top:2px;"></span>
+                            <span class="color-bar" id="textColorBar" style="background:#ef4444;"></span>
                         </button>
                         <div class="news-editor-color-panel" id="textColorPanel" style="display:none;"></div>
                     </div>
-                    <div class="news-editor-toolbar-divider" style="width: 1px; height: 24px; background: #e2e8f0; margin: 0 8px;"></div>
+                </div>
+
+                {{-- ═══ Baris 2: Dropdown Controls ═══ --}}
+                <div class="news-editor-toolbar-row news-editor-toolbar-row--dropdowns">
                     <div class="news-editor-dropdown" data-editor-dropdown>
-                        <button type="button" data-dropdown-toggle style="font-family: 'Poppins', sans-serif;">
+                        <button type="button" data-dropdown-toggle>
                             <span data-dropdown-label>Paragraph</span>
                             <i class="fas fa-chevron-down"></i>
                         </button>
-                        <div class="news-editor-dropdown__menu" data-dropdown-open style="font-family: 'Poppins', sans-serif;">
+                        <div class="news-editor-dropdown__menu" data-dropdown-open>
                             <button type="button" data-editor-command="formatBlock" data-editor-value="<p>">Paragraph</button>
                             <button type="button" data-editor-command="formatBlock" data-editor-value="<h1>">Heading 1</button>
                             <button type="button" data-editor-command="formatBlock" data-editor-value="<h2>">Heading 2</button>
@@ -71,11 +79,11 @@
                         </div>
                     </div>
                     <div class="news-editor-dropdown" data-editor-dropdown>
-                        <button type="button" data-dropdown-toggle style="font-family: 'Poppins', sans-serif;">
+                        <button type="button" data-dropdown-toggle>
                             <span data-dropdown-label>Ukuran</span>
                             <i class="fas fa-chevron-down"></i>
                         </button>
-                        <div class="news-editor-dropdown__menu" data-dropdown-open style="font-family: 'Poppins', sans-serif;">
+                        <div class="news-editor-dropdown__menu" data-dropdown-open>
                             <button type="button" data-editor-command="fontSize" data-editor-value="1">Extra Small</button>
                             <button type="button" data-editor-command="fontSize" data-editor-value="2">Small</button>
                             <button type="button" data-editor-command="fontSize" data-editor-value="3">Normal</button>
@@ -84,33 +92,33 @@
                         </div>
                     </div>
                     <div class="news-editor-dropdown" data-editor-dropdown data-case-dropdown>
-                        <button type="button" data-dropdown-toggle style="font-family: 'Poppins', sans-serif;">
+                        <button type="button" data-dropdown-toggle>
                             <span data-dropdown-label>Change case</span>
                             <i class="fas fa-chevron-down"></i>
                         </button>
-                        <div class="news-editor-dropdown__menu" data-dropdown-open style="font-family: 'Poppins', sans-serif;">
+                        <div class="news-editor-dropdown__menu" data-dropdown-open>
                             <button type="button" data-change-case="uppercase">UPPERCASE</button>
                             <button type="button" data-change-case="lowercase">lowercase</button>
                             <button type="button" data-change-case="capitalize">Title Case</button>
                         </div>
                     </div>
                     <div class="news-editor-dropdown" data-editor-dropdown data-line-spacing-dropdown>
-                        <button type="button" data-dropdown-toggle style="font-family: 'Poppins', sans-serif;">
+                        <button type="button" data-dropdown-toggle>
                             <span data-dropdown-label>Line spacing</span>
                             <i class="fas fa-chevron-down"></i>
                         </button>
-                        <div class="news-editor-dropdown__menu" data-dropdown-open style="font-family: 'Poppins', sans-serif;">
+                        <div class="news-editor-dropdown__menu" data-dropdown-open>
                             <button type="button" data-line-spacing="compact" data-line-height="1.25">Tight</button>
                             <button type="button" data-line-spacing="normal" data-line-height="1.6">Standard</button>
                             <button type="button" data-line-spacing="relaxed" data-line-height="2">Relaxed</button>
                         </div>
                     </div>
                     <div class="news-editor-dropdown" data-editor-dropdown data-paragraph-spacing-dropdown>
-                        <button type="button" data-dropdown-toggle style="font-family: 'Poppins', sans-serif;">
+                        <button type="button" data-dropdown-toggle>
                             <span data-dropdown-label>Paragraph spacing</span>
                             <i class="fas fa-chevron-down"></i>
                         </button>
-                        <div class="news-editor-dropdown__menu" data-dropdown-open style="font-family: 'Poppins', sans-serif;">
+                        <div class="news-editor-dropdown__menu" data-dropdown-open>
                             <button type="button" data-paragraph-spacing="compact">Compact</button>
                             <button type="button" data-paragraph-spacing="standard">Standard</button>
                             <button type="button" data-paragraph-spacing="relaxed">Relaxed</button>
