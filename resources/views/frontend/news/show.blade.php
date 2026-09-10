@@ -246,7 +246,7 @@
             @endif
 
             <div class="page-detail__body">
-                {!! $news->content !!}
+                {!! str_replace('contenteditable="true"', '', $news->content) !!}
             </div>
         </section>
     </main>

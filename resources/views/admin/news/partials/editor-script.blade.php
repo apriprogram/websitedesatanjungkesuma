@@ -872,7 +872,7 @@
                         // Buat header row + body rows
                         let theadHtml = '<thead><tr>';
                         for (let c = 0; c < cols; c++) {
-                            theadHtml += `<th contenteditable="true" style="border: 1px solid #cbd5e1; background: #f1f5f9; padding: 10px 12px; font-weight: 600; font-size: 0.9rem; color: #0f172a; text-align: left; min-width: 80px;">Kolom ${c + 1}</th>`;
+                            theadHtml += `<th style="border: 1px solid #cbd5e1; background: #f1f5f9; padding: 10px 12px; font-weight: 600; font-size: 0.9rem; color: #0f172a; text-align: left; min-width: 80px;">Kolom ${c + 1}</th>`;
                         }
                         theadHtml += '</tr></thead>';
 
@@ -880,7 +880,7 @@
                         for (let r = 0; r < rows; r++) {
                             tbodyHtml += '<tr>';
                             for (let c = 0; c < cols; c++) {
-                                tbodyHtml += `<td contenteditable="true" style="border: 1px solid #cbd5e1; padding: 10px 12px; min-width: 80px; min-height: 24px; vertical-align: top;">&nbsp;</td>`;
+                                tbodyHtml += `<td style="border: 1px solid #cbd5e1; padding: 10px 12px; min-width: 80px; min-height: 24px; vertical-align: top;">&nbsp;</td>`;
                             }
                             tbodyHtml += '</tr>';
                         }

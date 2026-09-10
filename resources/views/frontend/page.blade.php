@@ -192,7 +192,7 @@
             @endif
 
             <div class="page-detail__body">
-                {!! $page->content !!}
+                {!! str_replace('contenteditable="true"', '', $page->content) !!}
             </div>
 
             @if($imageAttachments->count())
