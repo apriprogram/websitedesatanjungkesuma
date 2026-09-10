@@ -4,6 +4,17 @@
 
 @push('head')
     <link rel="stylesheet" href="{{ asset('assets/css/admin-news.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-select.css') }}">
+    <style>
+        /* Kategori Pengumuman Styles */
+        .chip-desa { background: rgba(37, 99, 235, 0.1); color: #2563eb; border: 1px solid rgba(37, 99, 235, 0.2); }
+        .chip-daerah { background: rgba(245, 158, 11, 0.1); color: #d97706; border: 1px solid rgba(245, 158, 11, 0.2); }
+        .chip-pusat { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
+        
+        body.dark-mode .chip-desa { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border-color: rgba(59, 130, 246, 0.3); }
+        body.dark-mode .chip-daerah { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: rgba(245, 158, 11, 0.3); }
+        body.dark-mode .chip-pusat { background: rgba(52, 211, 153, 0.15); color: #34d399; border-color: rgba(52, 211, 153, 0.3); }
+    </style>
 @endpush
 
 
@@ -43,10 +54,10 @@
         <section class="page-title page-title--with-actions">
             <div>
                 <h1>Pengumuman Desa</h1>
-                <p>Kelola pengumuman yang tampil di website desa.</p>
+
             </div>
             <div class="title-actions">
-                <a href="{{ route('admin.announcements.create') }}" class="soft-action-btn soft-action-btn--violet">
+                <a href="{{ route('admin.announcements.create') }}" class="ann-btn ann-btn--submit">
                     <i class="fas fa-bullhorn"></i>
                     <span>Tambah Pengumuman</span>
                 </a>
@@ -60,11 +71,11 @@
                         <i class="fas fa-bullhorn"></i>
                         <span>Total Pengumuman</span>
                     </div>
-                    <p class="stat-card__trend stat-card__trend--neutral"><i class="fas fa-minus"></i> Semua status</p>
+
                 </div>
                 <div class="stat-card__body">
                     <p class="stat-card__value">{{ number_format($totalAnnouncements) }}</p>
-                    <p class="stat-card__label">Total entri pengumuman yang tersimpan.</p>
+                    <p class="stat-card__label">Pengumuman tersimpan.</p>
                 </div>
             </article>
 
@@ -74,11 +85,11 @@
                         <i class="fas fa-calendar-check"></i>
                         <span>Terbit</span>
                     </div>
-                    <p class="stat-card__trend stat-card__trend--up"><i class="fas fa-arrow-up"></i> Aktif</p>
+
                 </div>
                 <div class="stat-card__body">
                     <p class="stat-card__value">{{ number_format($publishedCount) }}</p>
-                    <p class="stat-card__label">Pengumuman yang sudah dipublikasikan.</p>
+                    <p class="stat-card__label">Sudah dipublikasikan.</p>
                 </div>
             </article>
 
@@ -88,11 +99,11 @@
                         <i class="fas fa-pencil-alt"></i>
                         <span>Draft</span>
                     </div>
-                    <p class="stat-card__trend stat-card__trend--neutral"><i class="fas fa-minus"></i> Perlu terbit</p>
+
                 </div>
                 <div class="stat-card__body">
                     <p class="stat-card__value">{{ number_format($draftCount) }}</p>
-                    <p class="stat-card__label">Siap ditinjau sebelum dipublikasikan.</p>
+                    <p class="stat-card__label">Belum dipublikasikan.</p>
                 </div>
             </article>
 
@@ -102,11 +113,11 @@
                         <i class="fas fa-calendar-alt"></i>
                         <span>Terbit Bulan Ini</span>
                     </div>
-                    <p class="stat-card__trend stat-card__trend--up"><i class="fas fa-arrow-up"></i> Bulan berjalan</p>
+
                 </div>
                 <div class="stat-card__body">
                     <p class="stat-card__value">{{ number_format($publishedThisMonth) }}</p>
-                    <p class="stat-card__label">Pengumuman yang dipublikasikan bulan ini.</p>
+                    <p class="stat-card__label">Terbit bulan ini.</p>
                 </div>
             </article>
 
@@ -116,11 +127,11 @@
                         <i class="fas fa-layer-group"></i>
                         <span>Kategori</span>
                     </div>
-                    <p class="stat-card__trend stat-card__trend--neutral"><i class="fas fa-minus"></i> Struktur</p>
+
                 </div>
                 <div class="stat-card__body">
                     <p class="stat-card__value">{{ number_format($categoryCount) }}</p>
-                    <p class="stat-card__label">Grup kategori yang tersedia.</p>
+                    <p class="stat-card__label">Kategori tersedia.</p>
                 </div>
             </article>
         </section>
@@ -142,73 +153,48 @@
 
             <div class="form-field">
                 <label for="filter-category">Kategori</label>
-                <select id="filter-category" name="category">
-                    <option value="">Semua kategori</option>
-                    @foreach($categories as $key => $label)
-                        <option value="{{ $key }}" {{ request('category') === $key ? 'selected' : '' }}>
-                            {{ $label }}
-                        </option>
-                    @endforeach
-                </select>
+                <div class="cs-wrapper" data-cs-label="Kategori">
+                    <select id="filter-category" name="category" class="cs-native">
+                        <option value="">Semua kategori</option>
+                        @foreach($categories as $key => $label)
+                            <option value="{{ $key }}" {{ request('category') === $key ? 'selected' : '' }}>
+                                {{ $label }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
 
             <div class="form-field">
                 <label for="filter-status">Status</label>
-                <select id="filter-status" name="status">
-                    <option value="">Semua status</option>
-                    <option value="draft" {{ request('status') === 'draft' ? 'selected' : '' }}>Draft</option>
-                    <option value="published" {{ request('status') === 'published' ? 'selected' : '' }}>Terbit</option>
-                </select>
+                <div class="cs-wrapper" data-cs-label="Status">
+                    <select id="filter-status" name="status" class="cs-native">
+                        <option value="">Semua status</option>
+                        <option value="draft" {{ request('status') === 'draft' ? 'selected' : '' }}>Draft</option>
+                        <option value="published" {{ request('status') === 'published' ? 'selected' : '' }}>Terbit</option>
+                    </select>
+                </div>
             </div>
 
             <div class="form-field">
                 <label for="filter-per-page">Per halaman</label>
-                <select id="filter-per-page" name="per_page" onchange="this.form.submit()">
-                    @foreach($perPageOptions as $size)
-                        <option value="{{ $size }}" {{ $currentPerPage === $size ? 'selected' : '' }}>{{ $size }}</option>
-                    @endforeach
-                </select>
+                <div class="cs-wrapper" data-cs-label="Per halaman">
+                    <select id="filter-per-page" name="per_page" class="cs-native">
+                        @foreach($perPageOptions as $size)
+                            <option value="{{ $size }}" {{ $currentPerPage === $size ? 'selected' : '' }}>{{ $size }} baris</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
 
             <div class="filter-toolbar__actions">
-                <button type="submit" class="primary-btn">Terapkan filter</button>
-                <a href="{{ route('admin.announcements.index') }}" class="ghost-btn">Reset</a>
+                <button type="submit" class="ann-btn ann-btn--submit">Terapkan filter</button>
+                <a href="{{ route('admin.announcements.index') }}" class="ann-btn ann-btn--cancel">Reset</a>
             </div>
         </form>
 
-        <section class="news-panel">
-            <header class="panel-header panel-header--table agenda-panel__header">
-                <div class="resident-panel__title-row resident-panel__title-row--inline agenda-panel__title-row">
-                    <div class="resident-panel__title">
-                        <h2>Daftar Pengumuman</h2>
-                        <p>Kelola pengumuman desa dan pantau status publikasinya.</p>
-                    </div>
-                    <div class="panel-toolbar-inline">
-                        <div class="panel-filters">
-                            <select name="per_page" form="announcementFilterForm" onchange="this.form.submit()" class="form-select-sm panel-filter-select">
-                                @foreach ($perPageOptions as $size)
-                                    <option value="{{ $size }}" {{ $currentPerPage === $size ? 'selected' : '' }}>{{ $size }} Baris</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="search-input-group">
-                            <div class="search-input-wrapper">
-                                <i class="fas fa-search search-icon-left"></i>
-                                <input
-                                    id="search-announcement"
-                                    name="q"
-                                    type="search"
-                                    placeholder="Cari pengumuman..."
-                                    value="{{ request('q') }}"
-                                    form="announcementFilterForm"
-                                    aria-label="Cari pengumuman"
-                                    autocomplete="off"
-                                >
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
+        <section class="news-panel" style="gap: 0; padding: 0; overflow: hidden;">
+            <h2 style="font-weight: 600; font-size: 1.15rem; margin: 0; padding: 1rem 1rem 0.85rem 1rem;">Daftar Pengumuman</h2>
 
             <div class="news-table">
                 <table>
@@ -216,7 +202,7 @@
                         <tr>
                             <th style="text-align: center; width: 60px;">#</th>
                             <th style="text-align: left;">Judul Pengumuman</th>
-                            <th style="text-align: center;">Kategori</th>
+                            <th style="text-align: center;">Pengumuman Kategori</th>
                             <th style="text-align: center;">Status</th>
                             <th style="text-align: center;">Tgl Publikasi</th>
                             <th style="text-align: center;">Views</th>
@@ -258,9 +244,15 @@
                                     </div>
                                 </td>
                                 <td style="text-align: center;">
-                                    <span class="table-chip" style="margin: 0 auto;">
+                                    @php
+                                        $chipClass = 'table-chip';
+                                        if ($announcement->category === 'desa') $chipClass .= ' chip-desa';
+                                        elseif ($announcement->category === 'daerah') $chipClass .= ' chip-daerah';
+                                        elseif ($announcement->category === 'pusat') $chipClass .= ' chip-pusat';
+                                    @endphp
+                                    <span class="{{ $chipClass }}" style="margin: 0 auto; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.75rem; border-radius: 999px; font-weight: 600; font-size: 0.8rem; white-space: nowrap;">
                                         <i class="fas fa-tag"></i>
-                                        {{ $categories[$announcement->category] ?? ucfirst($announcement->category) }}
+                                        {{ str_replace('Pengumuman ', '', $categories[$announcement->category] ?? ucfirst($announcement->category)) }}
                                     </span>
                                 </td>
                                 <td style="text-align: center;">
@@ -390,7 +382,69 @@
     </div>
 
     @push('scripts')
+        <script src="{{ asset('assets/js/custom-select.js') }}"></script>
         <script>
+            /* ── Dropdown Aksi: hanya satu yang terbuka pada satu waktu + animasi masuk/keluar ── */
+            document.addEventListener('DOMContentLoaded', () => {
+                const allDropdowns = document.querySelectorAll('[data-action-menu]');
+                const CLOSE_DURATION = 200; // sesuai durasi animasi dropdownFadeOut (ms)
+
+                /**
+                 * Tutup dropdown dengan animasi keluar (is-closing → hapus open)
+                 */
+                function closeDropdown(details) {
+                    if (!details.open || details.classList.contains('is-closing')) return;
+                    details.classList.add('is-closing');
+                    setTimeout(() => {
+                        details.removeAttribute('open');
+                        details.classList.remove('is-closing');
+                    }, CLOSE_DURATION);
+                }
+
+                /**
+                 * Tutup semua dropdown lain kecuali yang diberikan
+                 */
+                function closeOthers(except = null) {
+                    allDropdowns.forEach((d) => {
+                        if (d !== except) closeDropdown(d);
+                    });
+                }
+
+                allDropdowns.forEach((details) => {
+                    const summary = details.querySelector('summary');
+
+                    // Intercept klik summary: kalau sudah open → tutup dengan animasi
+                    summary?.addEventListener('click', (e) => {
+                        if (details.open) {
+                            e.preventDefault();
+                            closeDropdown(details);
+                        } else {
+                            // Akan dibuka — tutup yang lain dulu
+                            closeOthers(details);
+                        }
+                    });
+
+                    // Tutup dropdown saat salah satu item menu diklik
+                    details.querySelectorAll('.news-table__action-item').forEach((item) => {
+                        item.addEventListener('click', () => closeDropdown(details));
+                    });
+                });
+
+                // Klik di luar dropdown → tutup semua
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('[data-action-menu]')) {
+                        allDropdowns.forEach((d) => closeDropdown(d));
+                    }
+                });
+
+                // Tekan Escape → tutup semua
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        allDropdowns.forEach((d) => closeDropdown(d));
+                    }
+                });
+            });
+
             document.addEventListener('DOMContentLoaded', () => {
                 const modal = document.getElementById('announcementDetailModal');
                 if (!modal) return;

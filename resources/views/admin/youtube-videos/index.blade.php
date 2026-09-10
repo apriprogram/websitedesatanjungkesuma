@@ -4,7 +4,7 @@
 
 @push('head')
     <link rel="stylesheet" href="{{ asset('assets/css/admin-news.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/admin-residents.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-select.css') }}">
     <style>
         .yt-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
         .yt-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 1.25rem; }
@@ -487,7 +487,8 @@
 @endpush
 
 @section('content')
-    @include('admin.partials.alerts')
+    <div class="news-page announcements-page">
+        @include('admin.partials.alerts')
 
     <header class="main-header">
         <div class="header-controls">
@@ -514,17 +515,20 @@
     <section class="page-title page-title--with-actions">
         <div>
             <h1>Galeri Video YouTube</h1>
-            <p>Kelola tautan YouTube yang tampil di beranda Galeri Video.</p>
         </div>
         <div class="title-actions">
-            <a href="{{ route('videos.index') }}" target="_blank" class="news-btn news-btn--ghost">
+            <a href="{{ route('videos.index') }}" target="_blank" class="news-btn news-btn--ghost" style="text-decoration: none;">
                 <i class="fas fa-external-link-alt"></i>
                 Lihat Halaman Video
             </a>
+            <button type="button" class="ann-btn ann-btn--submit" id="openCreateModal">
+                <i class="fas fa-plus"></i>
+                <span>Tambah Video</span>
+            </button>
         </div>
     </section>
 
-    <section class="summary-grid summary-grid--wide">
+    <section class="summary-grid" style="grid-template-columns: repeat(5, 1fr);">
         <article class="stat-card stat-card--accent">
             <div class="stat-card__header">
                 <div class="stat-card__pill">
@@ -561,60 +565,79 @@
                 <p class="stat-card__label">Tidak ditampilkan.</p>
             </div>
         </article>
+        <article class="stat-card" data-card="month">
+            <div class="stat-card__header">
+                <div class="stat-card__pill stat-card__pill--brand">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Terbit Bulan Ini</span>
+                </div>
+            </div>
+            <div class="stat-card__body">
+                <p class="stat-card__value">{{ number_format($stats['publishedThisMonth'] ?? 0) }}</p>
+                <p class="stat-card__label">Tayang bulan ini.</p>
+            </div>
+        </article>
+        <article class="stat-card" data-card="new">
+            <div class="stat-card__header">
+                <div class="stat-card__pill stat-card__pill--muted">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Baru Ditambahkan</span>
+                </div>
+            </div>
+            <div class="stat-card__body">
+                <p class="stat-card__value">{{ number_format($stats['newThisMonth'] ?? 0) }}</p>
+                <p class="stat-card__label">Video ditambahkan bulan ini.</p>
+            </div>
+        </article>
     </section>
 
-    <div class="yt-grid">
-        <div class="yt-card" style="overflow-x:auto;">
-            <header class="panel-header panel-header--table agenda-panel__header" style="margin-bottom: 1.5rem;">
-                <div class="resident-panel__title-row resident-panel__title-row--inline agenda-panel__title-row">
-                    <div class="resident-panel__title">
-                        <h2>Daftar Video</h2>
-                        <p>Kelola koleksi video YouTube dan atur tampilan galeri.</p>
-                    </div>
-                    <div class="panel-toolbar-inline">
-                        <div class="panel-filters">
-                            <form method="GET" class="panel-filters">
-                                <select name="per_page" onchange="this.form.submit()" class="form-select-sm panel-filter-select">
-                                    @foreach([5,10,12,25,50] as $opt)
-                                        <option value="{{ $opt }}" @selected(($perPage ?? 12) == $opt)>{{ $opt }} Baris</option>
-                                    @endforeach
-                                </select>
-                                @if(!empty($search))
-                                    <input type="hidden" name="search" value="{{ $search }}">
-                                @endif
-                            </form>
-                        </div>
-                        <div class="search-input-group">
-                            <form method="GET" class="search-input-wrapper">
-                                <input type="hidden" name="per_page" value="{{ $perPage ?? 12 }}">
-                                <i class="fas fa-search search-icon-left"></i>
-                                <input
-                                    type="search"
-                                    name="search"
-                                    value="{{ $search ?? '' }}"
-                                    placeholder="Cari video..."
-                                    aria-label="Cari video"
-                                    autocomplete="off"
-                                >
-                            </form>
-                        </div>
-                        <button type="button" class="yt-btn yt-btn--primary" id="openCreateModal">
-                            <i class="fas fa-plus"></i> <span class="d-none d-sm-inline">Tambah Video</span>
+    <div>
+        <div>
+            <form method="GET" class="news-filter-form filter-toolbar">
+                <div class="form-field" style="flex-grow: 1;">
+                    <label>Pencarian</label>
+                    <div style="display: flex; gap: 0.5rem; align-items: stretch; position: relative; z-index: 5;">
+                        <input type="search" name="search" value="{{ $search ?? '' }}"
+                            placeholder="Cari video..."
+                            style="flex: 1; min-width: 0; position: relative; z-index: 5;">
+                        <button type="submit"
+                            style="background: rgba(148, 163, 184, 0.15); color: #475569; border: 1px solid rgba(148, 163, 184, 0.2); padding: 0 1rem; border-radius: 12px; cursor: pointer; transition: all 0.2s; display: grid; place-items: center; min-width: 44px; position: relative; z-index: 10; pointer-events: auto;">
+                            <i class="fas fa-search"></i>
                         </button>
                     </div>
                 </div>
-            </header>
-            <table class="yt-table" style="margin-top:0.65rem;">
-                <thead>
-                    <tr>
-                        <th style="text-align: center; width: 60px;">#</th>
-                        <th style="text-align: left;">Informasi Video</th>
-                        <th style="text-align: center; width: 140px;">Status</th>
-                        <th style="text-align: center; width: 80px;">Urutan</th>
-                        <th style="text-align: center; width: 140px;">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
+
+                <div class="form-field">
+                    <label>Per halaman</label>
+                    <div class="cs-wrapper" data-cs-label="Per halaman">
+                        <select name="per_page" class="cs-native">
+                            @foreach([5,10,12,25,50] as $opt)
+                                <option value="{{ $opt }}" @selected(($perPage ?? 12) == $opt)>{{ $opt }} Baris</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filter-toolbar__actions">
+                    <button type="submit" class="ann-btn ann-btn--submit">Terapkan filter</button>
+                    <a href="{{ route('admin.youtube-videos.index') }}" class="ann-btn ann-btn--cancel">Reset</a>
+                </div>
+            </form>
+
+            <section class="news-panel" style="gap: 0; padding: 0; overflow: hidden; border: none; box-shadow: none; margin-top: 1.25rem;">
+                <h2 style="font-weight: 600; font-size: 1.15rem; margin: 0; padding: 1rem 1rem 0.85rem 1rem;">Daftar Video</h2>
+                <div class="news-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="text-align: center; width: 60px;">#</th>
+                                <th style="text-align: left;">Informasi Video</th>
+                                <th style="text-align: center; width: 140px;">Status</th>
+                                <th style="text-align: center; width: 80px;">Urutan</th>
+                                <th style="text-align: center; width: 100px;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                 @forelse($videos as $index => $video)
                     <tr>
                         <td style="text-align: center;">{{ $videos->firstItem() + $index }}</td>
@@ -642,53 +665,58 @@
                             @if($video->published_at)
                                 <div><small style="font-size: 0.75rem; color: #64748b;">{{ $video->published_at->format('d M Y H:i') }}</small></div>
                             @endif
-                            <form action="{{ route('admin.youtube-videos.toggle', $video) }}" method="POST" style="margin-top:0.75rem;">
+                            <form action="{{ route('admin.youtube-videos.toggle', $video) }}" method="POST" style="margin-top:0.5rem;">
                                 @csrf
                                 @method('PATCH')
-                                <button type="submit" class="news-btn news-btn--ghost" style="padding:0.35rem 0.6rem; font-size: 0.75rem; margin: 0 auto;">
+                                <button type="submit" class="ann-btn {{ $video->is_published ? 'ann-btn--cancel' : 'ann-btn--submit' }}" style="font-size: 0.78rem; padding: 0.3rem 0.75rem; min-height: unset; width: 100%; justify-content: center; text-align: center;">
                                     {{ $video->is_published ? 'Sembunyikan' : 'Tampilkan' }}
                                 </button>
                             </form>
                         </td>
                         <td style="text-align: center;"><strong>{{ $video->sort_order }}</strong></td>
-                        <td class="yt-actions" style="text-align: center; justify-content: center;">
-                            <div style="display: flex; gap: 4px; justify-content: center; flex-wrap: wrap;">
-                                <button type="button" class="yt-btn yt-btn--ghost js-view" style="padding: 0.4rem 0.6rem;" data-video="{{ json_encode([
-                                    'id' => $video->id,
-                                    'title' => $video->title,
-                                    'youtube_url' => $video->youtube_url,
-                                    'youtube_id' => $video->youtube_id,
-                                    'description' => $video->description,
-                                    'thumbnail' => $video->thumbnail,
-                                    'thumbnail_url' => $video->thumbnail_url,
-                                    'sort_order' => $video->sort_order,
-                                    'is_published' => $video->is_published,
-                                    'published_at' => optional($video->published_at)->format('d M Y H:i'),
-                                    'created_at' => optional($video->created_at)->format('d M Y H:i'),
-                                    'updated_at' => optional($video->updated_at)->format('d M Y H:i'),
-                                    'embed_url' => $video->embed_url,
-                                ]) }}">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button type="button" class="yt-btn yt-btn--ghost js-edit" style="padding: 0.4rem 0.6rem;"
-                                    data-id="{{ $video->id }}"
-                                    data-title="{{ $video->title }}"
-                                    data-url="{{ $video->youtube_url }}"
-                                    data-description="{{ $video->description }}"
-                                    data-thumbnail="{{ $video->thumbnail_url }}"
-                                    data-sort="{{ $video->sort_order }}"
-                                    data-published="{{ optional($video->published_at)->format('Y-m-d\\TH:i') }}"
-                                    data-status="{{ $video->is_published ? 1 : 0 }}"
-                                    data-action="{{ route('admin.youtube-videos.update', $video) }}">
-                                    <i class="fas fa-pen"></i>
-                                </button>
-                                <button type="button"
-                                    class="yt-btn yt-btn--ghost js-delete" style="padding: 0.4rem 0.6rem; color:#dc2626;"
-                                    data-action="{{ route('admin.youtube-videos.destroy', $video) }}"
-                                    data-title="{{ $video->title }}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
+                        <td class="news-table__cell--actions" style="text-align: center;">
+                            <details class="news-table__action-dropdown" data-action-menu>
+                                <summary class="action-button action-button--dots" aria-haspopup="menu" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </summary>
+                                <div class="news-table__action-options" role="menu">
+                                    <button type="button" class="news-table__action-item js-view" role="menuitem" data-video="{{ json_encode([
+                                        'id' => $video->id,
+                                        'title' => $video->title,
+                                        'youtube_url' => $video->youtube_url,
+                                        'youtube_id' => $video->youtube_id,
+                                        'description' => $video->description,
+                                        'thumbnail' => $video->thumbnail,
+                                        'thumbnail_url' => $video->thumbnail_url,
+                                        'sort_order' => $video->sort_order,
+                                        'is_published' => $video->is_published,
+                                        'published_at' => optional($video->published_at)->format('d M Y H:i'),
+                                        'created_at' => optional($video->created_at)->format('d M Y H:i'),
+                                        'updated_at' => optional($video->updated_at)->format('d M Y H:i'),
+                                        'embed_url' => $video->embed_url,
+                                    ]) }}">
+                                        <i class="fas fa-eye"></i><span>Detail</span>
+                                    </button>
+                                    <button type="button" class="news-table__action-item js-edit" role="menuitem"
+                                        data-id="{{ $video->id }}"
+                                        data-title="{{ $video->title }}"
+                                        data-url="{{ $video->youtube_url }}"
+                                        data-description="{{ $video->description }}"
+                                        data-thumbnail="{{ $video->thumbnail_url }}"
+                                        data-sort="{{ $video->sort_order }}"
+                                        data-published="{{ optional($video->published_at)->format('Y-m-d\\TH:i') }}"
+                                        data-status="{{ $video->is_published ? 1 : 0 }}"
+                                        data-action="{{ route('admin.youtube-videos.update', $video) }}">
+                                        <i class="fas fa-pen"></i><span>Edit</span>
+                                    </button>
+                                    <button type="button"
+                                        class="news-table__action-item news-table__action-item--danger js-delete" role="menuitem"
+                                        data-action="{{ route('admin.youtube-videos.destroy', $video) }}"
+                                        data-title="{{ $video->title }}">
+                                        <i class="fas fa-trash"></i><span>Hapus</span>
+                                    </button>
+                                </div>
+                            </details>
                         </td>
                     </tr>
                 @empty
@@ -697,15 +725,17 @@
                     </tr>
                 @endforelse
                 </tbody>
-            </table>
-            <div class="yt-footer-controls">
-                <div class="yt-info">
-                    Menampilkan {{ $videos->firstItem() ?? 0 }} - {{ $videos->lastItem() ?? 0 }} dari {{ $videos->total() }} video
+                </table>
                 </div>
-                <div class="yt-pagination">
-                    {{ $videos->onEachSide(1)->withQueryString()->links('frontend.partials.pagination') }}
+                <div class="news-footer">
+                    <div class="table-info">
+                        Menampilkan {{ $videos->count() ? $videos->firstItem() : 0 }} - {{ $videos->count() ? $videos->lastItem() : 0 }} dari {{ $videos->total() }} video
+                    </div>
+                    <div class="news-pagination news-pagination--center">
+                        {{ $videos->onEachSide(1)->withQueryString()->links('admin.partials.pagination') }}
+                    </div>
                 </div>
-            </div>
+            </section>
         </div>
     </div>
 
@@ -752,8 +782,8 @@
                     <span>Tampilkan di situs</span>
                 </label>
                 <div class="yt-actions">
-                    <button type="button" class="yt-btn yt-btn--ghost" data-close-form>Batal</button>
-                    <button type="submit" class="yt-btn yt-btn--primary">
+                    <button type="button" class="ann-btn ann-btn--cancel" data-close-form>Batal</button>
+                    <button type="submit" class="ann-btn ann-btn--submit">
                         <i class="fas fa-save"></i> Simpan
                     </button>
                 </div>
@@ -815,11 +845,11 @@
                 <h3>Hapus Video?</h3>
                 <p class="yt-confirm__text">Anda yakin ingin menghapus <strong id="ytDeleteTitle">video ini</strong>? Tindakan ini tidak dapat dibatalkan.</p>
                 <div class="yt-actions yt-modal__actions">
-                    <button type="button" class="yt-btn yt-btn--ghost" data-close-delete>Batal</button>
+                    <button type="button" class="ann-btn ann-btn--cancel" data-close-delete>Batal</button>
                     <form id="ytDeleteForm" method="POST" style="margin:0;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="yt-btn yt-btn--primary">
+                        <button type="submit" class="ann-btn ann-btn--submit" style="background:#dc2626; color:#fff;">
                             <i class="fas fa-trash"></i> Ya, Hapus
                         </button>
                     </form>
@@ -831,6 +861,7 @@
     <form id="logout-form" action="{{ route('logout') }}" method="POST" hidden>
         @csrf
     </form>
+    </div>
 @endsection
 
 @push('scripts')
@@ -954,6 +985,51 @@
                     closeDelete();
                 }
             });
+
+            // Dropdown Auto-close & Animation Logic
+            function closeDetails(details) {
+                details.classList.add('is-closing');
+                setTimeout(() => {
+                    details.removeAttribute('open');
+                    details.classList.remove('is-closing');
+                }, 260); // Matches CSS transition duration
+            }
+
+            document.addEventListener('click', (e) => {
+                const isDropdown = e.target.closest('details[data-action-menu]');
+                
+                // Close all if clicking outside
+                if (!isDropdown) {
+                    document.querySelectorAll('details[data-action-menu][open]').forEach(details => {
+                        closeDetails(details);
+                    });
+                    return;
+                }
+
+                // If clicking a summary to open/close
+                const summary = e.target.closest('summary');
+                if (summary) {
+                    e.preventDefault();
+                    const currentDetails = summary.closest('details');
+
+                    if (currentDetails.hasAttribute('open')) {
+                        closeDetails(currentDetails);
+                    } else {
+                        currentDetails.setAttribute('open', '');
+                        document.querySelectorAll('details[data-action-menu][open]').forEach(details => {
+                            if (details !== currentDetails) {
+                                closeDetails(details);
+                            }
+                        });
+                    }
+                }
+            });
+
+            // Initialize custom selects
+            if (typeof CustomSelect !== 'undefined') {
+                CustomSelect.init();
+            }
         });
     </script>
+    <script src="{{ asset('assets/js/custom-select.js') }}"></script>
 @endpush

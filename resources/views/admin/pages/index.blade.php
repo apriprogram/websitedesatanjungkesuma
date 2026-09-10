@@ -5,17 +5,7 @@
 @push('head')
     <link rel="stylesheet" href="{{ asset('assets/css/admin-news.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/admin-news-modal.css') }}">
-    <style>
-        .soft-action-btn--violet {
-            box-shadow: none !important;
-            transition: all 0.3s ease !important;
-        }
-        .soft-action-btn--violet:hover {
-            background: #4a1ccd !important;
-            box-shadow: none !important;
-            transform: translateY(0) !important;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-select.css') }}">
 @endpush
 
 @section('content')
@@ -46,10 +36,9 @@
         <section class="page-title page-title--with-actions">
             <div>
                 <h1>Daftar Halaman</h1>
-                <p>Kelola halaman profil, layanan, dan informasi statis lainnya.</p>
             </div>
             <div class="title-actions">
-                <a href="{{ route('admin.pages.create') }}" class="soft-action-btn soft-action-btn--violet soft-action-btn--large">
+                <a href="{{ route('admin.pages.create') }}" class="ann-btn ann-btn--submit">
                     <i class="fas fa-plus"></i>
                     <span>Tambah Halaman</span>
                 </a>
@@ -66,7 +55,7 @@
                 </div>
                 <div class="stat-card__body">
                     <p class="stat-card__value">{{ number_format($stats['total']) }}</p>
-                    <p class="stat-card__label">Halaman terdaftar.</p>
+                    <p class="stat-card__label">Keseluruhan Konten</p>
                 </div>
             </article>
             <article class="stat-card" data-card="published">
@@ -78,7 +67,7 @@
                 </div>
                 <div class="stat-card__body">
                     <p class="stat-card__value">{{ number_format($stats['published']) }}</p>
-                    <p class="stat-card__label">Halaman aktif di publik.</p>
+                    <p class="stat-card__label">Halaman published</p>
                 </div>
             </article>
             <article class="stat-card" data-card="draft">
@@ -90,7 +79,7 @@
                 </div>
                 <div class="stat-card__body">
                     <p class="stat-card__value">{{ number_format($stats['draft']) }}</p>
-                    <p class="stat-card__label">Menunggu publikasi.</p>
+                    <p class="stat-card__label">Menunggu terbit</p>
                 </div>
             </article>
             <article class="stat-card" data-card="views">
@@ -102,7 +91,7 @@
                 </div>
                 <div class="stat-card__body">
                     <p class="stat-card__value">{{ number_format($stats['views']) }}</p>
-                    <p class="stat-card__label">Total views halaman.</p>
+                    <p class="stat-card__label">Jumlah Pembaca</p>
                 </div>
             </article>
             <article class="stat-card" data-card="image">
@@ -119,46 +108,43 @@
             </article>
         </section>
 
-        <section class="news-panel">
-            <header class="panel-header panel-header--table agenda-panel__header">
-                <div class="resident-panel__title-row resident-panel__title-row--inline agenda-panel__title-row">
-                    <div class="resident-panel__title">
-                        <h2>Daftar Halaman</h2>
-                        <p>Kelola konten statis dan halaman informasi desa.</p>
-                    </div>
-                    <div class="panel-toolbar-inline">
-                        <div class="panel-filters">
-                            <form action="{{ route('admin.pages.index') }}" method="get" class="panel-filters">
-                                @if(request('search'))
-                                    <input type="hidden" name="search" value="{{ request('search') }}">
-                                @endif
-                                <select id="per_page" name="per_page" onchange="this.form.submit()" class="form-select-sm panel-filter-select">
-                                    @foreach([10,20,50,100] as $size)
-                                        <option value="{{ $size }}" @selected((int)request('per_page', 20) === $size)>{{ $size }} Baris</option>
-                                    @endforeach
-                                </select>
-                            </form>
-                        </div>
-                        <div class="search-input-group">
-                            <form action="{{ route('admin.pages.index') }}" method="get" class="search-input-wrapper">
-                                @if(request('per_page'))
-                                    <input type="hidden" name="per_page" value="{{ request('per_page') }}">
-                                @endif
-                                <i class="fas fa-search search-icon-left"></i>
-                                <input
-                                    id="search-input"
-                                    name="search"
-                                    type="search"
-                                    placeholder="Cari halaman..."
-                                    value="{{ request('search') }}"
-                                    aria-label="Cari halaman"
-                                    autocomplete="off"
-                                >
-                            </form>
-                        </div>
-                    </div>
+        @php
+            $perPageOptions = [10, 20, 50, 100];
+        @endphp
+
+        <form id="pages-filter-form" method="GET" action="{{ route('admin.pages.index') }}" class="news-filter-form filter-toolbar">
+            <div class="form-field" style="flex-grow: 1;">
+                <label for="search-input">Pencarian</label>
+                <div style="display: flex; gap: 0.5rem; align-items: stretch; position: relative; z-index: 5;">
+                    <input type="search" id="search-input" name="search" value="{{ request('search') }}"
+                        placeholder="Cari halaman..."
+                        style="flex: 1; min-width: 0; position: relative; z-index: 5;">
+                    <button type="submit"
+                        style="background: rgba(148, 163, 184, 0.15); color: #475569; border: 1px solid rgba(148, 163, 184, 0.2); padding: 0 1rem; border-radius: 12px; cursor: pointer; transition: all 0.2s; display: grid; place-items: center; min-width: 44px; position: relative; z-index: 10; pointer-events: auto;">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
-            </header>
+            </div>
+
+            <div class="form-field">
+                <label for="filter-per-page">Per halaman</label>
+                <div class="cs-wrapper" data-cs-label="Per halaman">
+                    <select id="filter-per-page" name="per_page" class="cs-native">
+                        @foreach ($perPageOptions as $size)
+                            <option value="{{ $size }}" @selected((int)request('per_page', 20) === $size)>{{ $size }} Baris</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter-toolbar__actions">
+                <button type="submit" class="ann-btn ann-btn--submit">Terapkan filter</button>
+                <a href="{{ route('admin.pages.index') }}" class="ann-btn ann-btn--cancel">Reset</a>
+            </div>
+        </form>
+
+        <section class="news-panel" style="gap: 0; padding: 0; overflow: hidden;">
+            <h2 style="font-weight: 600; font-size: 1.15rem; margin: 0; padding: 1rem 1rem 0.85rem 1rem;">Daftar Halaman</h2>
 
             <div class="news-table">
                 <table>
@@ -234,10 +220,12 @@
                     </tbody>
                 </table>
             </div>
-            <div class="table-summary" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
-                <div>Menampilkan {{ $pages->firstItem() ?? 0 }} - {{ $pages->lastItem() ?? 0 }} dari {{ $pages->total() }} halaman</div>
-                <div class="table-pagination news-pagination" style="margin-left:auto;">
-                    {{ $pages->onEachSide(1)->links('vendor.pagination.bootstrap-4') }}
+            <div class="news-footer">
+                <div class="table-info">
+                    Menampilkan {{ $pages->count() ? $pages->firstItem() : 0 }} - {{ $pages->count() ? $pages->lastItem() : 0 }} dari {{ $pages->total() }} halaman
+                </div>
+                <div class="news-pagination news-pagination--center">
+                    {{ $pages->onEachSide(1)->withQueryString()->links('admin.partials.pagination') }}
                 </div>
             </div>
         </section>
@@ -466,6 +454,12 @@
                 }
             }
         });
+        
+        // Initialize custom selects
+        if (typeof CustomSelect !== 'undefined') {
+            CustomSelect.init();
+        }
     });
 </script>
+<script src="{{ asset('assets/js/custom-select.js') }}"></script>
 @endpush

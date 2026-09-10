@@ -4,6 +4,7 @@
 
 @push('head')
     <link rel="stylesheet" href="{{ asset('assets/css/admin-news.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-select.css') }}">
 @endpush
 
 
@@ -41,8 +42,8 @@
                     <i class="fas fa-arrow-left"></i>
                     Kembali
                 </a>
-                <button type="submit" form="newsFormEdit" class="news-btn news-btn--primary">
-                    <i class="fas fa-check"></i>
+                <a href="{{ route('admin.news.index') }}" class="ann-btn ann-btn--cancel">Batal</a>
+                <button type="submit" form="newsFormEdit" class="ann-btn ann-btn--submit">
                     Perbarui Berita
                 </button>
             </div>
@@ -60,4 +61,11 @@
     </div>
     @include('admin.news.partials.dropzone-script')
     @include('admin.news.partials.editor-script')
+    
+    <script src="{{ asset('assets/js/custom-select.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            CustomSelect.init();
+        });
+    </script>
 @endsection

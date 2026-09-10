@@ -4,6 +4,7 @@
 
 @push('head')
     <link rel="stylesheet" href="{{ asset('assets/css/admin-news.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-select.css') }}">
     <style>
         /* Drag and Drop Redesign */
         .file-drop-zone {
@@ -414,11 +415,11 @@
             <h1>{{ $page->exists ? 'Edit Halaman' : 'Tambah Halaman' }}</h1>
         </div>
         <div class="title-actions">
-            <a href="{{ route('admin.pages.index') }}" class="ghost-btn ghost-btn--back"
-                style="text-decoration: none;"><i class="fas fa-arrow-left"></i> Kembali</a>
-            <button type="submit" form="page-form"
-                class="soft-action-btn soft-action-btn--success soft-action-btn--large">
-                <i class="fas fa-check"></i>
+            <a href="{{ route('admin.pages.index') }}" class="news-btn news-btn--back">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </a>
+            <a href="{{ route('admin.pages.index') }}" class="ann-btn ann-btn--cancel">Batal</a>
+            <button type="submit" form="page-form" class="ann-btn ann-btn--submit">
                 <span>{{ $page->exists ? 'Simpan Halaman' : 'Simpan Halaman' }}</span>
             </button>
         </div>
@@ -673,13 +674,15 @@
                         </div>
                         <div class="news-input-control">
                             <label for="status">Status</label>
-                            <select id="status" name="status">
-                                <option value="draft" @selected(old('status', $page->status) === 'draft')>Draft</option>
-                                <option value="published" @selected(old('status', $page->status) === 'published')>
-                                    Published</option>
-                                <option value="archived" @selected(old('status', $page->status) === 'archived')>Archived
-                                </option>
-                            </select>
+                            <div class="cs-wrapper" data-cs-label="Status">
+                                <select id="status" name="status" class="cs-native">
+                                    <option value="draft" @selected(old('status', $page->status) === 'draft')>Draft</option>
+                                    <option value="published" @selected(old('status', $page->status) === 'published')>
+                                        Published</option>
+                                    <option value="archived" @selected(old('status', $page->status) === 'archived')>Archived
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1016,6 +1019,12 @@
                     }
                 });
             }
+
+            // Initialize custom selects
+            if (typeof CustomSelect !== 'undefined') {
+                CustomSelect.init();
+            }
         });
     </script>
+    <script src="{{ asset('assets/js/custom-select.js') }}"></script>
 @endpush

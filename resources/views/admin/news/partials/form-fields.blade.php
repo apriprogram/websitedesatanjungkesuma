@@ -124,8 +124,8 @@
                     <form data-editor-input-modal-form>
                         <div class="news-editor-input-modal__fields" data-editor-input-modal-fields></div>
                         <div class="news-editor-input-modal__actions">
-                            <button type="button" class="news-btn news-btn--ghost" data-editor-input-modal-cancel>Batalkan</button>
-                            <button type="submit" class="news-btn news-btn--primary">Simpan</button>
+                            <button type="button" class="ann-btn ann-btn--cancel" data-editor-input-modal-cancel>Batalkan</button>
+                            <button type="submit" class="ann-btn ann-btn--submit">Simpan</button>
                         </div>
                     </form>
                 </div>
@@ -148,23 +148,27 @@
             </div>
             <div class="news-input-control">
                 <label>Kategori</label>
-                <select name="category_id">
-                    <option value="">Pilih kategori</option>
-                    @foreach ($categories as $categoryItem)
-                        <option value="{{ $categoryItem->id }}" {{ $selectedCategory == $categoryItem->id ? 'selected' : '' }}>
-                            {{ $categoryItem->name }}
-                        </option>
-                    @endforeach
-                </select>
+                <div class="cs-wrapper" data-cs-label="Pilih kategori">
+                    <select name="category_id" class="cs-native">
+                        <option value="">Pilih kategori</option>
+                        @foreach ($categories as $categoryItem)
+                            <option value="{{ $categoryItem->id }}" {{ $selectedCategory == $categoryItem->id ? 'selected' : '' }}>
+                                {{ $categoryItem->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
                 @error('category_id')<span class="news-input-control__error">{{ $message }}</span>@enderror
             </div>
             <div class="news-input-control">
                 <label>Status</label>
-                <select name="status">
-                    @foreach ($statuses as $stat)
-                        <option value="{{ $stat }}" {{ $selectedStatus === $stat ? 'selected' : '' }}>{{ ucfirst($stat) }}</option>
-                    @endforeach
-                </select>
+                <div class="cs-wrapper" data-cs-label="Pilih status">
+                    <select name="status" class="cs-native">
+                        @foreach ($statuses as $stat)
+                            <option value="{{ $stat }}" {{ $selectedStatus === $stat ? 'selected' : '' }}>{{ ucfirst($stat) }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 @error('status')<span class="news-input-control__error">{{ $message }}</span>@enderror
             </div>
             <div class="news-input-control">

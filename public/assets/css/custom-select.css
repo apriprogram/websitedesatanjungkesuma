@@ -1,0 +1,212 @@
+/* ══════════════════════════════════════════════════════
+   Custom Select Component  —  Reusable Dropdown Panel
+   Gunakan class:  .cs-wrapper  pada container
+   ══════════════════════════════════════════════════════ */
+
+.cs-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+.cs-wrapper.cs-open {
+    z-index: 9999;
+}
+
+.cs-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.55rem 0.9rem;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.16);
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #0f172a;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+    text-align: left;
+    font-family: 'Poppins', sans-serif;
+}
+
+.cs-trigger:hover { border-color: rgba(99, 102, 241, 0.45); }
+
+.cs-trigger:focus,
+.cs-wrapper.cs-open .cs-trigger {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.14);
+}
+
+.cs-trigger:active {
+    transform: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.14);
+}
+
+.cs-trigger,
+.cs-trigger__text,
+.cs-option,
+.cs-option__label {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.cs-trigger__text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: none;
+}
+
+.cs-trigger__icon {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    color: rgba(15, 23, 42, 0.45);
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cs-wrapper.cs-open .cs-trigger__icon { transform: rotate(180deg); }
+
+/* ── Dropdown Panel ── */
+.cs-panel {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 100%;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 16px 48px rgba(15, 23, 42, 0.12);
+    z-index: 9999;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px) scale(0.97);
+    transform-origin: top left;
+    transition: opacity 0.22s cubic-bezier(0.16,1,0.3,1), transform 0.22s cubic-bezier(0.16,1,0.3,1), visibility 0s linear 0.22s;
+}
+
+.cs-wrapper.cs-open .cs-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    transition: opacity 0.22s cubic-bezier(0.16,1,0.3,1), transform 0.22s cubic-bezier(0.16,1,0.3,1), visibility 0s;
+}
+
+.cs-wrapper.cs-closing .cs-panel {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px) scale(0.97);
+    transition: opacity 0.18s cubic-bezier(0.16,1,0.3,1), transform 0.18s cubic-bezier(0.16,1,0.3,1), visibility 0s linear 0.18s;
+}
+
+/* ── Panel Header ── */
+.cs-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem 0.6rem;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.07);
+}
+
+.cs-panel__title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(15, 23, 42, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.cs-panel__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(15, 23, 42, 0.4);
+    font-size: 0.85rem;
+    padding: 2px 6px;
+    border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+    line-height: 1;
+}
+
+.cs-panel__close:hover {
+    color: #0f172a;
+    background: rgba(15, 23, 42, 0.06);
+}
+
+/* ── Option List ── */
+.cs-options {
+    list-style: none;
+    margin: 0;
+    padding: 0.35rem 0;
+    max-height: 310px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.cs-options::-webkit-scrollbar { width: 4px; }
+.cs-options::-webkit-scrollbar-track { background: transparent; }
+.cs-options::-webkit-scrollbar-thumb { background: rgba(15,23,42,0.12); border-radius: 99px; }
+
+/* ── Option Item ── */
+.cs-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.62rem 1rem;
+    font-size: 0.9rem;
+    color: #0f172a;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    gap: 0.5rem;
+}
+
+.cs-option__label {
+    flex: 1;
+    transition: none;
+}
+
+.cs-option:hover { background: rgba(15, 23, 42, 0.04); }
+.cs-option.cs-selected { background: rgba(99, 102, 241, 0.06); color: #4338ca; font-weight: 500; }
+
+.cs-option__label { flex: 1; }
+
+.cs-option__check {
+    font-size: 0.8rem;
+    color: #6366f1;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.cs-option.cs-selected .cs-option__check { opacity: 1; }
+
+
+
+/* ── Native select hidden (untuk form submission) ── */
+.cs-native {
+    position: absolute;
+    width: 1px; height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* ── Dark Mode ── */
+body.dark-mode .cs-trigger { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.14); color: #e5e7eb; }
+body.dark-mode .cs-trigger:hover { border-color: rgba(99,102,241,0.5); }
+body.dark-mode .cs-wrapper.cs-open .cs-trigger { border-color: #818cf8; box-shadow: 0 0 0 3px rgba(129,140,248,0.18); }
+body.dark-mode .cs-panel { background: #1e2130; border-color: rgba(255,255,255,0.1); box-shadow: 0 16px 48px rgba(0,0,0,0.35); }
+body.dark-mode .cs-panel__header { border-bottom-color: rgba(255,255,255,0.08); }
+body.dark-mode .cs-panel__title { color: rgba(255,255,255,0.4); }
+body.dark-mode .cs-panel__close { color: rgba(255,255,255,0.4); }
+body.dark-mode .cs-panel__close:hover { color: #e5e7eb; background: rgba(255,255,255,0.08); }
+body.dark-mode .cs-option { color: #e5e7eb; }
+body.dark-mode .cs-option:hover { background: rgba(255,255,255,0.06); }
+body.dark-mode .cs-option.cs-selected { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+body.dark-mode .cs-option__check { color: #818cf8; }
+body.dark-mode .cs-trigger__icon { color: rgba(255,255,255,0.4); }

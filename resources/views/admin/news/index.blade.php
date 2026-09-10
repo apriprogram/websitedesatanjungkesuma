@@ -4,6 +4,7 @@
 
 @push('head')
     <link rel="stylesheet" href="{{ asset('assets/css/admin-news.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-select.css') }}">
 @endpush
 
 @php
@@ -40,11 +41,10 @@
         <section class="page-title page-title--with-actions">
             <div>
                 <h1>Berita Desa</h1>
-                <p>Kelola seluruh konten berita, pantau status, dan publikasikan informasi penting.</p>
             </div>
             <div class="title-actions">
-                <a href="{{ route('admin.news.create') }}" class="soft-action-btn soft-action-btn--violet">
-                    <i class="fas fa-user-plus"></i>
+                <a href="{{ route('admin.news.create') }}" class="ann-btn ann-btn--submit">
+                    <i class="fas fa-plus"></i>
                     <span>Tambah Berita</span>
                 </a>
             </div>
@@ -57,11 +57,10 @@
                         <i class="fas fa-table"></i>
                         <span>Total Berita</span>
                     </div>
-                    <p class="stat-card__trend stat-card__trend--up"><i class="fas fa-arrow-up"></i> Stabil bulan ini</p>
                 </div>
                 <div class="stat-card__body">
                     <p class="stat-card__value">{{ number_format($news->total()) }}</p>
-                    <p class="stat-card__label">Keseluruhan konten yang tersedia di dashboard.</p>
+                    <p class="stat-card__label">Keseluruhan Konten</p>
                 </div>
             </article>
             <article class="stat-card" data-card="published">
@@ -70,11 +69,10 @@
                         <i class="fas fa-calendar-check"></i>
                         <span>Terbit</span>
                     </div>
-                    <p class="stat-card__trend stat-card__trend--up"><i class="fas fa-arrow-up"></i> Naik</p>
                 </div>
                 <div class="stat-card__body">
                     <p class="stat-card__value">{{ number_format($statusCounts['published'] ?? 0) }}</p>
-                    <p class="stat-card__label">Artikel yang sudah dipublikasi.</p>
+                    <p class="stat-card__label">Berita published</p>
                 </div>
             </article>
             <article class="stat-card" data-card="draft">
@@ -83,11 +81,10 @@
                         <i class="fas fa-pencil-alt"></i>
                         <span>Draft</span>
                     </div>
-                    <p class="stat-card__trend stat-card__trend--neutral"><i class="fas fa-minus"></i> Menunggu terbit</p>
                 </div>
                 <div class="stat-card__body">
                     <p class="stat-card__value">{{ number_format($statusCounts['draft'] ?? 0) }}</p>
-                    <p class="stat-card__label">Masih disimpan sebagai rancangan.</p>
+                    <p class="stat-card__label">Menunggu terbit</p>
                 </div>
             </article>
             <article class="stat-card" data-card="archived">
@@ -96,11 +93,10 @@
                         <i class="fas fa-archive"></i>
                         <span>Arsip</span>
                     </div>
-                    <p class="stat-card__trend stat-card__trend--down"><i class="fas fa-arrow-down"></i> Dipindahkan</p>
                 </div>
                 <div class="stat-card__body">
                     <p class="stat-card__value">{{ number_format($statusCounts['archived'] ?? 0) }}</p>
-                    <p class="stat-card__label">Konten yang sudah dipindahkan ke arsip.</p>
+                    <p class="stat-card__label">Dipindahkan</p>
                 </div>
             </article>
             <article class="stat-card" data-card="views">
@@ -109,11 +105,10 @@
                         <i class="fas fa-chart-line"></i>
                         <span>Total Views</span>
                     </div>
-                    <p class="stat-card__trend stat-card__trend--up"><i class="fas fa-arrow-up"></i> Bertambah</p>
                 </div>
                 <div class="stat-card__body">
                     <p class="stat-card__value">{{ number_format($totalViews) }}</p>
-                    <p class="stat-card__label">Kumulatif jumlah pembaca.</p>
+                    <p class="stat-card__label">Jumlah Pembaca</p>
                 </div>
             </article>
         </section>
@@ -140,29 +135,50 @@
             </div>
         </section>
 
+        @php
+            $perPageOptions = [6, 12, 18, 24, 36];
+        @endphp
+
         <form id="news-filter-form" method="GET" action="{{ route('admin.news.index') }}" class="news-filter-form filter-toolbar">
+            <div class="form-field" style="flex-grow: 1;">
+                <label for="search-input">Pencarian</label>
+                <div style="display: flex; gap: 0.5rem; align-items: stretch; position: relative; z-index: 5;">
+                    <input type="search" id="search-input" name="search" value="{{ request('search') }}"
+                        placeholder="Cari berita..."
+                        style="flex: 1; min-width: 0; position: relative; z-index: 5;">
+                    <button type="submit"
+                        style="background: rgba(148, 163, 184, 0.15); color: #475569; border: 1px solid rgba(148, 163, 184, 0.2); padding: 0 1rem; border-radius: 12px; cursor: pointer; transition: all 0.2s; display: grid; place-items: center; min-width: 44px; position: relative; z-index: 10; pointer-events: auto;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
             <div class="form-field">
                 <label for="filter-category">Kategori</label>
-                <select id="filter-category" name="category">
-                    <option value="">Semua kategori</option>
-                    @foreach ($categories as $categoryItem)
-                        <option value="{{ $categoryItem->id }}" {{ $categoryItem->id == $category ? 'selected' : '' }}>
-                            {{ $categoryItem->name }}
-                        </option>
-                    @endforeach
-                </select>
+                <div class="cs-wrapper" data-cs-label="Pilih kategori">
+                    <select id="filter-category" name="category" class="cs-native">
+                        <option value="">Semua kategori</option>
+                        @foreach ($categories as $categoryItem)
+                            <option value="{{ $categoryItem->id }}" {{ $categoryItem->id == $category ? 'selected' : '' }}>
+                                {{ $categoryItem->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
 
             <div class="form-field">
                 <label for="filter-status">Status</label>
-                <select id="filter-status" name="status">
-                    <option value="">Semua status</option>
-                    @foreach ($statuses as $stat)
-                        <option value="{{ $stat }}" {{ $stat === $status ? 'selected' : '' }}>
-                            {{ ucfirst($stat) }}
-                        </option>
-                    @endforeach
-                </select>
+                <div class="cs-wrapper" data-cs-label="Pilih status">
+                    <select id="filter-status" name="status" class="cs-native">
+                        <option value="">Semua status</option>
+                        @foreach ($statuses as $stat)
+                            <option value="{{ $stat }}" {{ $stat === $status ? 'selected' : '' }}>
+                                {{ ucfirst($stat) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
 
             <div class="form-field">
@@ -175,52 +191,28 @@
                 <input form="news-filter-form" id="published-to" type="date" name="published_to" value="{{ $publishedTo }}">
             </div>
 
+            <div class="form-field">
+                <label for="filter-per-page">Per halaman</label>
+                <div class="cs-wrapper" data-cs-label="Per halaman">
+                    <select id="filter-per-page" name="per_page" class="cs-native">
+                        @foreach ($perPageOptions as $size)
+                            <option value="{{ $size }}" {{ request('per_page', $perPage) == $size ? 'selected' : '' }}>{{ $size }} Baris</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
             <input type="hidden" name="page" value="1">
 
             <div class="filter-toolbar__actions">
-                <button type="submit" class="primary-btn">Terapkan filter</button>
-                <a href="{{ route('admin.news.index') }}" class="ghost-btn">Reset</a>
+                <button type="submit" class="ann-btn ann-btn--submit">Terapkan filter</button>
+                <a href="{{ route('admin.news.index') }}" class="ann-btn ann-btn--cancel">Reset</a>
             </div>
         </form>
 
         <div class="news-layout news-layout--single">
-            @php
-                $perPageOptions = [6, 12, 18, 24, 36];
-            @endphp
-
-            <section class="news-panel">
-            <header class="panel-header panel-header--table agenda-panel__header">
-                <div class="resident-panel__title-row resident-panel__title-row--inline agenda-panel__title-row">
-                    <div class="resident-panel__title">
-                        <h2>Daftar Berita</h2>
-                        <p>Kelola konten berita dan publikasi informasi desa.</p>
-                    </div>
-                    <div class="panel-toolbar-inline">
-                        <div class="panel-filters">
-                            <select name="per_page" form="news-filter-form" onchange="this.form.submit()" class="form-select-sm panel-filter-select">
-                                @foreach ($perPageOptions as $size)
-                                    <option value="{{ $size }}" {{ $perPage == $size ? 'selected' : '' }}>{{ $size }} Baris</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="search-input-group">
-                            <div class="search-input-wrapper">
-                                <i class="fas fa-search search-icon-left"></i>
-                                <input
-                                    id="search-input"
-                                    name="search"
-                                    type="search"
-                                    placeholder="Cari berita..."
-                                    value="{{ $search ?? '' }}"
-                                    form="news-filter-form"
-                                    aria-label="Cari berita"
-                                    autocomplete="off"
-                                >
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
+            <section class="news-panel" style="gap: 0; padding: 0; overflow: hidden;">
+                <h2 style="font-weight: 600; font-size: 1.15rem; margin: 0; padding: 1rem 1rem 0.85rem 1rem;">Daftar Berita</h2>
 
                 <div class="news-table">
                 <table>
@@ -497,6 +489,16 @@
                     document.querySelectorAll('details[open]').forEach(detail => detail.removeAttribute('open'));
                 }
             });
+        });
+    </script>
+    <script src="{{ asset('assets/js/custom-select.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            CustomSelect.init();
+            
+            // Re-initialize if selecting a per_page value triggers form submission, 
+            // the onchange handler might be captured by the native element.
+            // CustomSelect handles native onchange events normally if properly built.
         });
     </script>
 @endpush

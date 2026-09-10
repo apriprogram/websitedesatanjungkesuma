@@ -196,24 +196,28 @@
             </div>
             <div class="news-input-control">
                 <label for="categorySelect">Kategori</label>
-                <select id="categorySelect" name="category">
-                    @foreach($categories as $key => $label)
-                        <option value="{{ $key }}" {{ $category === $key ? 'selected' : '' }}>
-                            {{ $label }}
-                        </option>
-                    @endforeach
-                </select>
+                <div class="cs-wrapper" data-cs-label="Pilih kategori">
+                    <select id="categorySelect" name="category" class="cs-native">
+                        @foreach($categories as $key => $label)
+                            <option value="{{ $key }}" {{ $category === $key ? 'selected' : '' }}>
+                                {{ $label }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
                 @error('category')<span class="news-input-control__error">{{ $message }}</span>@enderror
             </div>
             <div class="news-input-control">
                 <label for="statusSelect">Status</label>
-                <select id="statusSelect" name="status">
-                    @foreach($statuses as $key => $label)
-                        <option value="{{ $key }}" {{ $status === $key ? 'selected' : '' }}>
-                            {{ $label }}
-                        </option>
-                    @endforeach
-                </select>
+                <div class="cs-wrapper" data-cs-label="Pilih status">
+                    <select id="statusSelect" name="status" class="cs-native">
+                        @foreach($statuses as $key => $label)
+                            <option value="{{ $key }}" {{ $status === $key ? 'selected' : '' }}>
+                                {{ $label }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
                 @error('status')<span class="news-input-control__error">{{ $message }}</span>@enderror
             </div>
         </div>

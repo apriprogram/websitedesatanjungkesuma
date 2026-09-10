@@ -30,6 +30,13 @@ class YoutubeVideoController extends Controller
             'total' => YoutubeVideo::count(),
             'published' => YoutubeVideo::where('is_published', true)->count(),
             'draft' => YoutubeVideo::where('is_published', false)->count(),
+            'publishedThisMonth' => YoutubeVideo::where('is_published', true)
+                ->whereMonth('published_at', now()->month)
+                ->whereYear('published_at', now()->year)
+                ->count(),
+            'newThisMonth' => YoutubeVideo::whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
+                ->count(),
         ];
 
         $editing = null;

@@ -4,6 +4,7 @@
 
 @push('head')
     <link rel="stylesheet" href="{{ asset('assets/css/admin-news.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-select.css') }}">
 @endpush
 
 
@@ -44,8 +45,8 @@
                     <i class="fas fa-arrow-left"></i>
                     Kembali
                 </a>
-                <a href="{{ route('admin.announcements.index') }}" class="ghost-btn">Batal</a>
-                <button type="submit" form="announcementForm" class="primary-btn">Perbarui Pengumuman</button>
+                <a href="{{ route('admin.announcements.index') }}" class="ann-btn ann-btn--cancel">Batal</a>
+                <button type="submit" form="announcementForm" class="ann-btn ann-btn--submit">Simpan</button>
             </div>
         </section>
 
@@ -106,4 +107,7 @@
         @endif
     </div>
     @include('admin.news.partials.editor-script')
+    @push('scripts')
+        <script src="{{ asset('assets/js/custom-select.js') }}"></script>
+    @endpush
 @endsection
