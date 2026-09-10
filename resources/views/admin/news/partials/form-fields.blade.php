@@ -72,10 +72,10 @@
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="news-editor-dropdown__menu" data-dropdown-open>
-                            <button type="button" data-editor-command="formatBlock" data-editor-value="<p>">Paragraph</button>
-                            <button type="button" data-editor-command="formatBlock" data-editor-value="<h1>">Heading 1</button>
-                            <button type="button" data-editor-command="formatBlock" data-editor-value="<h2>">Heading 2</button>
-                            <button type="button" data-editor-command="formatBlock" data-editor-value="<h3>">Heading 3</button>
+                            <button type="button" data-editor-command="formatBlock" data-editor-value="<p>" style="font-size: 1rem; font-weight: normal;">Paragraph</button>
+                            <button type="button" data-editor-command="formatBlock" data-editor-value="<h1>" style="font-size: 1.5rem; font-weight: 700;">Heading 1</button>
+                            <button type="button" data-editor-command="formatBlock" data-editor-value="<h2>" style="font-size: 1.25rem; font-weight: 600;">Heading 2</button>
+                            <button type="button" data-editor-command="formatBlock" data-editor-value="<h3>" style="font-size: 1.1rem; font-weight: 600;">Heading 3</button>
                         </div>
                     </div>
                     <div class="news-editor-dropdown" data-editor-dropdown>
@@ -84,11 +84,11 @@
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="news-editor-dropdown__menu" data-dropdown-open>
-                            <button type="button" data-editor-command="fontSize" data-editor-value="1">Extra Small</button>
-                            <button type="button" data-editor-command="fontSize" data-editor-value="2">Small</button>
-                            <button type="button" data-editor-command="fontSize" data-editor-value="3">Normal</button>
-                            <button type="button" data-editor-command="fontSize" data-editor-value="4">Large</button>
-                            <button type="button" data-editor-command="fontSize" data-editor-value="5">Extra Large</button>
+                            <button type="button" data-editor-command="fontSize" data-editor-value="1" style="font-size: 0.7rem;">Extra Small</button>
+                            <button type="button" data-editor-command="fontSize" data-editor-value="2" style="font-size: 0.85rem;">Small</button>
+                            <button type="button" data-editor-command="fontSize" data-editor-value="3" style="font-size: 1rem;">Normal</button>
+                            <button type="button" data-editor-command="fontSize" data-editor-value="4" style="font-size: 1.25rem;">Large</button>
+                            <button type="button" data-editor-command="fontSize" data-editor-value="5" style="font-size: 1.5rem;">Extra Large</button>
                         </div>
                     </div>
                     <div class="news-editor-dropdown" data-editor-dropdown data-case-dropdown>
@@ -97,9 +97,9 @@
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="news-editor-dropdown__menu" data-dropdown-open>
-                            <button type="button" data-change-case="uppercase">UPPERCASE</button>
-                            <button type="button" data-change-case="lowercase">lowercase</button>
-                            <button type="button" data-change-case="capitalize">Title Case</button>
+                            <button type="button" data-change-case="uppercase" style="text-transform: uppercase;">UPPERCASE</button>
+                            <button type="button" data-change-case="lowercase" style="text-transform: lowercase;">lowercase</button>
+                            <button type="button" data-change-case="capitalize" style="text-transform: capitalize;">Title Case</button>
                         </div>
                     </div>
                     <div class="news-editor-dropdown" data-editor-dropdown data-line-spacing-dropdown>
@@ -108,9 +108,9 @@
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="news-editor-dropdown__menu" data-dropdown-open>
-                            <button type="button" data-line-spacing="compact" data-line-height="1.25">Tight</button>
-                            <button type="button" data-line-spacing="normal" data-line-height="1.6">Standard</button>
-                            <button type="button" data-line-spacing="relaxed" data-line-height="2">Relaxed</button>
+                            <button type="button" data-line-spacing="compact" data-line-height="1.25" style="line-height: 1.25; padding-top: 0.25rem; padding-bottom: 0.25rem;">Tight</button>
+                            <button type="button" data-line-spacing="normal" data-line-height="1.6" style="line-height: 1.6; padding-top: 0.5rem; padding-bottom: 0.5rem;">Standard</button>
+                            <button type="button" data-line-spacing="relaxed" data-line-height="2" style="line-height: 2; padding-top: 0.75rem; padding-bottom: 0.75rem;">Relaxed</button>
                         </div>
                     </div>
                     <div class="news-editor-dropdown" data-editor-dropdown data-paragraph-spacing-dropdown>
@@ -119,9 +119,9 @@
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="news-editor-dropdown__menu" data-dropdown-open>
-                            <button type="button" data-paragraph-spacing="compact">Compact</button>
-                            <button type="button" data-paragraph-spacing="standard">Standard</button>
-                            <button type="button" data-paragraph-spacing="relaxed">Relaxed</button>
+                            <button type="button" data-paragraph-spacing="compact" style="margin-bottom: 2px;">Compact</button>
+                            <button type="button" data-paragraph-spacing="standard" style="margin-bottom: 8px;">Standard</button>
+                            <button type="button" data-paragraph-spacing="relaxed" style="margin-bottom: 16px;">Relaxed</button>
                         </div>
                     </div>
                 </div>

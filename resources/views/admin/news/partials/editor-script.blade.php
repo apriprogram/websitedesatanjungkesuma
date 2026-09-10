@@ -931,7 +931,13 @@
 
                 toggle.addEventListener('click', event => {
                     event.stopPropagation();
-                    dropdown.classList.toggle('is-open');
+                    const isOpen = dropdown.classList.contains('is-open');
+                    // Tutup semua dropdown lain
+                    dropdowns.forEach(d => d.classList.remove('is-open'));
+                    // Toggle yang diklik (buka jika sebelumnya tertutup)
+                    if (!isOpen) {
+                        dropdown.classList.add('is-open');
+                    }
                 });
 
                 menu.addEventListener('click', event => {
