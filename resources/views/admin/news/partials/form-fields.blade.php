@@ -121,13 +121,13 @@
                             <i class="fas fa-xmark"></i>
                         </button>
                     </header>
-                    <form data-editor-input-modal-form>
+                    <div data-editor-input-modal-form>
                         <div class="news-editor-input-modal__fields" data-editor-input-modal-fields></div>
                         <div class="news-editor-input-modal__actions">
                             <button type="button" class="ann-btn ann-btn--cancel" data-editor-input-modal-cancel>Batalkan</button>
-                            <button type="submit" class="ann-btn ann-btn--submit">Simpan</button>
+                            <button type="button" class="ann-btn ann-btn--submit" data-editor-input-modal-submit>Simpan</button>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
             <textarea name="content" hidden data-content-textarea>{{ old('content', $news->content) }}</textarea>

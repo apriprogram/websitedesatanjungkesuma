@@ -19,6 +19,7 @@
             const modalForm = modal?.querySelector('[data-editor-input-modal-form]');
             const modalCloseTargets = modal?.querySelectorAll('[data-editor-input-modal-close]');
             const modalCancelButton = modal?.querySelector('[data-editor-input-modal-cancel]');
+            const modalSubmitButton = modal?.querySelector('[data-editor-input-modal-submit]');
 
             editorArea.dataset.lineSpacing = editorArea.dataset.lineSpacing || 'normal';
             editorArea.dataset.paragraphSpacing = editorArea.dataset.paragraphSpacing || 'standard';
@@ -92,16 +93,20 @@
                                 <span class="modal-section-title">Pilih Ukuran Grid</span>
                                 <span id="gridValueDisplay" style="font-weight: 700; color: #3b82f6; background: #fff; border: 1px solid #dbeafe; padding: 2px 10px; border-radius: 6px; font-size: 0.9rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">1 x 1</span>
                             </label>
-                            <div id="tableGridPicker" style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; margin-top: 8px; cursor: pointer; justify-content: center;">
+                            <div id="tableGridPicker" style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; margin-top: 8px; cursor: pointer; justify-content: center; user-select: none;">
                                 ${Array.from({length: 100}).map((_, i) => `
                                     <div class="grid-square" data-row="${Math.floor(i/10)+1}" data-col="${(i%10)+1}" 
-                                         style="aspect-ratio: 1; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; transition: all 0.1s ease;">
+                                         style="aspect-ratio: 1; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; transition: background 0.08s ease, border-color 0.08s ease;">
                                     </div>
                                 `).join('')}
                             </div>
-                            <p class="modal-section-desc">Geser kursor untuk memilih ukuran tabel, lalu klik untuk mengunci.</p>
-                            <input type="hidden" name="rows" value="1">
-                            <input type="hidden" name="cols" value="1">
+                            <p class="modal-section-desc" style="margin-top: 8px;">Geser kursor untuk memilih ukuran tabel, lalu <strong>klik</strong> untuk mengunci pilihan.</p>
+                            <div id="gridLockedInfo" style="display:none; margin-top:10px; padding: 8px 14px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 8px; font-size: 0.88rem; color: #065f46; font-weight: 600;">
+                                <i class="fas fa-check-circle" style="margin-right:6px;"></i>
+                                <span id="gridLockedText">Tabel terkunci</span>
+                            </div>
+                            <input type="hidden" name="rows" id="tableRowsInput" value="0">
+                            <input type="hidden" name="cols" id="tableColsInput" value="0">
                         </div>
                     `,
                 },
@@ -188,8 +193,28 @@
                     const gridPicker = modalFields.querySelector('#tableGridPicker');
                     const gridSquares = modalFields.querySelectorAll('.grid-square');
                     const gridDisplay = modalFields.querySelector('#gridValueDisplay');
-                    const rowsInput = modalFields.querySelector('input[name="rows"]');
-                    const colsInput = modalFields.querySelector('input[name="cols"]');
+                    const rowsInput = modalFields.querySelector('#tableRowsInput');
+                    const colsInput = modalFields.querySelector('#tableColsInput');
+                    const lockedInfo = modalFields.querySelector('#gridLockedInfo');
+                    const lockedText = modalFields.querySelector('#gridLockedText');
+
+                    let lockedRows = 0;
+                    let lockedCols = 0;
+
+                    const paintGrid = (r, c, isLocked) => {
+                        gridSquares.forEach(s => {
+                            const sr = parseInt(s.dataset.row);
+                            const sc = parseInt(s.dataset.col);
+                            const inSelection = sr <= r && sc <= c;
+                            if (isLocked) {
+                                s.style.background = inSelection ? '#10b981' : '#fff';
+                                s.style.borderColor = inSelection ? '#059669' : '#cbd5e1';
+                            } else {
+                                s.style.background = inSelection ? '#3b82f6' : '#fff';
+                                s.style.borderColor = inSelection ? '#2563eb' : '#cbd5e1';
+                            }
+                        });
+                    };
 
                     if (gridPicker) {
                         gridSquares.forEach(sq => {
@@ -197,26 +222,48 @@
                                 const r = parseInt(sq.dataset.row);
                                 const c = parseInt(sq.dataset.col);
                                 gridDisplay.textContent = `${r} x ${c}`;
-                                gridSquares.forEach(s => {
-                                    const sr = parseInt(s.dataset.row);
-                                    const sc = parseInt(s.dataset.col);
-                                    if (sr <= r && sc <= c) {
-                                        s.style.background = '#3b82f6';
-                                        s.style.borderColor = '#2563eb';
-                                    } else {
-                                        s.style.background = '#fff';
-                                        s.style.borderColor = '#cbd5e1';
-                                    }
-                                });
+                                if (lockedRows > 0) {
+                                    // Jika sudah ada lock, tampilkan preview tapi pertahankan warna lock
+                                    paintGrid(r, c, false);
+                                } else {
+                                    paintGrid(r, c, false);
+                                }
                             });
-                            sq.addEventListener('click', () => {
-                                rowsInput.value = sq.dataset.row;
-                                colsInput.value = sq.dataset.col;
+
+                            sq.addEventListener('mouseleave', () => {
+                                // Kembalikan tampilan ke locked state jika ada
+                                if (lockedRows > 0) {
+                                    paintGrid(lockedRows, lockedCols, true);
+                                    gridDisplay.textContent = `${lockedRows} x ${lockedCols}`;
+                                }
+                            });
+
+                            sq.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                lockedRows = parseInt(sq.dataset.row);
+                                lockedCols = parseInt(sq.dataset.col);
+                                rowsInput.value = lockedRows;
+                                colsInput.value = lockedCols;
+                                gridDisplay.textContent = `${lockedRows} x ${lockedCols}`;
+                                paintGrid(lockedRows, lockedCols, true);
                                 gridPicker.style.borderColor = '#10b981';
-                                setTimeout(() => {
-                                    modalForm.dispatchEvent(new Event('submit'));
-                                }, 100);
+                                if (lockedInfo) lockedInfo.style.display = 'block';
+                                if (lockedText) lockedText.textContent = `Tabel ${lockedRows} baris × ${lockedCols} kolom terkunci — klik Simpan untuk memasukkan`;
                             });
+                        });
+
+                        // Reset tampilan saat mouse meninggalkan area grid
+                        gridPicker.addEventListener('mouseleave', () => {
+                            if (lockedRows > 0) {
+                                paintGrid(lockedRows, lockedCols, true);
+                                gridDisplay.textContent = `${lockedRows} x ${lockedCols}`;
+                            } else {
+                                gridSquares.forEach(s => {
+                                    s.style.background = '#fff';
+                                    s.style.borderColor = '#cbd5e1';
+                                });
+                            }
                         });
                     }
                 }
@@ -335,24 +382,40 @@
                 });
             });
 
-            modalForm?.addEventListener('submit', event => {
-                event.preventDefault();
-                if (!pendingCommand || !modalForm) {
-                    return;
-                }
-                const formData = new FormData(modalForm);
+            // Fungsi untuk mengumpulkan data dari field modal
+            const collectModalFormData = () => {
+                const data = {};
+                if (!modalFields) return data;
+                modalFields.querySelectorAll('input, select, textarea').forEach(el => {
+                    if (el.name) {
+                        if (el.type === 'checkbox') {
+                            data[el.name] = el.checked ? el.value : '';
+                        } else if (el.type === 'file') {
+                            data[el.name] = el.files ? el.files[0] : null;
+                        } else {
+                            data[el.name] = el.value;
+                        }
+                    }
+                });
+                return data;
+            };
+
+            const handleModalSubmit = () => {
+                if (!pendingCommand) return;
+
+                const fields = collectModalFormData();
                 let applied = false;
 
                 if (pendingCommand === 'createLink') {
-                    const url = (formData.get('value') || '').trim();
+                    const url = (fields['value'] || '').trim();
                     if (url) {
                         document.execCommand(pendingCommand, false, url);
                         applied = true;
                     }
                 } else if (pendingCommand === 'insertImage') {
-                    const fileInput = modalForm.querySelector('input[name="imageFile"]');
-                    const widthInput = modalForm.querySelector('input[name="imageWidth"]');
-                    
+                    const fileInput = modalFields.querySelector('input[name="imageFile"]');
+                    const widthInput = modalFields.querySelector('input[name="imageWidth"]');
+
                     const file = fileInput && fileInput.files[0];
                     const width = widthInput && widthInput.value ? widthInput.value + '%' : '100%';
 
@@ -390,34 +453,56 @@
                         return;
                     }
                 } else if (pendingCommand === 'hiliteColor') {
-                    const manual = (formData.get('value') || '').trim();
-                    const picker = (formData.get('valueColor') || '').trim();
+                    const manual = (fields['value'] || '').trim();
+                    const picker = (fields['valueColor'] || '').trim();
                     const color = manual || picker;
                     if (color) {
                         document.execCommand('hiliteColor', false, color);
                         applied = true;
                     }
                 } else if (pendingCommand === 'insertTable') {
-                    const rows = parseInt(formData.get('rows'), 10);
-                    const cols = parseInt(formData.get('cols'), 10);
+                    const rows = parseInt(fields['rows'] || '0', 10);
+                    const cols = parseInt(fields['cols'] || '0', 10);
                     if (rows > 0 && cols > 0) {
-                        let tableHtml = `<div class="news-editor-table-wrapper" contenteditable="false">
-                            <table class="news-editor-table" style="width: 100%; border-collapse: collapse; table-layout: fixed;">
-                                <tbody>`;
-                        for (let r = 0; r < rows; r++) {
-                            tableHtml += '<tr>';
-                            for (let c = 0; c < cols; c++) {
-                                tableHtml += `<td contenteditable="true" style="border: 1px solid #cbd5e1; padding: 0; position: relative; min-width: 50px;">
-                                    <div class="table-cell-resizable" style="resize: both; overflow: auto; padding: 12px; min-width: 50px; min-height: 20px;">&nbsp;</div>
-                                </td>`;
-                            }
-                            tableHtml += '</tr>';
+                        // Buat header row + body rows
+                        let theadHtml = '<thead><tr>';
+                        for (let c = 0; c < cols; c++) {
+                            theadHtml += `<th contenteditable="true" style="border: 1px solid #cbd5e1; background: #f1f5f9; padding: 10px 12px; font-weight: 600; font-size: 0.9rem; color: #0f172a; text-align: left; min-width: 80px;">Kolom ${c + 1}</th>`;
                         }
-                        tableHtml += `</tbody>
+                        theadHtml += '</tr></thead>';
+
+                        let tbodyHtml = '<tbody>';
+                        for (let r = 0; r < rows; r++) {
+                            tbodyHtml += '<tr>';
+                            for (let c = 0; c < cols; c++) {
+                                tbodyHtml += `<td contenteditable="true" style="border: 1px solid #cbd5e1; padding: 10px 12px; min-width: 80px; min-height: 24px; vertical-align: top;">&nbsp;</td>`;
+                            }
+                            tbodyHtml += '</tr>';
+                        }
+                        tbodyHtml += '</tbody>';
+
+                        const tableHtml = `<div class="news-editor-table-wrapper" style="overflow-x: auto; margin: 1.5rem 0;">
+                            <table class="news-editor-table" style="width: 100%; border-collapse: collapse; table-layout: auto; font-size: 0.95rem;">
+                                ${theadHtml}
+                                ${tbodyHtml}
                             </table>
-                        </div><p></p>`;
+                        </div><p><br></p>`;
                         insertHtmlAtCursor(tableHtml);
                         applied = true;
+                    } else {
+                        // Belum memilih ukuran grid
+                        const lockedInfo = document.querySelector('#gridLockedInfo');
+                        if (lockedInfo) {
+                            lockedInfo.style.display = 'block';
+                            lockedInfo.style.background = '#fef2f2';
+                            lockedInfo.style.borderColor = '#fca5a5';
+                            lockedInfo.style.color = '#991b1b';
+                            const icon = lockedInfo.querySelector('i');
+                            if (icon) icon.className = 'fas fa-exclamation-circle';
+                            const lt = lockedInfo.querySelector('#gridLockedText');
+                            if (lt) lt.textContent = 'Pilih ukuran tabel terlebih dahulu dengan mengklik grid di atas!';
+                        }
+                        return; // Jangan tutup modal
                     }
                 }
 
@@ -426,6 +511,12 @@
                     syncContent();
                 }
                 closeModal();
+            };
+
+            modalSubmitButton?.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleModalSubmit();
             });
 
             dropdowns.forEach(dropdown => {
