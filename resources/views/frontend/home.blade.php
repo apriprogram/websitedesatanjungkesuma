@@ -714,7 +714,7 @@
                 </style>
 
                 <!-- Statistik Pekerjaan -->
-                <div class="stat-card">
+                <div class="stat-card stat-card-wide">
                     <div class="stat-card-header">
                         <h3 class="stat-card-title">Pekerjaan</h3>
                         <div class="stat-menu-container">
@@ -733,7 +733,7 @@
                 </div>
 
                 <!-- Statistik Pendidikan -->
-                <div class="stat-card">
+                <div class="stat-card stat-card-wide">
                     <div class="stat-card-header">
                         <h3 class="stat-card-title">Pendidikan</h3>
                         <div class="stat-menu-container">
@@ -751,7 +751,7 @@
                     </div>
                 </div>
                 <!-- Statistik Agama -->
-                <div class="stat-card">
+                <div class="stat-card stat-card-wide">
                     <div class="stat-card-header">
                         <h3 class="stat-card-title">Agama</h3>
                         <div class="stat-menu-container">
@@ -770,7 +770,7 @@
                 </div>
 
                 <!-- Statistik Status Perkawinan -->
-                <div class="stat-card">
+                <div class="stat-card stat-card-wide">
                     <div class="stat-card-header">
                         <h3 class="stat-card-title">Status Perkawinan</h3>
                         <div class="stat-menu-container">
@@ -789,7 +789,7 @@
                 </div>
 
                 <!-- Statistik Usia -->
-                <div class="stat-card">
+                <div class="stat-card stat-card-wide">
                     <div class="stat-card-header">
                         <h3 class="stat-card-title">Usia</h3>
                         <div class="stat-menu-container">
@@ -808,7 +808,7 @@
                 </div>
 
                 <!-- Statistik Golongan Darah -->
-                <div class="stat-card">
+                <div class="stat-card stat-card-wide">
                     <div class="stat-card-header">
                         <h3 class="stat-card-title">Golongan Darah</h3>
                         <div class="stat-menu-container">
@@ -827,7 +827,7 @@
                 </div>
 
                 <!-- Statistik Suku -->
-                <div class="stat-card">
+                <div class="stat-card stat-card-wide">
                     <div class="stat-card-header">
                         <h3 class="stat-card-title">Suku</h3>
                         <div class="stat-menu-container">

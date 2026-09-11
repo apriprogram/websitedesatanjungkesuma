@@ -143,7 +143,8 @@
             display: flex;
             flex-direction: column;
         }
-                @media (max-width: 768px) {
+
+        @media (max-width: 768px) {
             .page-hero .page-title {
                 font-size: 1.2rem;
                 margin: 0 0 8px;
@@ -154,6 +155,64 @@
             .page-body p {
                 font-size: 0.8rem;
             }
+        }
+
+        /* ── Dark Mode ── */
+        body.dark-mode {
+            background: #0b1220;
+            color: #e5e7eb;
+        }
+        body.dark-mode .page-hero {
+            background: #0f1f3d;
+            color: #e5e7eb;
+        }
+        body.dark-mode .page-hero .breadcrumb,
+        body.dark-mode .page-hero .breadcrumb a,
+        body.dark-mode .page-hero .page-meta,
+        body.dark-mode .page-hero .page-meta .meta-sep {
+            color: #9fb5ff;
+        }
+        body.dark-mode .page-detail__body {
+            color: #e5e7eb;
+        }
+        body.dark-mode .attachment-card {
+            background: #1e293b;
+            border-color: #334155;
+            color: #e5e7eb;
+        }
+
+        /* Tabel – Paksa Dark Mode (Seperti di Berita) */
+        body.dark-mode .page-detail__body table,
+        body.dark-mode .page-detail__body table th,
+        body.dark-mode .page-detail__body table td,
+        body.dark-mode .page-detail__body table tr {
+            background-color: #0b1220 !important;
+            color: #e5e7eb !important;
+            border-color: #374151 !important;
+        }
+
+        body.dark-mode .page-detail__body table thead th {
+            background-color: #0f1f3d !important;
+        }
+
+        /* Teks dengan background warna (Highlight) di editor harus terbaca */
+        body.dark-mode .page-detail__body span[style*="background-color"] {
+            color: #0f172a !important;
+        }
+
+        body.dark-mode .page-detail__body h1:not([style*="color"]),
+        body.dark-mode .page-detail__body h2:not([style*="color"]),
+        body.dark-mode .page-detail__body h3:not([style*="color"]),
+        body.dark-mode .page-detail__body h4:not([style*="color"]),
+        body.dark-mode .page-detail__body h5:not([style*="color"]),
+        body.dark-mode .page-detail__body h6:not([style*="color"]) {
+            color: #f1f5f9;
+        }
+        body.dark-mode .page-detail__body a { color: #93c5fd; }
+        body.dark-mode .page-detail__body a:hover { color: #bfdbfe; }
+        body.dark-mode .page-detail__body blockquote {
+            border-left-color: #4b5563;
+            color: #9ca3af;
         }
     </style>
 </head>
@@ -251,4 +310,5 @@
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <script src="{{ asset('assets/js/accessibility.js') }}"></script>
 </body>
+
 </html>

@@ -1997,8 +1997,9 @@ if (dashboardContainer) {
       const total = dataset.reduce((a, b) => a + b, 0);
 
       ctx.save();
-      const centerX = width / 2;
-      const centerY = chart.height / 2;
+      const chartArea = chart.chartArea;
+      const centerX = (chartArea.left + chartArea.right) / 2;
+      const centerY = (chartArea.top + chartArea.bottom) / 2;
 
       // Icon
       ctx.font = "900 22px 'Font Awesome 6 Free'";
@@ -2045,9 +2046,17 @@ if (dashboardContainer) {
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         cutout: "70%",
         plugins: {
-          legend: { position: "bottom", labels: { font: { size: 12 } } },
+          legend: { 
+            position: "right", 
+            labels: { 
+              font: { size: 12 },
+              padding: 15,
+              usePointStyle: true
+            } 
+          },
           tooltip: {
             callbacks: {
               label: function (ctx) {

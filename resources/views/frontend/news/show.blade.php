@@ -195,6 +195,43 @@
             color: #e5e7eb;
         }
 
+        /* Tabel – Paksa Dark Mode (Seperti di Berita) */
+        body.dark-mode .page-detail__body table,
+        body.dark-mode .page-detail__body table th,
+        body.dark-mode .page-detail__body table td,
+        body.dark-mode .page-detail__body table tr {
+            background-color: #0b1220 !important;
+            color: #e5e7eb !important;
+            border-color: #374151 !important;
+        }
+
+        body.dark-mode .page-detail__body table thead th {
+            background-color: #0f1f3d !important;
+        }
+
+        /* Teks dengan background warna (Highlight) di editor harus terbaca */
+        body.dark-mode .page-detail__body span[style*="background-color"] {
+            color: #0f172a !important;
+        }
+
+        /* Heading tanpa warna inline */
+        body.dark-mode .page-detail__body h1:not([style*="color"]),
+        body.dark-mode .page-detail__body h2:not([style*="color"]),
+        body.dark-mode .page-detail__body h3:not([style*="color"]),
+        body.dark-mode .page-detail__body h4:not([style*="color"]),
+        body.dark-mode .page-detail__body h5:not([style*="color"]),
+        body.dark-mode .page-detail__body h6:not([style*="color"]) {
+            color: #f1f5f9;
+        }
+
+        /* Link */
+        body.dark-mode .page-detail__body a { color: #93c5fd; }
+        body.dark-mode .page-detail__body a:hover { color: #bfdbfe; }
+        body.dark-mode .page-detail__body blockquote {
+            border-left-color: #4b5563;
+            color: #9ca3af;
+        }
+
         .page-main {
             flex: 1;
             display: flex;

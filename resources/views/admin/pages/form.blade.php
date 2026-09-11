@@ -457,118 +457,102 @@
                         <span class="news-input-control__hint">Gunakan toolbar untuk memformat teks dan menyisipkan
                             media.</span>
                         <div class="news-editor-toolbar">
-                            <div class="news-editor-toolbar-row">
-                                <button type="button" data-editor-command="undo" title="Undo (Ctrl+Z)"><i
-                                        class="fas fa-undo"></i></button>
-                                <button type="button" data-editor-command="redo" title="Redo (Ctrl+Y)"><i
-                                        class="fas fa-redo"></i></button>
-                                <span
-                                    style="width:1px;height:20px;background:#e2e8f0;margin:0 8px;display:inline-block;"></span>
-                                <button type="button" data-editor-command="bold" aria-label="Bold"><i
-                                        class="fas fa-bold"></i></button>
-                                <button type="button" data-editor-command="italic" aria-label="Italic"><i
-                                        class="fas fa-italic"></i></button>
-                                <button type="button" data-editor-command="underline" aria-label="Underline"><i
-                                        class="fas fa-underline"></i></button>
-                                <button type="button" data-editor-command="justifyLeft" aria-label="Align left"><i
-                                        class="fas fa-align-left"></i></button>
-                                <button type="button" data-editor-command="justifyCenter" aria-label="Align center"><i
-                                        class="fas fa-align-center"></i></button>
-                                <button type="button" data-editor-command="justifyRight" aria-label="Align right"><i
-                                        class="fas fa-align-right"></i></button>
-                                <button type="button" data-editor-command="justifyFull" aria-label="Justify"><i
-                                        class="fas fa-align-justify"></i></button>
-                                <button type="button" data-editor-command="outdent" aria-label="Outdent"><i
-                                        class="fas fa-outdent"></i></button>
-                                <button type="button" data-editor-command="indent" aria-label="Indent"><i
-                                        class="fas fa-indent"></i></button>
-                                <button type="button" data-editor-command="insertUnorderedList"
-                                    aria-label="Bullet list"><i class="fas fa-list-ul"></i></button>
-                                <button type="button" data-editor-command="insertOrderedList"
-                                    aria-label="Number list"><i class="fas fa-list-ol"></i></button>
-                                <button type="button" data-editor-command="insertTable" aria-label="Insert table"><i
-                                        class="fas fa-table"></i></button>
-                                <button type="button" data-editor-command="createLink" aria-label="Insert link"><i
-                                        class="fas fa-link"></i></button>
-                                <button type="button" data-editor-command="insertImage" aria-label="Insert image"><i
-                                        class="fas fa-image"></i></button>
-                                <button type="button" data-editor-command="hiliteColor" aria-label="Highlight"
-                                    data-editor-value="rgba(79, 70, 229, 0.15)"><i
-                                        class="fas fa-fill-drip"></i></button>
+                            {{-- ═══ Baris 1: Icon Buttons ═══ --}}
+                            <div class="news-editor-toolbar-row news-editor-toolbar-row--icons">
+                                <button type="button" data-editor-command="bold" aria-label="Bold"><i class="fas fa-bold"></i></button>
+                                <button type="button" data-editor-command="italic" aria-label="Italic"><i class="fas fa-italic"></i></button>
+                                <button type="button" data-editor-command="underline" aria-label="Underline"><i class="fas fa-underline"></i></button>
+                                <span class="news-editor-toolbar-sep"></span>
+                                <button type="button" data-editor-command="justifyLeft" aria-label="Align left"><i class="fas fa-align-left"></i></button>
+                                <button type="button" data-editor-command="justifyCenter" aria-label="Align center"><i class="fas fa-align-center"></i></button>
+                                <button type="button" data-editor-command="justifyRight" aria-label="Align right"><i class="fas fa-align-right"></i></button>
+                                <button type="button" data-editor-command="justifyFull" aria-label="Justify"><i class="fas fa-align-justify"></i></button>
+                                <span class="news-editor-toolbar-sep"></span>
+                                <button type="button" data-editor-command="outdent" aria-label="Outdent"><i class="fas fa-outdent"></i></button>
+                                <button type="button" data-editor-command="indent" aria-label="Indent"><i class="fas fa-indent"></i></button>
+                                <button type="button" data-editor-command="insertUnorderedList" aria-label="Bullet list"><i class="fas fa-list-ul"></i></button>
+                                <button type="button" data-editor-command="insertOrderedList" aria-label="Number list"><i class="fas fa-list-ol"></i></button>
+                                <span class="news-editor-toolbar-sep"></span>
+                                <button type="button" data-editor-command="insertTable" aria-label="Insert table"><i class="fas fa-table"></i></button>
+                                <button type="button" data-editor-command="createLink" aria-label="Insert link"><i class="fas fa-link"></i></button>
+                                <button type="button" data-editor-command="insertImage" aria-label="Insert image"><i class="fas fa-image"></i></button>
+                                <span class="news-editor-toolbar-sep"></span>
+                                {{-- Highlight Color --}}
+                                <div class="news-editor-color-picker" id="highlightPicker" data-color-picker="hiliteColor">
+                                    <button type="button" class="news-editor-color-trigger" id="highlightTrigger" title="Warna Latar Teks" aria-label="Warna Latar" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-fill-drip"></i>
+                                        <span class="color-bar" id="highlightBar" style="background:#6366f1;"></span>
+                                    </button>
+                                    <div class="news-editor-color-panel" id="highlightPanel" style="display:none;"></div>
+                                </div>
+                                {{-- Text Color --}}
+                                <div class="news-editor-color-picker" id="textColorPicker" data-color-picker="foreColor">
+                                    <button type="button" class="news-editor-color-trigger" id="textColorTrigger" title="Warna Teks" aria-label="Warna Teks" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-font"></i>
+                                        <span class="color-bar" id="textColorBar" style="background:#ef4444;"></span>
+                                    </button>
+                                    <div class="news-editor-color-panel" id="textColorPanel" style="display:none;"></div>
+                                </div>
                             </div>
-                            <div class="news-editor-toolbar-row">
-                                <div class="news-editor-toolbar-group">
-                                    <div class="news-editor-dropdown" data-editor-dropdown>
-                                        <button type="button" data-dropdown-toggle>
-                                            <span data-dropdown-label>Paragraph</span>
-                                            <i class="fas fa-chevron-down"></i>
-                                        </button>
-                                        <div class="news-editor-dropdown__menu" data-dropdown-open>
-                                            <button type="button" data-editor-command="formatBlock"
-                                                data-editor-value="<p>">Paragraph</button>
-                                            <button type="button" data-editor-command="formatBlock"
-                                                data-editor-value="<h1>">Heading 1</button>
-                                            <button type="button" data-editor-command="formatBlock"
-                                                data-editor-value="<h2>">Heading 2</button>
-                                            <button type="button" data-editor-command="formatBlock"
-                                                data-editor-value="<h3>">Heading 3</button>
-                                        </div>
+
+                            {{-- ═══ Baris 2: Dropdown Controls ═══ --}}
+                            <div class="news-editor-toolbar-row news-editor-toolbar-row--dropdowns">
+                                <div class="news-editor-dropdown" data-editor-dropdown>
+                                    <button type="button" data-dropdown-toggle>
+                                        <span data-dropdown-label>Paragraph</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <div class="news-editor-dropdown__menu" data-dropdown-open>
+                                        <button type="button" data-editor-command="formatBlock" data-editor-value="<p>" style="font-size: 1rem; font-weight: normal;">Paragraph</button>
+                                        <button type="button" data-editor-command="formatBlock" data-editor-value="<h1>" style="font-size: 1.5rem; font-weight: 700;">Heading 1</button>
+                                        <button type="button" data-editor-command="formatBlock" data-editor-value="<h2>" style="font-size: 1.25rem; font-weight: 600;">Heading 2</button>
+                                        <button type="button" data-editor-command="formatBlock" data-editor-value="<h3>" style="font-size: 1.1rem; font-weight: 600;">Heading 3</button>
                                     </div>
-                                    <div class="news-editor-dropdown" data-editor-dropdown>
-                                        <button type="button" data-dropdown-toggle>
-                                            <span data-dropdown-label>Ukuran</span>
-                                            <i class="fas fa-chevron-down"></i>
-                                        </button>
-                                        <div class="news-editor-dropdown__menu" data-dropdown-open>
-                                            <button type="button" data-editor-command="fontSize"
-                                                data-editor-value="1">Extra Small</button>
-                                            <button type="button" data-editor-command="fontSize"
-                                                data-editor-value="2">Small</button>
-                                            <button type="button" data-editor-command="fontSize"
-                                                data-editor-value="3">Normal</button>
-                                            <button type="button" data-editor-command="fontSize"
-                                                data-editor-value="4">Large</button>
-                                            <button type="button" data-editor-command="fontSize"
-                                                data-editor-value="5">Extra Large</button>
-                                        </div>
+                                </div>
+                                <div class="news-editor-dropdown" data-editor-dropdown>
+                                    <button type="button" data-dropdown-toggle>
+                                        <span data-dropdown-label>Ukuran</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <div class="news-editor-dropdown__menu" data-dropdown-open>
+                                        <button type="button" data-editor-command="fontSize" data-editor-value="1" style="font-size: 0.7rem;">Extra Small</button>
+                                        <button type="button" data-editor-command="fontSize" data-editor-value="2" style="font-size: 0.85rem;">Small</button>
+                                        <button type="button" data-editor-command="fontSize" data-editor-value="3" style="font-size: 1rem;">Normal</button>
+                                        <button type="button" data-editor-command="fontSize" data-editor-value="4" style="font-size: 1.25rem;">Large</button>
+                                        <button type="button" data-editor-command="fontSize" data-editor-value="5" style="font-size: 1.5rem;">Extra Large</button>
                                     </div>
-                                    <div class="news-editor-dropdown" data-editor-dropdown data-case-dropdown>
-                                        <button type="button" data-dropdown-toggle>
-                                            <span data-dropdown-label>Change case</span>
-                                            <i class="fas fa-chevron-down"></i>
-                                        </button>
-                                        <div class="news-editor-dropdown__menu" data-dropdown-open>
-                                            <button type="button" data-change-case="lowercase">lowercase</button>
-                                            <button type="button" data-change-case="uppercase">UPPERCASE</button>
-                                            <button type="button" data-change-case="capitalize">Capitalize Each
-                                                Word</button>
-                                        </div>
+                                </div>
+                                <div class="news-editor-dropdown" data-editor-dropdown data-case-dropdown>
+                                    <button type="button" data-dropdown-toggle>
+                                        <span data-dropdown-label>Change case</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <div class="news-editor-dropdown__menu" data-dropdown-open>
+                                        <button type="button" data-change-case="uppercase" style="text-transform: uppercase;">UPPERCASE</button>
+                                        <button type="button" data-change-case="lowercase" style="text-transform: lowercase;">lowercase</button>
+                                        <button type="button" data-change-case="capitalize" style="text-transform: capitalize;">Title Case</button>
                                     </div>
-                                    <div class="news-editor-dropdown" data-editor-dropdown data-line-spacing-dropdown>
-                                        <button type="button" data-dropdown-toggle>
-                                            <span data-dropdown-label>Line spacing</span>
-                                            <i class="fas fa-chevron-down"></i>
-                                        </button>
-                                        <div class="news-editor-dropdown__menu" data-dropdown-open>
-                                            <button type="button" data-line-spacing="compact"
-                                                data-line-height="1.4">Compact</button>
-                                            <button type="button" data-line-spacing="normal"
-                                                data-line-height="1.6">Standard</button>
-                                            <button type="button" data-line-spacing="relaxed"
-                                                data-line-height="2">Relaxed</button>
-                                        </div>
+                                </div>
+                                <div class="news-editor-dropdown" data-editor-dropdown data-line-spacing-dropdown>
+                                    <button type="button" data-dropdown-toggle>
+                                        <span data-dropdown-label>Line spacing</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <div class="news-editor-dropdown__menu" data-dropdown-open>
+                                        <button type="button" data-line-spacing="compact" data-line-height="1.25" style="line-height: 1.25; padding-top: 0.25rem; padding-bottom: 0.25rem;">Tight</button>
+                                        <button type="button" data-line-spacing="normal" data-line-height="1.6" style="line-height: 1.6; padding-top: 0.5rem; padding-bottom: 0.5rem;">Standard</button>
+                                        <button type="button" data-line-spacing="relaxed" data-line-height="2" style="line-height: 2; padding-top: 0.75rem; padding-bottom: 0.75rem;">Relaxed</button>
                                     </div>
-                                    <div class="news-editor-dropdown" data-editor-dropdown
-                                        data-paragraph-spacing-dropdown>
-                                        <button type="button" data-dropdown-toggle>
-                                            <span data-dropdown-label>Paragraph spacing</span>
-                                            <i class="fas fa-chevron-down"></i>
-                                        </button>
-                                        <div class="news-editor-dropdown__menu" data-dropdown-open>
-                                            <button type="button" data-paragraph-spacing="compact">Compact</button>
-                                            <button type="button" data-paragraph-spacing="standard">Standard</button>
-                                            <button type="button" data-paragraph-spacing="relaxed">Relaxed</button>
-                                        </div>
+                                </div>
+                                <div class="news-editor-dropdown" data-editor-dropdown data-paragraph-spacing-dropdown>
+                                    <button type="button" data-dropdown-toggle>
+                                        <span data-dropdown-label>Paragraph spacing</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <div class="news-editor-dropdown__menu" data-dropdown-open>
+                                        <button type="button" data-paragraph-spacing="compact" style="margin-bottom: 2px;">Compact</button>
+                                        <button type="button" data-paragraph-spacing="standard" style="margin-bottom: 8px;">Standard</button>
+                                        <button type="button" data-paragraph-spacing="relaxed" style="margin-bottom: 16px;">Relaxed</button>
                                     </div>
                                 </div>
                             </div>
@@ -770,13 +754,13 @@
                 <i class="fas fa-xmark"></i>
             </button>
         </header>
-        <form data-editor-input-modal-form>
+        <div data-editor-input-modal-form>
             <div class="news-editor-input-modal__fields" data-editor-input-modal-fields></div>
             <div class="news-editor-input-modal__actions">
                 <button type="button" class="news-btn news-btn--ghost" data-editor-input-modal-cancel>Batalkan</button>
-                <button type="submit" class="news-btn news-btn--primary">Simpan</button>
+                <button type="button" class="news-btn news-btn--primary" data-editor-input-modal-submit>Simpan</button>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 @endsection
